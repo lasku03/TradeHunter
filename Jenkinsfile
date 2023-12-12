@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                //
+                PowerShell('.//Jenkins_Build.ps1')
             }
         }
         stage('Test') {
@@ -11,7 +11,7 @@ pipeline {
                 //
             }
         }
-        stage('Deploy') {
+        stage('Sonarqube') {
             steps {
                 //
             }
