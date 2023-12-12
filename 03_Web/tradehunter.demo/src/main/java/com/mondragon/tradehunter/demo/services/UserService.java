@@ -33,4 +33,20 @@ public class UserService {
     public User login(String username, String password){
         return userRepository.findUserByUsernameAndPassword(username, password);
     }
+
+    public boolean verifyUsername(String username){
+        boolean verified = false;
+        if(userRepository.findUserByUsername(username) == null){
+            verified = true;
+        }
+        return verified;
+    }
+
+    public boolean verifyEmail(String email){
+        boolean verified = false;
+        if(userRepository.findUserByEmail(email) == null){
+            verified = true;
+        }
+        return verified;
+    }
 }

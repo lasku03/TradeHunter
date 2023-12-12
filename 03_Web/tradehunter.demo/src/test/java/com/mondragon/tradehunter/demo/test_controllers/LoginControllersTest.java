@@ -28,7 +28,7 @@ class LoginControllersTest {
 
         if(responseEntity.getStatusCode() == HttpStatus.OK){
             User user = responseEntity.getBody();
-            assertEquals("usernam", user.getUsername());
+            assertEquals("username", user.getUsername());
         }
     }
 }

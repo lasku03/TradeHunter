@@ -3,7 +3,7 @@ package com.mondragon.tradehunter.demo.request_models;
 import lombok.Data;
 
 @Data
-public class Request_user {
+public class RequestUser {
     private String name;
     private String surname;
     private String username;
