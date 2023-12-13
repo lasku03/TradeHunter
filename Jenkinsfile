@@ -6,15 +6,10 @@ pipeline {
                 PowerShell('.//Jenkins_Build.ps1')
             }
         }
-        /*stage('Test') {
+        stage('Test') {
             steps {
-                //
+                PowerShell('.//Jenkins_Test.ps1')
             }
         }
-        stage('Sonarqube') {
-            steps {
-                //
-            }
-        }*/
     }
 }
