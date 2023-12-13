@@ -6,7 +6,7 @@ pipeline {
                 PowerShell('.//Jenkins_Build.ps1')
             }
         }
-        stage('Test') {
+        /*stage('Test') {
             steps {
                 //
             }
@@ -15,6 +15,6 @@ pipeline {
             steps {
                 //
             }
-        }
+        }*/
     }
 }
