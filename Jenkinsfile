@@ -3,12 +3,12 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                PowerShell('.//Jenkins_Build.ps1')
+                bat 'powershell.exe -File .\\Jenkins_Build.ps1'
             }
         }
         stage('Test') {
             steps {
-                PowerShell('.//Jenkins_Test.ps1')
+                bat 'powershell.exe -File .\\Jenkins_Test.ps1'
             }
         }
     }
