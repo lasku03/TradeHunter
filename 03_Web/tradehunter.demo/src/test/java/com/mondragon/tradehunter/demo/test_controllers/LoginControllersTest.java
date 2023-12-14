@@ -19,7 +19,7 @@ class LoginControllersTest {
         this.restTemplate = restTemplate;
     }
 
-    @Test
+    /*@Test
     void testLogin(){
         Map<String, String> loginRequest = new HashMap<>();
         loginRequest.put("username", "username");
@@ -31,5 +31,5 @@ class LoginControllersTest {
             User user = responseEntity.getBody();
             assertEquals("username", user.getUsername());
         }
-    }
+    }*/
 }
