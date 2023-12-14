@@ -2,6 +2,8 @@ package com.mondragon.tradehunter.demo.model;
 
 import java.time.LocalDateTime;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,10 +26,14 @@ import lombok.NoArgsConstructor;
 public class Search {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @XmlElement
     private int searchID;
 
+    @XmlElement
     private LocalDateTime initialDate;
+    @XmlElement
     private LocalDateTime finalDate;
+    @XmlElement
     private boolean favorite;
 
     @ManyToOne(cascade = CascadeType.ALL)

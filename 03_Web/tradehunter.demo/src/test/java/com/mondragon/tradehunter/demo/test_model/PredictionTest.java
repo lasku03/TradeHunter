@@ -1,10 +1,10 @@
 package com.mondragon.tradehunter.demo.test_model;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 import java.time.LocalDateTime;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import com.mondragon.tradehunter.demo.model.Prediction;
 import com.mondragon.tradehunter.demo.model.User;

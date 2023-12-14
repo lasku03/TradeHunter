@@ -1,12 +1,11 @@
 package com.mondragon.tradehunter.demo.test_controllers;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.Test;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +14,10 @@ import com.mondragon.tradehunter.demo.model.User;
 
 class LoginControllersTest {
 
-    @Autowired
     private TestRestTemplate restTemplate;
+    public LoginControllersTest(TestRestTemplate restTemplate){
+        this.restTemplate = restTemplate;
+    }
 
     @Test
     void testLogin(){

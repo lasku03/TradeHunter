@@ -2,6 +2,9 @@ package com.mondragon.tradehunter.demo.model;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,10 +30,13 @@ import lombok.NoArgsConstructor;
 public class Forum {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @XmlElement
     private int forumID;
 
+    @XmlElement
     private String description;
 
+    @XmlElement
     @OneToMany(mappedBy = "forum", cascade = CascadeType.ALL)
     List<Message> messages;
 
@@ -38,6 +44,8 @@ public class Forum {
     @JoinColumn(name = "userID")
     private User user;
 
+    @XmlElementWrapper
+    @XmlElement
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "User_forums", joinColumns = @JoinColumn(name = "forumID"), inverseJoinColumns = @JoinColumn(name = "userID"))
     List<User> users;

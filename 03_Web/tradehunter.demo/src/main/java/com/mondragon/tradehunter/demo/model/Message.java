@@ -3,6 +3,8 @@ package com.mondragon.tradehunter.demo.model;
 
 import java.time.LocalDateTime;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,11 +27,13 @@ import lombok.NoArgsConstructor;
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @XmlElement
     private int messageID;
 
+    @XmlElement
     private String content;
+    @XmlElement
     private LocalDateTime date;
-    private boolean type;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "userID")

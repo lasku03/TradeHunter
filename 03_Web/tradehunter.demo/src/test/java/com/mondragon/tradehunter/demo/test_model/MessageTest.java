@@ -1,11 +1,10 @@
 package com.mondragon.tradehunter.demo.test_model;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 import java.time.LocalDateTime;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import com.mondragon.tradehunter.demo.model.Forum;
 import com.mondragon.tradehunter.demo.model.Message;
@@ -32,13 +31,6 @@ class MessageTest {
         LocalDateTime now = LocalDateTime.now();
         message.setDate(now);
         assertEquals(now, message.getDate());
-    }
-
-    @Test
-    void testTypeGetterAndSetter() {
-        Message message = new Message();
-        message.setType(true);
-        assertTrue(message.isType());
     }
 
     @Test

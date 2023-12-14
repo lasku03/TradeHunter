@@ -2,6 +2,7 @@ package com.mondragon.tradehunter.demo.model;
 
 import java.time.LocalDateTime;
 
+import javax.xml.bind.annotation.XmlElement;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -25,10 +26,14 @@ import lombok.NoArgsConstructor;
 public class Prediction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @XmlElement
     private int predictionID;
 
+    @XmlElement
     private double value;
+    @XmlElement
     private LocalDateTime consultDate;
+    @XmlElement
     private LocalDateTime predictionDate;
 
     @ManyToOne(cascade = CascadeType.ALL)
