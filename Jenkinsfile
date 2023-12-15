@@ -1,6 +1,6 @@
 def PowerShell(scriptName) {
     def psCmd = "pwsh -File ${scriptName}"
-    bat psCmd
+    sh psCmd
 }
 
 pipeline {
