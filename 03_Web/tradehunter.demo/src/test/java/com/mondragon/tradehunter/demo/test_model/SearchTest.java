@@ -5,7 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.time.LocalDateTime;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.mondragon.tradehunter.demo.model.Search;
 import com.mondragon.tradehunter.demo.model.User;

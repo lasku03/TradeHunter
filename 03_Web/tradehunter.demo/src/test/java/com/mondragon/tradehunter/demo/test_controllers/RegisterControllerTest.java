@@ -2,7 +2,7 @@ package com.mondragon.tradehunter.demo.test_controllers;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
@@ -10,12 +10,17 @@ import org.springframework.http.ResponseEntity;
 
 import com.mondragon.tradehunter.demo.request_models.RequestUser;
 
-class RegisterControllerTest {
+public class RegisterControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
+    public RegisterControllerTest() {
+        restTemplate = new TestRestTemplate();
+
+    }
+
     @Test
-    void testRegister(){
+    public void testRegister() {
         RequestUser requestUser = new RequestUser();
         requestUser.setName("Name");
         requestUser.setSurname("Surname");
@@ -25,9 +30,12 @@ class RegisterControllerTest {
         requestUser.setAge(25);
         requestUser.setPremium(true);
 
-        ResponseEntity<String> responseEntity = restTemplate.postForEntity("/register", requestUser, String.class);
-        if(responseEntity.getStatusCode() == HttpStatus.OK){
+        ResponseEntity<String> responseEntity = restTemplate.postForEntity("http://localhost:8080/register",
+                requestUser, String.class);
+        if (responseEntity.getStatusCode() == HttpStatus.OK) {
             assertEquals("Created!", responseEntity.getBody());
-        }
+        } else if (responseEntity.getBody().equals("Username exists!") || responseEntity.getBody().equals("Email exists!")) {
+            assertEquals(HttpStatus.NOT_ACCEPTABLE, responseEntity.getStatusCode());
+        } 
     }
 }

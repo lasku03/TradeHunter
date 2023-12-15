@@ -43,7 +43,6 @@ public class ForumControler {
 
             System.out.println(list.toString());
         } catch (JAXBException  e) {
-            e.printStackTrace(); // Handle the exception as needed
         }
     }
 }
