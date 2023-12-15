@@ -1,18 +1,19 @@
+def PowerShell(scriptName) {
+    def psCmd = "pwsh -File ${scriptName}"
+    bat psCmd
+}
+
 pipeline {
     agent any
     stages {
         stage('Build') {
             steps {
-                sh '''
-                    pwsh -File ./Jenkins_Build.ps1
-                '''
+                PowerShell("./Jenkins_Build.ps1")
             }
         }
         stage('Test') {
             steps {
-                sh '''
-                    pwsh -File ./Jenkins_Test.ps1
-                '''
+                PowerShell("./Jenkins_Test.ps1")
             }
         }
     }
