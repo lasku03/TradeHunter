@@ -3,7 +3,6 @@ package com.mondragon.tradehunter.demo.services;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mondragon.tradehunter.demo.model.User;
@@ -11,8 +10,12 @@ import com.mondragon.tradehunter.demo.repository.UserRepository;
 
 @Service
 public class UserService {
-    @Autowired
+    
     UserRepository userRepository;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public Optional<User> getUserByID(int id){
         return userRepository.findById(id);
