@@ -7,7 +7,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.mondragon.tradehunter.demo.model.Forum;
 import com.mondragon.tradehunter.demo.model.Prediction;

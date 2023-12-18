@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.time.LocalDateTime;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.mondragon.tradehunter.demo.model.Forum;
 import com.mondragon.tradehunter.demo.model.Message;
