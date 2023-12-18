@@ -27,16 +27,27 @@ pipeline {
             script {
                     if (env.BRANCH_NAME.equals("master")) {
                         emailext (
-                            subject: "SUCCESS MASTER",
-                            body: "SUCCESS MASTER: Job",
+                            subject: "SUCCESS MASTER: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                            body: """<p>SUCCESS MASTER: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+                                """,
                             to: 'trade.hunter.ai@gmail.com',
+                            recipientProviders: [[$class: 'DevelopersRecipientProvider']]
                         )
                     }
                     if (env.BRANCH_NAME.equals("develop")) {
                         emailext (
-                            subject: "SUCCESS DEVELOP:",
-                            body: "SUCCESS DEVELOP: Job",
+                            subject: "SUCCESS DEVELOP: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                            body: """<p>SUCCESS DEVELOP: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+                                """,
                             to: 'trade.hunter.ai@gmail.com',
+                            recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+                        )
+                        emailext (
+                            subject: "SUCCESS DEVELOP: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                            body: """<p>SUCCESS DEVELOP: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+                                """,
+                            to: 'unai.laskurain@alumni.mondragon.edu',
+                            recipientProviders: [[$class: 'DevelopersRecipientProvider']]
                         )
                     }
             }
@@ -46,17 +57,23 @@ pipeline {
             script {
                     if (env.BRANCH_NAME.equals("develop")) {
                         emailext (
-                            subject: "FAILED DEVELOP",
-                            body: "FAILED DEVELOP: Job",
+                            subject: "FAILED DEVELOP: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                            body: """<p>FAILED DEVELOP: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+                                    <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>
+                                """,
                             to: 'trade.hunter.ai@gmail.com',
+                            recipientProviders: [[$class: 'DevelopersRecipientProvider']]
                         )
                     }
                     
                     if (env.BRANCH_NAME.equals("master")) {
                         emailext (
-                            subject: "FAILED MASTER",
-                            body: "FAILED MASTER: Job",
+                            subject: "FAILED MASTER: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                            body: """<p>FAILED MASTER: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+                                    <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>
+                                """,
                             to: 'trade.hunter.ai@gmail.com',
+                            recipientProviders: [[$class: 'DevelopersRecipientProvider']]
                         )
                     }
             }
