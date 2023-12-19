@@ -17,8 +17,20 @@ class Serv(BaseHTTPRequestHandler):
             search = Search()
             result = search.createSearch(start_date, end_date)
 
+            result_list_of_dicts = []
+            for item in result:
+                result_dict = {
+                "date": item[0],
+                "AdjClose": item[1],
+                "Close": item[2],
+                "High": item[3],
+                "Low": item[4],
+                "Open": item[5]
+                }
+                result_list_of_dicts.append(result_dict)
+
             # Serialize the result to JSON
-            result_json = json.dumps(result)
+            result_json = json.dumps(result_list_of_dicts, indent=2)
 
             # Send the response headers
             self.send_response(200)

@@ -2,6 +2,7 @@ import requests
 from datetime import datetime
 from influxdb_client import InfluxDBClient, Point
 from influxdb_client.client.write_api import SYNCHRONOUS
+from datetime import datetime, timedelta
 
 def reorganizar_resultados(result):
     # Inicializa un diccionario para almacenar los datos reorganizados
@@ -14,6 +15,8 @@ def reorganizar_resultados(result):
             i = i + 1
             # Extrae la información relevante
             tiempo = record.values['_time']
+
+            tiempo = tiempo + timedelta(days=1)
 
             #campo = record.values['_field']
             valor = record.values['_value']
