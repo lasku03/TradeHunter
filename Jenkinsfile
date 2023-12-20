@@ -8,24 +8,24 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                PowerShell("./Jenkins_Build.ps1")
+                PowerShell('./Jenkins_Build.ps1')
             }
         }
         stage('Test') {
             steps {
-                PowerShell("./Jenkins_Test.ps1")
+                PowerShell('./Jenkins_Test.ps1')
             }
         }
     }
 
-    post {    
+    post {
         always {
             deleteDir()
         }
 
         success {
             script {
-                    if (env.BRANCH_NAME.equals("master")) {
+                    if (env.BRANCH_NAME.equals('master')) {
                         emailext (
                             subject: "SUCCESS MASTER: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
                             body: """<p>SUCCESS MASTER: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
@@ -34,7 +34,7 @@ pipeline {
                             recipientProviders: [[$class: 'DevelopersRecipientProvider']]
                         )
                     }
-                    if (env.BRANCH_NAME.equals("develop")) {
+                    if (env.BRANCH_NAME.equals('develop')) {
                         emailext (
                             subject: "SUCCESS DEVELOP: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
                             body: """<p>SUCCESS DEVELOP: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
@@ -51,7 +51,7 @@ pipeline {
                         )
                     }
             }
-        }        
+        }
         
         failure {
             script {
