@@ -53,4 +53,21 @@ class ForumTest {
         forum.setUsers(users);
         assertEquals(users, forum.getUsers());
     }
+
+    @Test
+    void testConstructor(){
+        User user = new User();
+        Message message = new Message();
+        List<Message> messages = new ArrayList<>();
+        List<User> users = new ArrayList<>();
+        users.add(user);
+        messages.add(message);
+        Forum forum = new Forum(1, "Description of the Forum", messages, user, users);
+        assertEquals(1, forum.getForumID());
+        assertEquals("Description of the Forum", forum.getDescription());
+        assertEquals(messages, forum.getMessages());
+        assertEquals(user, forum.getUser());
+        assertEquals(user, forum.getUser());
+        assertEquals(users, forum.getUsers());
+    }
 }

@@ -5,55 +5,67 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-import com.mondragon.tradehunter.demo.model.User;
+import com.mondragon.tradehunter.demo.request_models.RequestUser;
 
-public class Request_userTest {
+class RequestUserTest {
     @Test
     void testNameGetterAndSetter() {
-        User user = new User();
+        RequestUser user = new RequestUser();
         user.setName("Name");
         assertEquals("Name", user.getName());
     }
 
     @Test
     void testSurnameGetterAndSetter() {
-        User user = new User();
+        RequestUser user = new RequestUser();
         user.setSurname("Surname");
         assertEquals("Surname", user.getSurname());
     }
 
     @Test
     void testUsernameGetterAndSetter() {
-        User user = new User();
+        RequestUser user = new RequestUser();
         user.setUsername("name.surname");
         assertEquals("name.surname", user.getUsername());
     }
 
     @Test
     void testPasswordGetterAndSetter() {
-        User user = new User();
+        RequestUser user = new RequestUser();
         user.setPassword("password123");
         assertEquals("password123", user.getPassword());
     }
 
     @Test
     void testEmailGetterAndSetter() {
-        User user = new User();
+        RequestUser user = new RequestUser();
         user.setEmail("name.surname@email.com");
         assertEquals("name.surname@email.com", user.getEmail());
     }
 
     @Test
     void testAgeGetterAndSetter() {
-        User user = new User();
+        RequestUser user = new RequestUser();
         user.setAge(25);
         assertEquals(25, user.getAge());
     }
 
     @Test
     void testPremiumGetterAndSetter() {
-        User user = new User();
+        RequestUser user = new RequestUser();
         user.setPremium(true);
+        assertTrue(user.isPremium());
+    }
+
+    @Test
+    void testConstructor(){
+        RequestUser user = new RequestUser("Name", "Surname", "username", "password", "name.surname@gmail.com", 25, true);
+        assertEquals("Name", user.getName());
+        assertEquals("Surname", user.getSurname());
+        assertEquals("username", user.getUsername());
+        assertEquals("password", user.getPassword());
+        assertEquals("name.surname@gmail.com", user.getEmail());
+        assertEquals(25, user.getAge());
         assertTrue(user.isPremium());
     }
 }
