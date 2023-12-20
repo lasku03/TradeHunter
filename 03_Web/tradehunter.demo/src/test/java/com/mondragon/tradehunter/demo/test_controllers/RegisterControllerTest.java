@@ -10,17 +10,17 @@ import org.springframework.http.ResponseEntity;
 
 import com.mondragon.tradehunter.demo.request_models.RequestUser;
 
-public class RegisterControllerTest {
+class RegisterControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
-    public RegisterControllerTest() {
+    RegisterControllerTest() {
         restTemplate = new TestRestTemplate();
 
     }
 
     @Test
-    public void testRegister() {
+    void testRegister() {
         RequestUser requestUser = new RequestUser();
         requestUser.setName("Name");
         requestUser.setSurname("Surname");
