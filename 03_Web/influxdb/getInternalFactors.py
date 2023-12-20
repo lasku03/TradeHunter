@@ -2,6 +2,7 @@ import requests
 from datetime import datetime
 from influxdb_client import InfluxDBClient, Point
 from influxdb_client.client.write_api import SYNCHRONOUS
+from datetime import datetime, timedelta
 
 def reorganizar_resultados(result):
     # Inicializa un diccionario para almacenar los datos reorganizados
@@ -14,6 +15,8 @@ def reorganizar_resultados(result):
             i = i + 1
             # Extrae la información relevante
             tiempo = record.values['_time']
+
+            tiempo = tiempo + timedelta(days=1)
 
             #campo = record.values['_field']
             valor = record.values['_value']
@@ -32,8 +35,8 @@ def reorganizar_resultados(result):
     return datos_reorganizados
 
 def get_internal_factors(start, stop):
-    url = "http://localhost:8086"
-    token = "cXCNQgiokEdLO_S9VLELWXYV4Vpgok-5t3k0Y3bS-CSC0PbK0myWpSyuJhh5Z-8PH3W7wSbjACzboLGeZMoCoQ=="
+    url = "http://tradehunter.duckdns.org:8086"
+    token = "KYrAp2dOqBHVBNr0XIT--Rm_PaSF2sWP_b7YZO-QD9MCPuejpe0Dzu7j3-6mxSK7xcCbVWJJYHdVgFdAQHbEFw=="
     org = "Trade Hunter"
     bucket = "Trade Hunter Real Time Data"
     measurement = "Internal_Factors"

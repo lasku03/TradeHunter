@@ -2,9 +2,6 @@ package com.mondragon.tradehunter.demo.model;
 
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,14 +10,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @Entity
 @Table(name = "User")
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
@@ -28,39 +21,119 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userID;
 
-    @XmlElement
     private String name;
-    @XmlElement
     private String surname;
-    @XmlElement
     private String username;
-    @XmlElement
     private String password;
-    // private String photo;
-    @XmlElement
     private String email;
-    @XmlElement
     private int age;
-    @XmlElement
     private boolean premium;
 
-    @XmlElementWrapper(name = "messages")
-    @XmlElement(name = "message")
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     List<Message> messages;
 
-    @XmlElementWrapper(name = "forums")
-    @XmlElement(name = "forum")
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     List<Forum> forums;
 
-    @XmlElementWrapper(name = "searches")
-    @XmlElement(name = "search")
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     List<Search> searches;
 
-    @XmlElementWrapper(name = "predictions")
-    @XmlElement(name = "prediction")
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     List<Prediction> predictions;
+
+    public int getUserID() {
+        return userID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public boolean isPremium() {
+        return premium;
+    }
+
+    public void setPremium(boolean premium) {
+        this.premium = premium;
+    }
+
+    public List<Message> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
+    }
+
+    public List<Forum> getForums() {
+        return forums;
+    }
+
+    public void setForums(List<Forum> forums) {
+        this.forums = forums;
+    }
+
+    public List<Search> getSearches() {
+        return searches;
+    }
+
+    public void setSearches(List<Search> searches) {
+        this.searches = searches;
+    }
+
+    public List<Prediction> getPredictions() {
+        return predictions;
+    }
+
+    public void setPredictions(List<Prediction> predictions) {
+        this.predictions = predictions;
+    }
 }

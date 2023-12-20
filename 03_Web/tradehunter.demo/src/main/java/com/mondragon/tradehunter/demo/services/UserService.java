@@ -25,12 +25,16 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public void saveUser(User user){
-        userRepository.save(user);
+    public User saveUser(User user){
+        return userRepository.save(user);
     }
 
     public void deleteUser(User user){
         userRepository.delete(user);
+    }
+
+    public User getUserByUsername(String username){
+        return userRepository.findUserByUsername(username);
     }
 
     public User login(String username, String password){

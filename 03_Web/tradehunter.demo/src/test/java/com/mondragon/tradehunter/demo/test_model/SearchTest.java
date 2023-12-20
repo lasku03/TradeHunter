@@ -48,4 +48,17 @@ class SearchTest {
         search.setUser(user);
         assertEquals(user, search.getUser());
     }
+
+    @Test
+    void testConstructor(){
+        LocalDateTime initialDate = LocalDateTime.of(2015, 1, 1, 0, 0, 0);
+        LocalDateTime finalDate = LocalDateTime.of(2016, 1, 1, 0, 0, 0);
+        User user = new User();
+        Search search = new Search(1, initialDate, finalDate, true, user);
+        assertEquals(1, search.getSearchID());
+        assertEquals(initialDate, search.getInitialDate());
+        assertEquals(finalDate, search.getFinalDate());
+        assertTrue(search.isFavorite());
+        assertEquals(user, search.getUser());
+    }
 }
