@@ -3,7 +3,6 @@ package com.mondragon.tradehunter.demo.model;
 
 import java.time.LocalDateTime;
 
-import javax.xml.bind.annotation.XmlElement;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -13,26 +12,17 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @Entity
 @Table(name = "Message")
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @XmlElement
     private int messageID;
 
-    @XmlElement
     private String content;
-    @XmlElement
     private LocalDateTime date;
 
     @ManyToOne(cascade = CascadeType.ALL)
@@ -42,4 +32,52 @@ public class Message {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "forumID")
     private Forum forum;
+
+    public Message(int messageID, String content, LocalDateTime date, User user, Forum forum) {
+        this.messageID = messageID;
+        this.content = content;
+        this.date = date;
+        this.user = user;
+        this.forum = forum;
+    }
+
+    public int getMessageID() {
+        return messageID;
+    }
+
+    public void setMessageID(int messageID) {
+        this.messageID = messageID;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Forum getForum() {
+        return forum;
+    }
+
+    public void setForum(Forum forum) {
+        this.forum = forum;
+    }
 }

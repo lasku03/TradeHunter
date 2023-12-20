@@ -1,6 +1,5 @@
 package com.mondragon.tradehunter.demo.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,8 +13,11 @@ import com.mondragon.tradehunter.demo.services.UserService;
 @RestController
 // @RequestMapping("/register")
 public class RegisterController {
-    @Autowired
-    UserService userService;
+    private UserService userService;
+
+    public RegisterController(UserService userService){
+        this.userService = userService;
+    }
 
     @PostMapping(value = "/register", produces = { "application/xml", "application/json" }, consumes = {
             "application/xml", "application/json" })
@@ -23,15 +25,14 @@ public class RegisterController {
         ResponseEntity<String> responseEntity;
         if (userService.verifyUsername(requestUser.getUsername())
                 && (userService.verifyEmail(requestUser.getEmail()))) {
-            User user = User.builder()
-                    .name(requestUser.getName())
-                    .surname(requestUser.getSurname())
-                    .username(requestUser.getUsername())
-                    .password(requestUser.getPassword())
-                    .email(requestUser.getEmail())
-                    .age(requestUser.getAge())
-                    .premium(requestUser.isPremium())
-                    .build();
+            User user = new User();
+            user.setName(requestUser.getName());
+            user.setSurname(requestUser.getSurname());
+            user.setUsername(requestUser.getUsername());
+            user.setPassword(requestUser.getPassword());
+            user.setEmail(requestUser.getEmail());
+            user.setAge(requestUser.getAge());
+            user.setPremium(requestUser.isPremium());
             userService.saveUser(user);
             responseEntity = new ResponseEntity<>("Created!", HttpStatus.CREATED);
         } else if (!userService.verifyUsername(requestUser.getUsername())) {

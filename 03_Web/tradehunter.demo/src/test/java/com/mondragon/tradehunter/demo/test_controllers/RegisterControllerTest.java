@@ -2,40 +2,64 @@ package com.mondragon.tradehunter.demo.test_controllers;
 
 import static org.junit.Assert.assertEquals;
 
+import org.easymock.EasyMock;
+import org.easymock.EasyMockSupport;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import com.mondragon.tradehunter.demo.controllers.RegisterController;
+import com.mondragon.tradehunter.demo.model.User;
 import com.mondragon.tradehunter.demo.request_models.RequestUser;
+import com.mondragon.tradehunter.demo.services.UserService;
 
-public class RegisterControllerTest {
-    @Autowired
-    private TestRestTemplate restTemplate;
+class RegisterControllerTest extends EasyMockSupport{
+    public UserService userService;
+    public User user;
+    public RequestUser requestUser;
+    public RegisterController registerController;
 
-    public RegisterControllerTest() {
-        restTemplate = new TestRestTemplate();
-
+    @BeforeEach
+    void setUp(){
+        userService = createMock(UserService.class);
+        requestUser = new RequestUser("Name", "Surname", "username", "password", "name.surname@gmail.com", 25, false);
+        user = new User(1,"Name", "Surname", "username", "password", "name.surname@gmail.com", 25, false, null, null, null, null);
+        registerController = new RegisterController(userService);
     }
 
     @Test
-    public void testRegister() {
-        RequestUser requestUser = new RequestUser();
-        requestUser.setName("Name");
-        requestUser.setSurname("Surname");
-        requestUser.setUsername("name.surname");
-        requestUser.setPassword("password123");
-        requestUser.setEmail("name.surname@example.com");
-        requestUser.setAge(25);
-        requestUser.setPremium(true);
+    void testRegister(){
+        EasyMock.expect(userService.verifyUsername("username")).andReturn(true);
+        EasyMock.expect(userService.verifyEmail("name.surname@gmail.com")).andReturn(true);
+        EasyMock.expect(userService.saveUser(EasyMock.anyObject(User.class))).andReturn(user);
+        EasyMock.replay(userService);
 
-        ResponseEntity<String> responseEntity = restTemplate.postForEntity("http://localhost:8080/register",
-                requestUser, String.class);
-        if (responseEntity.getStatusCode() == HttpStatus.OK) {
-            assertEquals("Created!", responseEntity.getBody());
-        } else if (responseEntity.getBody().equals("Username exists!") || responseEntity.getBody().equals("Email exists!")) {
-            assertEquals(HttpStatus.NOT_ACCEPTABLE, responseEntity.getStatusCode());
-        } 
+        ResponseEntity<String> responseEntity = registerController.register(requestUser);
+        assertEquals("Created!", responseEntity.getBody());
+        EasyMock.verify(userService);
     }
+
+    @Test
+    void testRegisterUsernameExists(){
+        EasyMock.expect(userService.verifyUsername("username")).andReturn(false);
+        EasyMock.expect(userService.verifyUsername("username")).andReturn(false);
+        EasyMock.replay(userService);
+
+        ResponseEntity<String> responseEntity = registerController.register(requestUser);
+        assertEquals("Username exists!", responseEntity.getBody());
+        EasyMock.verify(userService);
+    }
+
+    @Test
+    void testRegisterEmailExists(){
+        EasyMock.expect(userService.verifyUsername("username")).andReturn(true);
+        EasyMock.expect(userService.verifyEmail("name.surname@gmail.com")).andReturn(false);
+        EasyMock.expect(userService.verifyUsername("username")).andReturn(true);
+        EasyMock.replay(userService);
+
+        ResponseEntity<String> responseEntity = registerController.register(requestUser);
+        assertEquals("Email exists!", responseEntity.getBody());
+        EasyMock.verify(userService);
+    }
+
 }
