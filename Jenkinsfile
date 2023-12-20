@@ -21,6 +21,15 @@ pipeline {
                 bat 'call Jenkins_Sonarqube.bat'
             }
         }
+        stage('Publish') {
+            steps {
+                script {
+                    if (env.BRANCH_NAME.equals('develop')) {
+                        PowerShell('./Jenkins_Publish.ps1')
+                    }
+                }
+            }
+        }
     }
 
     post {
