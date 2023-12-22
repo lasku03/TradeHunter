@@ -21,8 +21,6 @@ if ($LASTEXITCODE -eq 0) {
     #Copy to the Web foled of TradeHunterAI
     $destinationFolder = "/home/trade_hunter_ai/web"
     Move-Item -Path $sourceJar -Destination $destinationFolder -Force
-
-    Move-Item -Path $sourceJar.FullName -Destination $destinationFolder -Force
 }
 else {
     # Si hubo un error en la construcción del JAR, mostrar mensaje de error
