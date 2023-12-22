@@ -20,6 +20,7 @@ pipeline {
             steps {
                 script {
                     if (isUnix()) {
+                        sh 'chmod 777 Jenkins_Sonarqube.sh'
                         sh './Jenkins_Sonarqube.sh'
                     } else {
                         bat 'call Jenkins_Sonarqube.bat'
