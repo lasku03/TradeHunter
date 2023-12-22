@@ -16,11 +16,11 @@ pipeline {
                 PowerShell('./Jenkins_Test.ps1')
             }
         }
-        /*stage('Sonarqube') {
+        stage('Sonarqube') {
             steps {
                 bat 'call Jenkins_Sonarqube.bat'
             }
-        }*/
+        }
         stage('Publish') {
             steps {
                 script {

@@ -3,7 +3,7 @@
 :: Definir los parámetros
 set projectKey=TradeHunter
 set projectName=TradeHunter
-set sonarHostUrl=http://tradehunter.duckdns.org:9090
+set sonarHostUrl=http://localhost:9090
 set sonarToken=sqp_446b24c9e7d429a2ab2df19ddd7e3438869ca294
 
 :: Comando Maven
