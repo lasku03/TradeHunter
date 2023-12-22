@@ -16,11 +16,10 @@ if ($LASTEXITCODE -eq 0) {
     # Obtener la versión del archivo POM
     $versionPOM = (Select-String -Path pom.xml -Pattern '<version>(.*?)<\/version>').Matches.Groups[1].Value
 
-    # Buscar el archivo JAR con la versión específica en el directorio 'target'
-    $sourceJar = Get-ChildItem -Path "./target/" -Filter ("tradehunter.demo-$versionPOM.jar") -Recurse | Select-Object -First 1
-    
+    $sourceJar = Join-Path -Path $directorioProyecto -ChildPath "target/tradehunter.demo-$versionPOM.jar"
     #Copy to the Web foled of TradeHunterAI
     $destinationFolder = "/home/trade_hunter_ai/web"
+    Move-Item -Path $sourceJar -Destination $destinationFolder -Force
 
     Move-Item -Path $sourceJar.FullName -Destination $destinationFolder -Force
 }
