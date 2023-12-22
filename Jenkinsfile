@@ -18,7 +18,13 @@ pipeline {
         }
         stage('Sonarqube') {
             steps {
-                bat 'call Jenkins_Sonarqube.bat'
+                script {
+                    if (isUnix()) {
+                        sh './Jenkins_Sonarqube.sh'
+                    } else {
+                        bat 'call Jenkins_Sonarqube.bat'
+                    }
+                }
             }
         }
         stage('Publish') {
