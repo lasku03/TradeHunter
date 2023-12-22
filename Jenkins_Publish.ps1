@@ -14,7 +14,7 @@ if ($LASTEXITCODE -eq 0) {
 
     # Mover el archivo JAR a la carpeta /home/trade_hunter_ai/web
     # Obtener la versión del archivo POM
-    $doc = [xml](Get-Content ("/pom.xml")) 
+    $doc = [xml](Get-Content ($directorioProyecto + "/pom.xml")) 
     $versionPOM = $doc.project.version
     
     $sourceJar = Join-Path -Path $directorioProyecto -ChildPath "target/tradehunter.demo-$versionPOM.jar"
