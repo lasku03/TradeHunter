@@ -31,7 +31,7 @@ pipeline {
         stage('Publish') {
             steps {
                 script {
-                    if (env.BRANCH_NAME.equals('develop')) {
+                    if (env.BRANCH_NAME.equals('main')) {
                         PowerShell('./Jenkins_Publish.ps1')
                     }
                 }
