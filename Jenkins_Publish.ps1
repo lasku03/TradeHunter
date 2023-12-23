@@ -23,7 +23,13 @@ if ($LASTEXITCODE -eq 0) {
     Move-Item -Path $sourceJar -Destination $destinationFolder -Force
 
     if ($LASTEXITCODE -eq 0) {
-        icacls "$destinationFolder/tradehunter.demo-$versionPOM.jar" /grant Everyone:F
+        #Give permission to everyone
+        $file = "$destinationFolder/tradehunter.demo-$versionPOM.jar"
+        $acl = Get-Acl $file
+        $acl.SetAccessRuleProtection($true, $false)
+        $rule = New-Object System.Security.AccessControl.FileSystemAccessRule("Everyone", "FullControl", "Allow")
+        $acl.SetAccessRule($rule)
+        Set-Acl -Path $file -AclObject $acl
         Write-Host "Succesfully moved the file to $destinationFolder and given all permisions." -BackgroundColor Green
     }
     else {
