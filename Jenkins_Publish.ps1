@@ -21,6 +21,14 @@ if ($LASTEXITCODE -eq 0) {
     #Copy to the Web foled of TradeHunterAI
     $destinationFolder = "/home/trade_hunter_ai/web"
     Move-Item -Path $sourceJar -Destination $destinationFolder -Force
+
+    if ($LASTEXITCODE -eq 0) {
+        Get-Item "$destinationFolder/tradehunter.demo-$versionPOM.jar" | Set-Item -Force -Permission 777
+        Write-Host "Succesfully moved the file to $destinationFolder and given all permisions." -BackgroundColor Green
+    }
+    else {
+        Write-Host "Error moving the file to $destinationFolder." -BackgroundColor Red
+    }
 }
 else {
     # Si hubo un error en la construcción del JAR, mostrar mensaje de error

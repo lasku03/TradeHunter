@@ -32,7 +32,6 @@ pipeline {
             steps {
                 script {
                     if (env.BRANCH_NAME.equals('develop')) {
-                        sh 'chmod 777 Jenkins_Publish.ps1'
                         PowerShell('./Jenkins_Publish.ps1')
                     }
                 }
