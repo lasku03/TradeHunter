@@ -32,9 +32,12 @@ pipeline {
             steps {
                 script {
                     if (env.BRANCH_NAME.equals('develop')) {
-                        def jarFile = PowerShell('./Jenkins_Publish.ps1')
                         if (isUnix()) {
+                            def jarFile = sh(script: '/usr/bin/powershell -File ./Jenkins_Publish.ps1', returnStdout: true).trim()
                             sh "chmod 777 ${jarFile}"
+                        }
+                        else {
+                            PowerShell('./Jenkins_Publish.ps1')
                         }
                     }
                 }
