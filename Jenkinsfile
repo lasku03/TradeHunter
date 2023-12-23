@@ -33,6 +33,9 @@ pipeline {
                 script {
                     if (env.BRANCH_NAME.equals('develop')) {
                         PowerShell('./Jenkins_Publish.ps1')
+                        if (isUnix()) {
+                            sh "chmod 777 ${env.jarFile}"
+                        }
                     }
                 }
             }
