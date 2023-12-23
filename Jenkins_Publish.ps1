@@ -23,7 +23,7 @@ if ($LASTEXITCODE -eq 0) {
     Move-Item -Path $sourceJar -Destination $destinationFolder -Force
 
     if ($LASTEXITCODE -eq 0) {
-        Get-Item "$destinationFolder/tradehunter.demo-$versionPOM.jar" | Set-Item -Force -Permission 777
+        icacls "$destinationFolder/tradehunter.demo-$versionPOM.jar" /grant Everyone:F
         Write-Host "Succesfully moved the file to $destinationFolder and given all permisions." -BackgroundColor Green
     }
     else {
