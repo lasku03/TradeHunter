@@ -24,7 +24,8 @@ if ($LASTEXITCODE -eq 0) {
 
     if ($LASTEXITCODE -eq 0) {
         Write-Host "Succesfully moved the file to $destinationFolder." -BackgroundColor Green
-        $env:jarFile = "$destinationFolder/tradehunter.demo-$versionPOM.jar"
+        $jarFile = "$destinationFolder/tradehunter.demo-$versionPOM.jar"
+        [Environment]::SetEnvironmentVariable("jarFile", "$jarFile", "Machine")
     }
     else {
         Write-Host "Error moving the file to $destinationFolder." -BackgroundColor Red
