@@ -47,4 +47,17 @@ class PredictionTest {
         prediction.setUser(user);
         assertEquals(user, prediction.getUser());
     }
+
+    @Test
+    void testConstructor(){
+        LocalDateTime consultDate = LocalDateTime.now();
+        LocalDateTime predictionDate = LocalDateTime.of(2024, 1, 1, 0, 0, 0);
+        User user = new User();
+        Prediction prediction = new Prediction(1, 1000.0, consultDate, predictionDate, user);
+        assertEquals(1, prediction.getPredictionID());
+        assertEquals(1000.0, prediction.getValue(), 0.01);
+        assertEquals(consultDate, prediction.getConsultDate());
+        assertEquals(predictionDate, prediction.getPredictionDate());
+        assertEquals(user, prediction.getUser());
+    }
 }

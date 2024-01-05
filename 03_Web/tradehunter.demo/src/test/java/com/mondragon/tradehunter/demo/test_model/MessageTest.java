@@ -48,4 +48,17 @@ class MessageTest {
         message.setForum(forum);
         assertEquals(forum, message.getForum());
     }
+
+    @Test
+    void testConstructor(){
+        User user = new User();
+        Forum forum = new Forum();
+        LocalDateTime date = LocalDateTime.now();
+        Message message = new Message(1, "Message content",date, user, forum);
+        assertEquals(1, message.getMessageID());
+        assertEquals("Message content", message.getContent());
+        assertEquals(date, message.getDate());
+        assertEquals(user, message.getUser());
+        assertEquals(forum, message.getForum());
+    }
 }

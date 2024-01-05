@@ -111,4 +111,34 @@ class UserTest {
         user.setPredictions(predictions);
         assertEquals(predictions, user.getPredictions());
     }
+
+    @Test
+    void testConstructor() {
+        Message message = new Message();
+        List<Message> messages = new ArrayList<>();
+        messages.add(message);
+        Forum forum = new Forum();
+        List<Forum> forums = new ArrayList<>();
+        forums.add(forum);
+        Search search = new Search();
+        List<Search> searches = new ArrayList<>();
+        searches.add(search);
+        Prediction prediction = new Prediction();
+        List<Prediction> predictions = new ArrayList<>();
+        predictions.add(prediction);
+        User user = new User(1, "Name", "Surname", "username", "password", "name.surname@gmail.com", 25, true, messages,
+                forums, searches, predictions);
+        assertEquals(1, user.getUserID());
+        assertEquals("Name", user.getName());
+        assertEquals("Surname", user.getSurname());
+        assertEquals("username", user.getUsername());
+        assertEquals("password", user.getPassword());
+        assertEquals("name.surname@gmail.com", user.getEmail());
+        assertEquals(25, user.getAge());
+        assertTrue(user.isPremium());
+        assertEquals(messages, user.getMessages());
+        assertEquals(forums, user.getForums());
+        assertEquals(searches, user.getSearches());
+        assertEquals(predictions, user.getPredictions());
+    }
 }
