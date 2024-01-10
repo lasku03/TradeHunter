@@ -10,6 +10,7 @@ public class Simulation {
     private int nSocials;
     private int politicalToPaint;
     private int socialToPaint;
+    private boolean predictionInProgress;
     private Semaphore mutex;
     private Semaphore graphMutex;
     private Semaphore dowJonesMutex;
@@ -24,8 +25,6 @@ public class Simulation {
     private Semaphore socialWait;
     private Semaphore socialDone;
     private ReusableBarrier barrier;
-    private Semaphore politicalQueue;
-    private Semaphore socialQueue;
 
     public Simulation() {
         this.nDowJones = 0;
@@ -34,6 +33,7 @@ public class Simulation {
         this.nSocials = 0;
         this.politicalToPaint = 0;
         this.socialToPaint = 0;
+        this.predictionInProgress = false;
         this.mutex = new Semaphore(1, true);
         this.graphMutex = new Semaphore(1, true);
         this.dowJonesMutex = new Semaphore(1);
@@ -47,8 +47,6 @@ public class Simulation {
         this.politicalDone = new Semaphore(0);
         this.socialWait = new Semaphore(0, true);
         this.socialDone = new Semaphore(0);
-        this.politicalQueue = new Semaphore(0);
-        this.socialQueue = new Semaphore(0);
         this.barrier = new ReusableBarrier(3);
     }
 
@@ -61,16 +59,19 @@ public class Simulation {
             graphMutex.release();
             dowJonesWait.release();
             dowJonesDone.acquire();
+            prediction.paintGraph();
         } else if (nEconomics == 3) {
             prediction.makePrediction();
             graphMutex.release();
             economicWait.release();
             economicDone.acquire();
+            prediction.paintGraph();
         } else if (politicalToPaint == 3) {
             prediction.makePrediction();
             graphMutex.release();
             politicalWait.release();
             politicalDone.acquire();
+            prediction.paintGraph();
         } else if (politicalToPaint == 2 && socialToPaint == 1) {
             prediction.makePrediction();
             graphMutex.release();
@@ -78,11 +79,13 @@ public class Simulation {
             socialWait.release();
             politicalDone.acquire();
             socialDone.acquire();
+            prediction.paintGraph();
         } else if (socialToPaint == 3) {
             prediction.makePrediction();
             graphMutex.release();
             socialWait.release();
             socialDone.acquire();
+            prediction.paintGraph();
         } else if (socialToPaint == 2 && politicalToPaint == 1) {
             prediction.makePrediction();
             graphMutex.release();
@@ -90,16 +93,18 @@ public class Simulation {
             politicalWait.release();
             socialDone.acquire();
             politicalDone.acquire();
+            prediction.paintGraph();
         }
         mutex.release();
     }
 
     public void waitDowJonesValues(DowJones dowJones) throws InterruptedException {
         dowJonesMutex.acquire();
-        mutex.acquire();
+        getMutex();
 
         dowJones.giveValue();
         nDowJones++;
+        predictionInProgress = true;
         predictionWait.release();
 
         mutex.release();
@@ -114,17 +119,19 @@ public class Simulation {
 
         dowJonesDone.release();
         dowJonesMutex.release();
+        predictionInProgress = false;
 
         graphMutex.release();
     }
 
     public void waitEconomicValues(Economic economic) throws InterruptedException {
         economicMutex.acquire();
-        mutex.acquire();
+        getMutex();
 
         economic.giveValue();
         nEconomics++;
         if (nEconomics == 3) {
+            predictionInProgress = true;
             predictionWait.release();
         } else {
             economicMutex.release();
@@ -142,6 +149,7 @@ public class Simulation {
         if (nEconomics == 0) {
             economicDone.release();
             economicMutex.release();
+            predictionInProgress = false;   
         } else {
             economicWait.release();
         }
@@ -151,40 +159,39 @@ public class Simulation {
     public void waitPoliticalValues(Political political) throws InterruptedException {
         boolean isLast = false;
 
-        mutex.acquire();
+        getMutex();
 
         political.giveValue();
         nPoliticals++;
         if (nPoliticals == 3) {
             releasePoliticals(3);
             isLast = true;
+            predictionInProgress = true;
         } else if (nPoliticals == 2 && nSocials >= 1) {
             releasePoliticals(2);
             releaseSocials(1);
             isLast = true;
+            predictionInProgress = true;
         } else if (nPoliticals == 1 && nSocials >= 2) {
             releasePoliticals(1);
             releaseSocials(2);
             isLast = true;
+            predictionInProgress = true;
         } else {
             mutex.release();
         }
 
-        //politicalQueue.acquire();
-
-        barrier.waitBarrier();
-
-        if (!isLast) {
-            mutex.acquire();
-        }
+        barrier.waitBarrier();      
 
         politicalToPaint++;
 
-        if ((politicalToPaint == 3) || (politicalToPaint == 2 && socialToPaint == 1) || (politicalToPaint == 1 && socialToPaint == 2)) {
+        if ((politicalToPaint == 3) || (politicalToPaint == 2 && socialToPaint == 1) || (politicalToPaint == 1 && socialToPaint == 2)) {    
             predictionWait.release();
         }
         
-        mutex.release();
+        if (isLast) {
+            mutex.release();
+        }
 
         politicalWait.acquire();
     }
@@ -196,6 +203,9 @@ public class Simulation {
         politicalToPaint--;
         if (politicalToPaint == 0) {
             politicalDone.release();
+            if (socialToPaint == 0) {
+                predictionInProgress = false;
+            }
         } else if (politicalToPaint > 0) {
             politicalWait.release();
         }
@@ -205,40 +215,39 @@ public class Simulation {
     public void waitSocialValues(Social social) throws InterruptedException {
         boolean isLast = false;
 
-        mutex.acquire();
+        getMutex();
 
         social.giveValue();
         nSocials++;
         if (nSocials == 3) {
             releaseSocials(3);
             isLast = true;
+            predictionInProgress = true;
         } else if (nSocials == 2 && nPoliticals >= 1) {
             releaseSocials(2);
             releasePoliticals(1);
             isLast = true;
+            predictionInProgress = true;
         } else if (nSocials == 1 && nPoliticals >= 2) {
             releaseSocials(1);
             releasePoliticals(2);
             isLast = true;
+            predictionInProgress = true;
         } else {
             mutex.release();
         }
 
-        //socialQueue.acquire();
-
         barrier.waitBarrier();
-
-        if (!isLast) {
-            mutex.acquire();
-        }
-
+        
         socialToPaint++;
 
         if ((socialToPaint == 3) || (socialToPaint == 2 && politicalToPaint == 1) || (socialToPaint == 1 && politicalToPaint == 2)) {
             predictionWait.release();
         }
         
-        mutex.release();
+        if (isLast) {
+            mutex.release();
+        }
         
         socialWait.acquire();
     }
@@ -250,6 +259,9 @@ public class Simulation {
         socialToPaint--;
         if (socialToPaint == 0) {
             socialDone.release();
+            if (politicalToPaint == 0) {
+                predictionInProgress = false;
+            }
         } else if (socialToPaint > 0) {
             socialWait.release();
         }
@@ -258,15 +270,23 @@ public class Simulation {
 
     private void releasePoliticals(int n) {
         for (int i = 0; i < n; i++) {
-            politicalQueue.release();
             nPoliticals--;
         }
     }
 
     private void releaseSocials(int n) {
         for (int i = 0; i < n; i++) {
-            socialQueue.release();
             nSocials--;
         }
+    }
+
+    private void getMutex() throws InterruptedException {
+        do {
+            mutex.acquire();
+            if (predictionInProgress) {
+                mutex.release();
+                Thread.sleep(100);
+            }
+        } while(predictionInProgress);
     }
 }

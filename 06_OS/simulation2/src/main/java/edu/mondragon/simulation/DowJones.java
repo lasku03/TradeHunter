@@ -40,7 +40,7 @@ public class DowJones extends Thread {
 
     public void paintGraph() throws InterruptedException {
         // Call to paint the graph with the new value
-        System.out.println("\t\tDow Jones painting in graph");
+        System.out.println("\t\t(Dow Jones) painting in graph");
         Thread.sleep(rand.nextInt(100, 400));
     }
 

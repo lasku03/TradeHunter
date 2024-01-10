@@ -54,4 +54,10 @@ public class Prediction extends Thread {
         // Ask the AI server for the prediction
         return value;
     }
+
+    public void paintGraph() throws InterruptedException {
+        // Call to paint the graph with the new value
+        System.out.println("\t\t\t(Prediction) painting in graph");
+        Thread.sleep(rand.nextInt(100, 400));
+    }
 }
