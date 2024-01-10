@@ -110,4 +110,11 @@ class UserServiceTest extends EasyMockSupport {
         replayAll();
         assertEquals(userService.getUserByUsername("username"), user);
     }
+
+    @Test
+    void testGetUserByEmail(){
+        EasyMock.expect(userRepository.findUserByEmail("email@email.com")).andReturn(user);
+        replayAll();
+        assertEquals(userService.getUserByEmail("email@email.com"), user);
+    }
 }
