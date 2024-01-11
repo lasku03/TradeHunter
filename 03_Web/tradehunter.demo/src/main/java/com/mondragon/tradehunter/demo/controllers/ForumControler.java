@@ -1,5 +1,6 @@
 package com.mondragon.tradehunter.demo.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,13 +35,18 @@ public class ForumControler {
 
     @GetMapping(value = "/forum/{forumID}", produces = { "application/json",
             "application/xml" })
-    public ResponseEntity<List<Message>> getMessages(@PathVariable int forumID) {
-        ResponseEntity<List<Message>> responseEntity;
+    public ResponseEntity<List<RequestMessage>> getMessages(@PathVariable int forumID) {
+        ResponseEntity<List<RequestMessage>> responseEntity;
 
         Optional<Forum> forum = forumService.getForumByID(forumID);
         if (forum.isPresent()) {
             List<Message> messages = messageService.getMessagesByForum(forum);
-            responseEntity = new ResponseEntity<>(messages, HttpStatus.OK);
+            List<RequestMessage> requestMessages = new ArrayList<>();
+            for(Message message : messages){
+                RequestMessage requestMessage = new RequestMessage(message.getContent(), message.getUser().getUsername(), message.getForum().getForumID(), message.getDate());
+                requestMessages.add(requestMessage);
+            }
+            responseEntity = new ResponseEntity<>(requestMessages, HttpStatus.OK);
         } else {
             responseEntity = ResponseEntity.notFound().build();
         }
@@ -48,7 +54,7 @@ public class ForumControler {
         return responseEntity;
     }
 
-    @PostMapping(value = "/forum")
+    @PostMapping(value = "/forum", consumes = { "application/json","application/xml" })
     public void putMessages(@RequestBody List<RequestMessage> requestMessages) {
             for (RequestMessage requestMessage : requestMessages) {
                 User user = userService.getUserByUsername(requestMessage.getUserUsername());
