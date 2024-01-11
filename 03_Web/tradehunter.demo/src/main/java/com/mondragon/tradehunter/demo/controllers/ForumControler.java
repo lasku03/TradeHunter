@@ -1,14 +1,27 @@
 package com.mondragon.tradehunter.demo.controllers;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mondragon.tradehunter.demo.model.Forum;
+import com.mondragon.tradehunter.demo.model.Message;
+import com.mondragon.tradehunter.demo.model.User;
+import com.mondragon.tradehunter.demo.request_models.RequestMessage;
 import com.mondragon.tradehunter.demo.services.ForumService;
 import com.mondragon.tradehunter.demo.services.MessageService;
 import com.mondragon.tradehunter.demo.services.UserService;
 
 @RestController
-//@RequestMapping("")
+// @RequestMapping("")
 public class ForumControler {
     @Autowired
     ForumService forumService;
@@ -18,4 +31,34 @@ public class ForumControler {
 
     @Autowired
     MessageService messageService;
+
+    @GetMapping(value = "/forum/{forumID}", produces = { "application/json",
+            "application/xml" })
+    public ResponseEntity<List<Message>> getMessages(@PathVariable int forumID) {
+        ResponseEntity<List<Message>> responseEntity;
+
+        Optional<Forum> forum = forumService.getForumByID(forumID);
+        if (forum.isPresent()) {
+            List<Message> messages = messageService.getMessagesByForum(forum);
+            responseEntity = new ResponseEntity<>(messages, HttpStatus.OK);
+        } else {
+            responseEntity = ResponseEntity.notFound().build();
+        }
+
+        return responseEntity;
+    }
+
+    @PostMapping(value = "/forum")
+    public void putMessages(@RequestBody List<RequestMessage> requestMessages) {
+            for (RequestMessage requestMessage : requestMessages) {
+                User user = userService.getUserByUsername(requestMessage.getUserUsername());
+                Forum forum = forumService.getForumByID(requestMessage.getForumID()).orElseThrow();
+                Message message = new Message();
+                message.setDate(requestMessage.getDate());
+                message.setContent(requestMessage.getContent());
+                message.setUser(user);
+                message.setForum(forum);
+                messageService.saveMessage(message);
+            }
+    }
 }
