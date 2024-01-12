@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 
 import com.mondragon.tradehunter.demo.controllers.LoginController;
 import com.mondragon.tradehunter.demo.model.User;
+import com.mondragon.tradehunter.demo.request_models.RequestUser;
 import com.mondragon.tradehunter.demo.services.UserService;
 
 class LoginControllerTest extends EasyMockSupport{
@@ -38,7 +39,7 @@ class LoginControllerTest extends EasyMockSupport{
         loginRequest.put("username", "username");
         loginRequest.put("password", "password");
 
-        ResponseEntity<User> responseEntity = loginController.login(loginRequest);
+        ResponseEntity<RequestUser> responseEntity = loginController.login(loginRequest);
         assertEquals(user, responseEntity.getBody());
         EasyMock.verify(userService);
     }
@@ -52,7 +53,7 @@ class LoginControllerTest extends EasyMockSupport{
         loginRequest.put("username", "new_username");
         loginRequest.put("password", "new_password");
 
-        ResponseEntity<User> responseEntity = loginController.login(loginRequest);
+        ResponseEntity<RequestUser> responseEntity = loginController.login(loginRequest);
         assertNull(responseEntity.getBody());
         EasyMock.verify(userService);
     }
