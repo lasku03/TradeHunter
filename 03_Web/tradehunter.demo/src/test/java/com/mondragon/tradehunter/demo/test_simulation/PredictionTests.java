@@ -31,7 +31,7 @@ class PredictionTests {
         economics = new Economic[2];
         politicals = new Political[2];
         simulation = new Simulation();
-        dowJones = new DowJones(simulation, 0, 10);
+        dowJones = new DowJones(simulation, "Test", 0, 10);
         prediction = new Prediction(simulation, socials, economics, politicals, dowJones);
     }
 
@@ -75,7 +75,7 @@ class PredictionTests {
 
     @Test
     void testSetDowJones() {
-        DowJones testDowJones = new DowJones(simulation, 0, 1000);
+        DowJones testDowJones = new DowJones(simulation, "Test", 0, 1000);
         prediction.setDowJones(testDowJones);
         assertEquals(testDowJones, prediction.getDowJones());
     }
@@ -89,12 +89,12 @@ class PredictionTests {
 
     @Test
     void testAskForPrediction() {
-        socials[0] = new Social(simulation, "Death rate", 0, 5);
-        socials[1] = new Social(simulation, "Birth rate", 5, 10);
-        economics[0] = new Economic(simulation, "Unemployment rate", 0, 10);
-        economics[1] = new Economic(simulation, "Employment rate", 5, 5);
-        politicals[0] = new Political(simulation, "Interest rate", 3, 9);
-        politicals[1] = new Political(simulation, "Tariff rate", 4, 10);
+        socials[0] = new Social(simulation, "Death rate", "Test", 0, 5);
+        socials[1] = new Social(simulation, "Birth rate", "Test", 5, 10);
+        politicals[0] = new Political(simulation, "Unemployment rate", "Test", 0, 10);
+        politicals[1] = new Political(simulation, "Employment rate", "Test", 5, 5);
+        economics[0] = new Economic(simulation, "Euro", "Test", 3, 9);
+        economics[1] = new Economic(simulation, "IPC", "Test", 4, 10);
 
         double predictedValue = prediction.askForPrediction();
         assertEquals(38, predictedValue, 0.01);
@@ -102,12 +102,12 @@ class PredictionTests {
 
     @Test
     void testMakePrediction() throws InterruptedException {
-        socials[0] = new Social(simulation, "Death rate", 0, 5);
-        socials[1] = new Social(simulation, "Birth rate", 5, 10);
-        economics[0] = new Economic(simulation, "Unemployment rate", 0, 10);
-        economics[1] = new Economic(simulation, "Employment rate", 5, 5);
-        politicals[0] = new Political(simulation, "Interest rate", 3, 9);
-        politicals[1] = new Political(simulation, "Tariff rate", 4, 10);
+        socials[0] = new Social(simulation, "Death rate", "Test", 0, 5);
+        socials[1] = new Social(simulation, "Birth rate", "Test", 5, 10);
+        politicals[0] = new Political(simulation, "Unemployment rate", "Test", 0, 10);
+        politicals[1] = new Political(simulation, "Employment rate", "Test", 5, 5);
+        economics[0] = new Economic(simulation, "Euro", "Test", 3, 9);
+        economics[1] = new Economic(simulation, "IPC", "Test", 4, 10);
 
         prediction.makePrediction();
         double predictedValue = prediction.getPredictedValue();

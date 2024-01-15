@@ -20,7 +20,7 @@ class PoliticalTests {
     @BeforeEach
     void setUp() {
         simulation = new Simulation();
-        political = new Political(simulation, "Test Political", 0, 100);
+        political = new Political(simulation, "Test Political", "Test", 0, 100);
     }
 
     @Test

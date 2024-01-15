@@ -25,28 +25,28 @@ public class SimulationMaker {
         createSocialThreads();
         createEconomicThreads();
         createPoliticalThreads();
-        dowJones = new DowJones(simulation, 20000, 38000);
+        dowJones = new DowJones(simulation, "High_DJ", 22500, 32000);
         prediction = new Prediction(simulation, socials, economics, politicals, dowJones);
     }
 
     public void createSocialThreads() {
-        socials[0] = new Social(simulation, "Death rate", 8, 10);
-        socials[1] = new Social(simulation, "Birth rate", 7.5, 11.5);
-        socials[2] = new Social(simulation, "Migration rate", 0, 14);
+        socials[0] = new Social(simulation, "Death rate", "Defunciones", 6, 12);
+        socials[1] = new Social(simulation, "Birth rate", "Births", 1100, 900);
+        socials[2] = new Social(simulation, "Debt per capita", "Debt_per_Capita", 25000, 29000);
     }
 
     public void createEconomicThreads() {
-        economics[0] = new Economic(simulation, "Unemployment rate", 8, 10);
-        economics[1] = new Economic(simulation, "Employment rate", 8, 10);
-        economics[2] = new Economic(simulation, "Euro", 7.5, 11.5);
-        economics[3] = new Economic(simulation, "Inflation rate", 0, 14);
-        economics[4] = new Economic(simulation, "Gross Domestic Product", 0, 14);
+        economics[0] = new Economic(simulation, "Euribor", "Euribor", -1, 1);
+        economics[1] = new Economic(simulation, "IPC", "IPC", -2, 1.5);
+        economics[2] = new Economic(simulation, "Euro", "Price_EURO", 1.1, 1.3);
+        economics[3] = new Economic(simulation, "Debt", "Debt", 1.2, 1.4);
+        economics[4] = new Economic(simulation, "Gross Domestic Product", "GDP", -11, 18);
     }
 
     public void createPoliticalThreads() {
-        politicals[0] = new Political(simulation, "Interest rate", 3, 9);
-        politicals[1] = new Political(simulation, "Tariff rate", 4, 21);
-        politicals[2] = new Political(simulation, "Public deficit", -8, 0);
+        politicals[0] = new Political(simulation, "Activity rate", "Activos", 22000, 23500);
+        politicals[1] = new Political(simulation, "Unemployment rate", "Parados", 3500, 5000);
+        politicals[2] = new Political(simulation, "Employment rate", "Ocupados",18000, 20000);
     }
 
     public void startThreads() {

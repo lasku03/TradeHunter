@@ -20,7 +20,7 @@ class SocialTests {
     @BeforeEach
     void setUp() {
         simulation = new Simulation();
-        social = new Social(simulation, "Test Social", 0, 100);
+        social = new Social(simulation, "Test Social", "Test", 0, 100);
     }
 
     @Test

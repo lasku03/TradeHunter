@@ -20,7 +20,7 @@ class EconomicTests {
     @BeforeEach
     void setUp() {
         simulation = new Simulation();
-        economic = new Economic(simulation, "Test Economic", 0, 100);
+        economic = new Economic(simulation, "Test Economic", "Test", 0, 100);
     }
 
     @Test

@@ -6,13 +6,15 @@ public class DowJones extends Thread {
 
     private Simulation simulation;
     private SecureRandom rand;
+    String dbName;
     private double min;
     private double max;
     private double value;
 
-    public DowJones(Simulation simulation, double min, double max) {
-        super("Down Jones");
+    public DowJones(Simulation simulation, String dbName, double min, double max) {
+        super("Dow Jones");
         this.simulation = simulation;
+        this.dbName = dbName;
         this.rand = new SecureRandom();
         this.min = min;
         this.max = max;

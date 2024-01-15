@@ -32,7 +32,7 @@ class SimulationTests {
 
     @Test
     void testWaitValues1() throws InterruptedException {
-        Prediction prediction = new Prediction(simulation, new Social[0], new Economic[0], new Political[0], new DowJones(simulation, 0, 100));
+        Prediction prediction = new Prediction(simulation, new Social[0], new Economic[0], new Political[0], new DowJones(simulation, "Test", 0, 100));
         
         Thread predictionThread = new Thread(() -> {
             try {
@@ -58,7 +58,7 @@ class SimulationTests {
 
     @Test
     void testWaitValues2() throws InterruptedException {
-        Prediction prediction = new Prediction(simulation, new Social[0], new Economic[0], new Political[0], new DowJones(simulation, 0, 100));
+        Prediction prediction = new Prediction(simulation, new Social[0], new Economic[0], new Political[0], new DowJones(simulation, "Test", 0, 100));
         
         Thread predictionThread = new Thread(() -> {
             try {
@@ -84,7 +84,7 @@ class SimulationTests {
 
     @Test
     void testWaitValues3() throws InterruptedException {
-        Prediction prediction = new Prediction(simulation, new Social[0], new Economic[0], new Political[0], new DowJones(simulation, 0, 100));
+        Prediction prediction = new Prediction(simulation, new Social[0], new Economic[0], new Political[0], new DowJones(simulation, "Test", 0, 100));
         
         Thread predictionThread = new Thread(() -> {
             try {
@@ -110,7 +110,7 @@ class SimulationTests {
 
     @Test
     void testWaitValues4() throws InterruptedException {
-        Prediction prediction = new Prediction(simulation, new Social[0], new Economic[0], new Political[0], new DowJones(simulation, 0, 100));
+        Prediction prediction = new Prediction(simulation, new Social[0], new Economic[0], new Political[0], new DowJones(simulation, "Test", 0, 100));
         
         Thread predictionThread = new Thread(() -> {
             try {
@@ -140,7 +140,7 @@ class SimulationTests {
 
     @Test
     void testWaitValues5() throws InterruptedException {
-        Prediction prediction = new Prediction(simulation, new Social[0], new Economic[0], new Political[0], new DowJones(simulation, 0, 100));
+        Prediction prediction = new Prediction(simulation, new Social[0], new Economic[0], new Political[0], new DowJones(simulation, "Test", 0, 100));
         
         Thread predictionThread = new Thread(() -> {
             try {
@@ -166,7 +166,7 @@ class SimulationTests {
 
     @Test
     void testWaitValues6() throws InterruptedException {
-        Prediction prediction = new Prediction(simulation, new Social[0], new Economic[0], new Political[0], new DowJones(simulation, 0, 100));
+        Prediction prediction = new Prediction(simulation, new Social[0], new Economic[0], new Political[0], new DowJones(simulation, "Test", 0, 100));
         
         Thread predictionThread = new Thread(() -> {
             try {
@@ -196,7 +196,7 @@ class SimulationTests {
 
     @Test
     void testWaitValues7() throws InterruptedException {
-        Prediction prediction = new Prediction(simulation, new Social[0], new Economic[0], new Political[0], new DowJones(simulation, 0, 100));
+        Prediction prediction = new Prediction(simulation, new Social[0], new Economic[0], new Political[0], new DowJones(simulation, "Test", 0, 100));
         
         Thread predictionThread = new Thread(() -> {
             try {
@@ -218,15 +218,15 @@ class SimulationTests {
 
         assertEquals(50, prediction.getPredictedValue());
         assertEquals(1, simulation.getGraphMutex().availablePermits());
-        assertEquals(1, simulation.getSocialWait().availablePermits());
         assertEquals(1, simulation.getPoliticalWait().availablePermits());
-        assertEquals(0, simulation.getSocialDone().availablePermits());
+        assertEquals(1, simulation.getSocialWait().availablePermits());
         assertEquals(0, simulation.getPoliticalDone().availablePermits());
+        assertEquals(0, simulation.getSocialDone().availablePermits());
     }
 
     @Test
     void testWaitValues8() throws InterruptedException {
-        Prediction prediction = new Prediction(simulation, new Social[0], new Economic[0], new Political[0], new DowJones(simulation, 0, 100));
+        Prediction prediction = new Prediction(simulation, new Social[0], new Economic[0], new Political[0], new DowJones(simulation, "Test", 0, 100));
         
         Thread predictionThread = new Thread(() -> {
             try {
@@ -248,15 +248,15 @@ class SimulationTests {
 
         assertEquals(50, prediction.getPredictedValue());
         assertEquals(1, simulation.getGraphMutex().availablePermits());
-        assertEquals(1, simulation.getSocialWait().availablePermits());
         assertEquals(1, simulation.getPoliticalWait().availablePermits());
+        assertEquals(1, simulation.getSocialWait().availablePermits());
         assertEquals(0, simulation.getSocialDone().availablePermits());
         assertEquals(0, simulation.getPoliticalDone().availablePermits());
     }
     
     @Test
     void testWaitDowJonesValues() throws InterruptedException {
-        DowJones dowJones = new DowJones(simulation, 0, 100);
+        DowJones dowJones = new DowJones(simulation, "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
         expect(rand.nextInt(100, 400)).andReturn(0);
@@ -289,7 +289,7 @@ class SimulationTests {
 
     @Test
     void testWaitDowJonesGraphPainted() throws InterruptedException {
-        DowJones dowJones = new DowJones(simulation, 0, 100);
+        DowJones dowJones = new DowJones(simulation, "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
         expect(rand.nextInt(100, 400)).andReturn(0);
@@ -322,7 +322,7 @@ class SimulationTests {
 
     @Test
     void testWaitEconomicValues1() throws InterruptedException {
-        Economic economic = new Economic(simulation, "Test Economic", 0, 100);
+        Economic economic = new Economic(simulation, "Test Economic", "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
         expect(rand.nextInt(100, 400)).andReturn(0);
@@ -355,7 +355,7 @@ class SimulationTests {
 
     @Test
     void testWaitEconomicGraphsPainted1() throws InterruptedException {
-        Economic economic = new Economic(simulation, "Test Economic", 0, 100);
+        Economic economic = new Economic(simulation, "Test Economic", "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
         expect(rand.nextInt(100, 400)).andReturn(0);
@@ -387,7 +387,7 @@ class SimulationTests {
 
     @Test
     void testWaitEconomicValues2() throws InterruptedException {
-        Economic economic = new Economic(simulation, "Test Economic", 0, 100);
+        Economic economic = new Economic(simulation, "Test Economic", "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
         expect(rand.nextInt(100, 400)).andReturn(0);
@@ -421,7 +421,7 @@ class SimulationTests {
 
     @Test
     void testWaitEconomicGraphsPainted2() throws InterruptedException {
-        Economic economic = new Economic(simulation, "Test Economic", 0, 100);
+        Economic economic = new Economic(simulation, "Test Economic", "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
         expect(rand.nextInt(100, 400)).andReturn(0);
@@ -454,7 +454,7 @@ class SimulationTests {
     //1 political and 0 social
     @Test
     void testWaitPoliticalValues1() throws InterruptedException {
-        Political political = new Political(simulation, "Test Political", 0, 100);
+        Political political = new Political(simulation, "Test Political", "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
         expect(rand.nextInt(100, 400)).andReturn(0);
@@ -490,7 +490,7 @@ class SimulationTests {
     // 1 political and 1 social
     @Test
     void testWaitPoliticalValues2() throws InterruptedException {
-        Political political = new Political(simulation, "Test Political", 0, 100);
+        Political political = new Political(simulation, "Test Political", "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
         expect(rand.nextInt(100, 400)).andReturn(0);
@@ -527,7 +527,7 @@ class SimulationTests {
     // 2 political and 0 social
     @Test
     void testWaitPoliticalValues3() throws InterruptedException {
-        Political political = new Political(simulation, "Test Political", 0, 100);
+        Political political = new Political(simulation, "Test Political", "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
         expect(rand.nextInt(100, 400)).andReturn(0);
@@ -566,7 +566,7 @@ class SimulationTests {
     // There are 3 political
     @Test
     void testWaitPoliticalValues4() throws InterruptedException {
-        Political political = new Political(simulation, "Test Political", 0, 100);
+        Political political = new Political(simulation, "Test Political", "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
         expect(rand.nextInt(100, 400)).andReturn(0);
@@ -604,7 +604,7 @@ class SimulationTests {
     // There are 2 political and 1 social
     @Test
     void testWaitPoliticalValues5() throws InterruptedException {
-        Political political = new Political(simulation, "Test Political", 0, 100);
+        Political political = new Political(simulation, "Test Political", "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
         expect(rand.nextInt(100, 400)).andReturn(0);
@@ -646,7 +646,7 @@ class SimulationTests {
     // There are 1 political and 2 socials
     @Test
     void testWaitPoliticalValues6() throws InterruptedException {
-        Political political = new Political(simulation, "Test Political", 0, 100);
+        Political political = new Political(simulation, "Test Political", "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
         expect(rand.nextInt(100, 400)).andReturn(0);
@@ -688,7 +688,7 @@ class SimulationTests {
     // 1 politicalToPaint and 0 socialToPaint
     @Test
     void testWaitPoliticalGraphsPainted1() throws InterruptedException {
-        Political political = new Political(simulation, "Test Political", 0, 100);
+        Political political = new Political(simulation, "Test Political", "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
         expect(rand.nextInt(100, 400)).andReturn(0);
@@ -721,7 +721,7 @@ class SimulationTests {
     // 1 politicalToPaint and 2 socialToPaint
     @Test
     void testWaitPoliticalGraphsPainted2() throws InterruptedException {
-        Political political = new Political(simulation, "Test Political", 0, 100);
+        Political political = new Political(simulation, "Test Political", "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
         expect(rand.nextInt(100, 400)).andReturn(0);
@@ -756,7 +756,7 @@ class SimulationTests {
     // 2 politicalToPaint and 1 socialToPaint
     @Test
     void testWaitPoliticalGraphsPainted3() throws InterruptedException {
-        Political political = new Political(simulation, "Test Political", 0, 100);
+        Political political = new Political(simulation, "Test Political", "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
         expect(rand.nextInt(100, 400)).andReturn(0);
@@ -791,7 +791,7 @@ class SimulationTests {
     //1 social and 0 political
     @Test
     void testWaitSocialValues1() throws InterruptedException {
-        Social social = new Social(simulation, "Test Social", 0, 100);
+        Social social = new Social(simulation, "Test Social", "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
         expect(rand.nextInt(100, 400)).andReturn(0);
@@ -827,7 +827,7 @@ class SimulationTests {
     // 1 social and 1 political
     @Test
     void testWaitSocialValues2() throws InterruptedException {
-        Social social = new Social(simulation, "Test Social", 0, 100);
+        Social social = new Social(simulation, "Test Social", "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
         expect(rand.nextInt(100, 400)).andReturn(0);
@@ -864,7 +864,7 @@ class SimulationTests {
     // 2 social and 0 political
     @Test
     void testWaitSocialValues3() throws InterruptedException {
-        Social social = new Social(simulation, "Test Social", 0, 100);
+        Social social = new Social(simulation, "Test Social", "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
         expect(rand.nextInt(100, 400)).andReturn(0);
@@ -903,7 +903,7 @@ class SimulationTests {
     // There are 3 social
     @Test
     void testWaitSocialValues4() throws InterruptedException {
-        Social social = new Social(simulation, "Test Social", 0, 100);
+        Social social = new Social(simulation, "Test Social", "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
         expect(rand.nextInt(100, 400)).andReturn(0);
@@ -941,7 +941,7 @@ class SimulationTests {
     // There are 2 social and 1 political
     @Test
     void testWaitSocialValues5() throws InterruptedException {
-        Social social = new Social(simulation, "Test Social", 0, 100);
+        Social social = new Social(simulation, "Test Social", "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
         expect(rand.nextInt(100, 400)).andReturn(0);
@@ -983,7 +983,7 @@ class SimulationTests {
     // There are 1 social and 2 politicals
     @Test
     void testWaitSocialValues6() throws InterruptedException {
-        Social social = new Social(simulation, "Test Social", 0, 100);
+        Social social = new Social(simulation, "Test Social", "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
         expect(rand.nextInt(100, 400)).andReturn(0);
@@ -1025,7 +1025,7 @@ class SimulationTests {
     // 1 socialToPaint and 0 politicalToPaint
     @Test
     void testWaitSocialGraphsPainted1() throws InterruptedException {
-        Social social = new Social(simulation, "Test Social", 0, 100);
+        Social social = new Social(simulation, "Test Social", "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
         expect(rand.nextInt(100, 400)).andReturn(0);
@@ -1058,7 +1058,7 @@ class SimulationTests {
     // 1 socialToPaint and 2 politicalToPaint
     @Test
     void testWaitSocialGraphsPainted2() throws InterruptedException {
-        Social social = new Social(simulation, "Test Social", 0, 100);
+        Social social = new Social(simulation, "Test Social", "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
         expect(rand.nextInt(100, 400)).andReturn(0);
@@ -1093,7 +1093,7 @@ class SimulationTests {
     // 2 socialToPaint and 1 politicalToPaint
     @Test
     void testWaitSocialGraphsPainted3() throws InterruptedException {
-        Social social = new Social(simulation, "Test Social", 0, 100);
+        Social social = new Social(simulation, "Test Social", "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
         expect(rand.nextInt(100, 400)).andReturn(0);

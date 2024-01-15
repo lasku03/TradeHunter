@@ -20,7 +20,7 @@ class DowJonesTests {
     @BeforeEach
     void setUp() {
         simulation = new Simulation();
-        dowJones = new DowJones(simulation, 0, 100);
+        dowJones = new DowJones(simulation, "High_DJ", 0, 100);
     }
 
     @Test

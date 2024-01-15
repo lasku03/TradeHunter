@@ -6,13 +6,15 @@ public class Political extends Thread {
 
     private Simulation simulation;
     private SecureRandom rand;
+    String dbName;
     private double min;
     private double max;
     private double value;
 
-    public Political(Simulation simulation, String name, double min, double max) {
+    public Political(Simulation simulation, String name, String dbName, double min, double max) {
         super(name);
         this.simulation = simulation;
+        this.dbName = dbName;
         this.rand = new SecureRandom();
         this.min = min;
         this.max = max;

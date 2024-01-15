@@ -44,7 +44,7 @@ class SimulationMakerTests {
     void testSocialsGetterSetter() {
         Social[] socials = new Social[SimulationMaker.NSOCIALS];
         for (int i = 0; i < SimulationMaker.NSOCIALS; i++) {
-            socials[i] = new Social(new Simulation(), "Social" + i, i, i + 1);
+            socials[i] = new Social(new Simulation(), "Social" + i, "Test", i, i + 1);
         }
         simulationMaker.setSocials(socials);
         assertArrayEquals(socials, simulationMaker.getSocials());
@@ -54,7 +54,7 @@ class SimulationMakerTests {
     void testEconomicsGetterSetter() {
         Economic[] economics = new Economic[SimulationMaker.NECONOMICS];
         for (int i = 0; i < SimulationMaker.NECONOMICS; i++) {
-            economics[i] = new Economic(new Simulation(), "Economic" + i, i, i + 1);
+            economics[i] = new Economic(new Simulation(), "Economic" + i, "Test", i, i + 1);
         }
         simulationMaker.setEconomics(economics);
         assertArrayEquals(economics, simulationMaker.getEconomics());
@@ -64,7 +64,7 @@ class SimulationMakerTests {
     void testPoliticalsGetterSetter() {
         Political[] politicals = new Political[SimulationMaker.NPOLITICALS];
         for (int i = 0; i < SimulationMaker.NPOLITICALS; i++) {
-            politicals[i] = new Political(new Simulation(), "Political" + i, i, i + 1);
+            politicals[i] = new Political(new Simulation(), "Political" + i, "Test", i, i + 1);
         }
         simulationMaker.setPoliticals(politicals);
         assertArrayEquals(politicals, simulationMaker.getPoliticals());
@@ -72,14 +72,14 @@ class SimulationMakerTests {
 
     @Test
     void testDowJonesGetterSetter() {
-        DowJones dowJones = new DowJones(new Simulation(), 10000, 20000);
+        DowJones dowJones = new DowJones(new Simulation(), "Test", 10000, 20000);
         simulationMaker.setDowJones(dowJones);
         assertSame(dowJones, simulationMaker.getDowJones());
     }
 
     @Test
     void testPredictionGetterSetter() {
-        Prediction prediction = new Prediction(new Simulation(), new Social[SimulationMaker.NSOCIALS], new Economic[SimulationMaker.NECONOMICS], new Political[SimulationMaker.NPOLITICALS], new DowJones(new Simulation(), 10000, 20000));
+        Prediction prediction = new Prediction(new Simulation(), new Social[SimulationMaker.NSOCIALS], new Economic[SimulationMaker.NECONOMICS], new Political[SimulationMaker.NPOLITICALS], new DowJones(new Simulation(), "Test", 10000, 20000));
         simulationMaker.setPrediction(prediction);
         assertSame(prediction, simulationMaker.getPrediction());
     }
