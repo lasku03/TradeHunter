@@ -20,7 +20,7 @@ public class LoginController {
         this.userService = userService;
     }
 
-    @PostMapping(value = "/login", produces = {"applicacion/xml", "application/json"}, consumes = {"application/xml", "application/json"})
+    @PostMapping(value = "/login", produces = {"application/json"}, consumes = {"application/json"})
     public ResponseEntity<User> login(@RequestBody Map<String, String> loginRequest){
         String username = loginRequest.get("username");
         String password = loginRequest.get("password");
