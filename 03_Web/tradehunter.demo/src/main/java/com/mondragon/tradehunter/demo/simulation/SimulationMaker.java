@@ -91,12 +91,6 @@ public class SimulationMaker {
         prediction.join();
     }
 
-    private void waitForSimulationInterruption() throws InterruptedException {
-        // This will change in the future to be waiting until the user cancels the
-        // simulation
-        Thread.sleep(200000);
-    }
-
     public Simulation getSimulation() {
         return simulation;
     }
@@ -145,15 +139,14 @@ public class SimulationMaker {
         this.prediction = prediction;
     }
 
-    public void makeSimulation() throws InterruptedException {
-        SimulationMaker app = new SimulationMaker();
-
-        app.createThreads();
-        app.startThreads();
-
-        app.waitForSimulationInterruption();
-
-        app.interruptThreads();
-        app.waitEndOfThreads();
+    public void makeSimulation() {
+        createThreads();
+        startThreads();
     }
+
+    public void stopSimulation() throws InterruptedException {
+        interruptThreads();
+        waitEndOfThreads();
+    }
+
 }

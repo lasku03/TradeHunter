@@ -2,7 +2,6 @@ package com.mondragon.tradehunter.demo.test_simulation;
 
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.partialMockBuilder;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import static org.junit.jupiter.api.Assertions.*;
@@ -31,14 +30,14 @@ class SimulationTests {
     }
 
     @Test
-    void testWaitValues1() throws InterruptedException {
+    void testWaitValues1() throws Exception {
         Prediction prediction = new Prediction(simulation, new Social[0], new Economic[0], new Political[0], new DowJones(simulation, "Test", 0, 100));
         
         Thread predictionThread = new Thread(() -> {
             try {
                 simulation.waitValues(prediction);
-            } catch (InterruptedException e) {
-                fail("InterruptedException occurred");
+            } catch (Exception e) {
+                fail("Exception occurred");
             }
         });
 
@@ -57,14 +56,14 @@ class SimulationTests {
     }
 
     @Test
-    void testWaitValues2() throws InterruptedException {
+    void testWaitValues2() throws Exception {
         Prediction prediction = new Prediction(simulation, new Social[0], new Economic[0], new Political[0], new DowJones(simulation, "Test", 0, 100));
         
         Thread predictionThread = new Thread(() -> {
             try {
                 simulation.waitValues(prediction);
-            } catch (InterruptedException e) {
-                fail("InterruptedException occurred");
+            } catch (Exception e) {
+                fail("Exception occurred");
             }
         });
 
@@ -83,14 +82,14 @@ class SimulationTests {
     }
 
     @Test
-    void testWaitValues3() throws InterruptedException {
+    void testWaitValues3() throws Exception {
         Prediction prediction = new Prediction(simulation, new Social[0], new Economic[0], new Political[0], new DowJones(simulation, "Test", 0, 100));
         
         Thread predictionThread = new Thread(() -> {
             try {
                 simulation.waitValues(prediction);
-            } catch (InterruptedException e) {
-                fail("InterruptedException occurred");
+            } catch (Exception e) {
+                fail("Exception occurred");
             }
         });
 
@@ -109,14 +108,14 @@ class SimulationTests {
     }
 
     @Test
-    void testWaitValues4() throws InterruptedException {
+    void testWaitValues4() throws Exception {
         Prediction prediction = new Prediction(simulation, new Social[0], new Economic[0], new Political[0], new DowJones(simulation, "Test", 0, 100));
         
         Thread predictionThread = new Thread(() -> {
             try {
                 simulation.waitValues(prediction);
-            } catch (InterruptedException e) {
-                fail("InterruptedException occurred");
+            } catch (Exception e) {
+                fail("Exception occurred");
             }
         });
 
@@ -139,14 +138,14 @@ class SimulationTests {
     }
 
     @Test
-    void testWaitValues5() throws InterruptedException {
+    void testWaitValues5() throws Exception {
         Prediction prediction = new Prediction(simulation, new Social[0], new Economic[0], new Political[0], new DowJones(simulation, "Test", 0, 100));
         
         Thread predictionThread = new Thread(() -> {
             try {
                 simulation.waitValues(prediction);
-            } catch (InterruptedException e) {
-                fail("InterruptedException occurred");
+            } catch (Exception e) {
+                fail("Exception occurred");
             }
         });
 
@@ -165,14 +164,14 @@ class SimulationTests {
     }
 
     @Test
-    void testWaitValues6() throws InterruptedException {
+    void testWaitValues6() throws Exception {
         Prediction prediction = new Prediction(simulation, new Social[0], new Economic[0], new Political[0], new DowJones(simulation, "Test", 0, 100));
         
         Thread predictionThread = new Thread(() -> {
             try {
                 simulation.waitValues(prediction);
-            } catch (InterruptedException e) {
-                fail("InterruptedException occurred");
+            } catch (Exception e) {
+                fail("Exception occurred");
             }
         });
 
@@ -195,14 +194,14 @@ class SimulationTests {
     }
 
     @Test
-    void testWaitValues7() throws InterruptedException {
+    void testWaitValues7() throws Exception {
         Prediction prediction = new Prediction(simulation, new Social[0], new Economic[0], new Political[0], new DowJones(simulation, "Test", 0, 100));
         
         Thread predictionThread = new Thread(() -> {
             try {
                 simulation.waitValues(prediction);
-            } catch (InterruptedException e) {
-                fail("InterruptedException occurred");
+            } catch (Exception e) {
+                fail("Exception occurred");
             }
         });
 
@@ -225,14 +224,14 @@ class SimulationTests {
     }
 
     @Test
-    void testWaitValues8() throws InterruptedException {
+    void testWaitValues8() throws Exception {
         Prediction prediction = new Prediction(simulation, new Social[0], new Economic[0], new Political[0], new DowJones(simulation, "Test", 0, 100));
         
         Thread predictionThread = new Thread(() -> {
             try {
                 simulation.waitValues(prediction);
-            } catch (InterruptedException e) {
-                fail("InterruptedException occurred");
+            } catch (Exception e) {
+                fail("Exception occurred");
             }
         });
 
@@ -255,7 +254,7 @@ class SimulationTests {
     }
     
     @Test
-    void testWaitDowJonesValues() throws InterruptedException {
+    void testWaitDowJonesValues() throws Exception {
         DowJones dowJones = new DowJones(simulation, "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
@@ -269,8 +268,8 @@ class SimulationTests {
         Thread dowJonesThread = new Thread(() -> {
             try {
                 simulation.waitDowJonesValues(dowJones);
-            } catch (InterruptedException e) {
-                fail("InterruptedException occurred");
+            } catch (Exception e) {
+                fail("Exception occurred");
             }
         });
 
@@ -288,7 +287,7 @@ class SimulationTests {
     }
 
     @Test
-    void testWaitDowJonesGraphPainted() throws InterruptedException {
+    void testWaitDowJonesGraphPainted() throws Exception {
         DowJones dowJones = new DowJones(simulation, "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
@@ -299,8 +298,8 @@ class SimulationTests {
         Thread dowJonesThread = new Thread(() -> {
             try {
                 simulation.waitDowJonesGraphPainted(dowJones);
-            } catch (InterruptedException e) {
-                fail("InterruptedException occurred");
+            } catch (Exception e) {
+                fail("Exception occurred");
             }
         });
 
@@ -321,7 +320,7 @@ class SimulationTests {
     }
 
     @Test
-    void testWaitEconomicValues1() throws InterruptedException {
+    void testWaitEconomicValues1() throws Exception {
         Economic economic = new Economic(simulation, "Test Economic", "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
@@ -333,8 +332,8 @@ class SimulationTests {
         Thread economicThread = new Thread(() -> {
             try {
                 simulation.waitEconomicValues(economic);
-            } catch (InterruptedException e) {
-                fail("InterruptedException occurred");
+            } catch (Exception e) {
+                fail("Exception occurred");
             }
         });
 
@@ -354,7 +353,7 @@ class SimulationTests {
     }
 
     @Test
-    void testWaitEconomicGraphsPainted1() throws InterruptedException {
+    void testWaitEconomicGraphsPainted1() throws Exception {
         Economic economic = new Economic(simulation, "Test Economic", "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
@@ -365,8 +364,8 @@ class SimulationTests {
         Thread economicThread = new Thread(() -> {
             try {
                 simulation.waitEconomicGraphsPainted(economic);
-            } catch (InterruptedException e) {
-                fail("InterruptedException occurred");
+            } catch (Exception e) {
+                fail("Exception occurred");
             }
         });
 
@@ -386,7 +385,7 @@ class SimulationTests {
     }
 
     @Test
-    void testWaitEconomicValues2() throws InterruptedException {
+    void testWaitEconomicValues2() throws Exception {
         Economic economic = new Economic(simulation, "Test Economic", "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
@@ -398,8 +397,8 @@ class SimulationTests {
         Thread economicThread = new Thread(() -> {
             try {
                 simulation.waitEconomicValues(economic);
-            } catch (InterruptedException e) {
-                fail("InterruptedException occurred");
+            } catch (Exception e) {
+                fail("Exception occurred");
             }
         });
 
@@ -420,7 +419,7 @@ class SimulationTests {
     }
 
     @Test
-    void testWaitEconomicGraphsPainted2() throws InterruptedException {
+    void testWaitEconomicGraphsPainted2() throws Exception {
         Economic economic = new Economic(simulation, "Test Economic", "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
@@ -431,8 +430,8 @@ class SimulationTests {
         Thread economicThread = new Thread(() -> {
             try {
                 simulation.waitEconomicGraphsPainted(economic);
-            } catch (InterruptedException e) {
-                fail("InterruptedException occurred");
+            } catch (Exception e) {
+                fail("Exception occurred");
             }
         });
 
@@ -453,7 +452,7 @@ class SimulationTests {
 
     //1 political and 0 social
     @Test
-    void testWaitPoliticalValues1() throws InterruptedException {
+    void testWaitPoliticalValues1() throws Exception {
         Political political = new Political(simulation, "Test Political", "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
@@ -465,8 +464,8 @@ class SimulationTests {
         Thread politicalThread = new Thread(() -> {
             try {
                 simulation.waitPoliticalValues(political);
-            } catch (InterruptedException e) {
-                fail("InterruptedException occurred");
+            } catch (Exception e) {
+                fail("Exception occurred");
             }
         });
 
@@ -489,7 +488,7 @@ class SimulationTests {
 
     // 1 political and 1 social
     @Test
-    void testWaitPoliticalValues2() throws InterruptedException {
+    void testWaitPoliticalValues2() throws Exception {
         Political political = new Political(simulation, "Test Political", "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
@@ -501,8 +500,8 @@ class SimulationTests {
         Thread politicalThread = new Thread(() -> {
             try {
                 simulation.waitPoliticalValues(political);
-            } catch (InterruptedException e) {
-                fail("InterruptedException occurred");
+            } catch (Exception e) {
+                fail("Exception occurred");
             }
         });
 
@@ -526,7 +525,7 @@ class SimulationTests {
 
     // 2 political and 0 social
     @Test
-    void testWaitPoliticalValues3() throws InterruptedException {
+    void testWaitPoliticalValues3() throws Exception {
         Political political = new Political(simulation, "Test Political", "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
@@ -538,8 +537,8 @@ class SimulationTests {
         Thread politicalThread = new Thread(() -> {
             try {
                 simulation.waitPoliticalValues(political);
-            } catch (InterruptedException e) {
-                fail("InterruptedException occurred");
+            } catch (Exception e) {
+                fail("Exception occurred");
             }
         });
 
@@ -565,7 +564,7 @@ class SimulationTests {
 
     // There are 3 political
     @Test
-    void testWaitPoliticalValues4() throws InterruptedException {
+    void testWaitPoliticalValues4() throws Exception {
         Political political = new Political(simulation, "Test Political", "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
@@ -577,8 +576,8 @@ class SimulationTests {
         Thread politicalThread = new Thread(() -> {
             try {
                 simulation.waitPoliticalValues(political);
-            } catch (InterruptedException e) {
-                fail("InterruptedException occurred");
+            } catch (Exception e) {
+                fail("Exception occurred");
             }
         });
         
@@ -603,7 +602,7 @@ class SimulationTests {
 
     // There are 2 political and 1 social
     @Test
-    void testWaitPoliticalValues5() throws InterruptedException {
+    void testWaitPoliticalValues5() throws Exception {
         Political political = new Political(simulation, "Test Political", "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
@@ -615,8 +614,8 @@ class SimulationTests {
         Thread politicalThread = new Thread(() -> {
             try {
                 simulation.waitPoliticalValues(political);
-            } catch (InterruptedException e) {
-                fail("InterruptedException occurred");
+            } catch (Exception e) {
+                fail("Exception occurred");
             }
         });
         
@@ -645,7 +644,7 @@ class SimulationTests {
 
     // There are 1 political and 2 socials
     @Test
-    void testWaitPoliticalValues6() throws InterruptedException {
+    void testWaitPoliticalValues6() throws Exception {
         Political political = new Political(simulation, "Test Political", "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
@@ -657,8 +656,8 @@ class SimulationTests {
         Thread politicalThread = new Thread(() -> {
             try {
                 simulation.waitPoliticalValues(political);
-            } catch (InterruptedException e) {
-                fail("InterruptedException occurred");
+            } catch (Exception e) {
+                fail("Exception occurred");
             }
         });
         
@@ -687,7 +686,7 @@ class SimulationTests {
 
     // 1 politicalToPaint and 0 socialToPaint
     @Test
-    void testWaitPoliticalGraphsPainted1() throws InterruptedException {
+    void testWaitPoliticalGraphsPainted1() throws Exception {
         Political political = new Political(simulation, "Test Political", "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
@@ -698,8 +697,8 @@ class SimulationTests {
         Thread politicalThread = new Thread(() -> {
             try {
                 simulation.waitPoliticalGraphsPainted(political);
-            } catch (InterruptedException e) {
-                fail("InterruptedException occurred");
+            } catch (Exception e) {
+                fail("Exception occurred");
             }
         });
 
@@ -720,7 +719,7 @@ class SimulationTests {
 
     // 1 politicalToPaint and 2 socialToPaint
     @Test
-    void testWaitPoliticalGraphsPainted2() throws InterruptedException {
+    void testWaitPoliticalGraphsPainted2() throws Exception {
         Political political = new Political(simulation, "Test Political", "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
@@ -731,8 +730,8 @@ class SimulationTests {
         Thread politicalThread = new Thread(() -> {
             try {
                 simulation.waitPoliticalGraphsPainted(political);
-            } catch (InterruptedException e) {
-                fail("InterruptedException occurred");
+            } catch (Exception e) {
+                fail("Exception occurred");
             }
         });
 
@@ -755,7 +754,7 @@ class SimulationTests {
 
     // 2 politicalToPaint and 1 socialToPaint
     @Test
-    void testWaitPoliticalGraphsPainted3() throws InterruptedException {
+    void testWaitPoliticalGraphsPainted3() throws Exception {
         Political political = new Political(simulation, "Test Political", "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
@@ -766,8 +765,8 @@ class SimulationTests {
         Thread politicalThread = new Thread(() -> {
             try {
                 simulation.waitPoliticalGraphsPainted(political);
-            } catch (InterruptedException e) {
-                fail("InterruptedException occurred");
+            } catch (Exception e) {
+                fail("Exception occurred");
             }
         });
 
@@ -790,7 +789,7 @@ class SimulationTests {
 
     //1 social and 0 political
     @Test
-    void testWaitSocialValues1() throws InterruptedException {
+    void testWaitSocialValues1() throws Exception {
         Social social = new Social(simulation, "Test Social", "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
@@ -802,8 +801,8 @@ class SimulationTests {
         Thread socialThread = new Thread(() -> {
             try {
                 simulation.waitSocialValues(social);
-            } catch (InterruptedException e) {
-                fail("InterruptedException occurred");
+            } catch (Exception e) {
+                fail("Exception occurred");
             }
         });
 
@@ -826,7 +825,7 @@ class SimulationTests {
 
     // 1 social and 1 political
     @Test
-    void testWaitSocialValues2() throws InterruptedException {
+    void testWaitSocialValues2() throws Exception {
         Social social = new Social(simulation, "Test Social", "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
@@ -838,8 +837,8 @@ class SimulationTests {
         Thread socialThread = new Thread(() -> {
             try {
                 simulation.waitSocialValues(social);
-            } catch (InterruptedException e) {
-                fail("InterruptedException occurred");
+            } catch (Exception e) {
+                fail("Exception occurred");
             }
         });
 
@@ -863,7 +862,7 @@ class SimulationTests {
 
     // 2 social and 0 political
     @Test
-    void testWaitSocialValues3() throws InterruptedException {
+    void testWaitSocialValues3() throws Exception {
         Social social = new Social(simulation, "Test Social", "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
@@ -875,8 +874,8 @@ class SimulationTests {
         Thread socialThread = new Thread(() -> {
             try {
                 simulation.waitSocialValues(social);
-            } catch (InterruptedException e) {
-                fail("InterruptedException occurred");
+            } catch (Exception e) {
+                fail("Exception occurred");
             }
         });
 
@@ -902,7 +901,7 @@ class SimulationTests {
 
     // There are 3 social
     @Test
-    void testWaitSocialValues4() throws InterruptedException {
+    void testWaitSocialValues4() throws Exception {
         Social social = new Social(simulation, "Test Social", "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
@@ -914,8 +913,8 @@ class SimulationTests {
         Thread socialThread = new Thread(() -> {
             try {
                 simulation.waitSocialValues(social);
-            } catch (InterruptedException e) {
-                fail("InterruptedException occurred");
+            } catch (Exception e) {
+                fail("Exception occurred");
             }
         });
         
@@ -940,7 +939,7 @@ class SimulationTests {
 
     // There are 2 social and 1 political
     @Test
-    void testWaitSocialValues5() throws InterruptedException {
+    void testWaitSocialValues5() throws Exception {
         Social social = new Social(simulation, "Test Social", "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
@@ -952,8 +951,8 @@ class SimulationTests {
         Thread socialThread = new Thread(() -> {
             try {
                 simulation.waitSocialValues(social);
-            } catch (InterruptedException e) {
-                fail("InterruptedException occurred");
+            } catch (Exception e) {
+                fail("Exception occurred");
             }
         });
         
@@ -982,7 +981,7 @@ class SimulationTests {
 
     // There are 1 social and 2 politicals
     @Test
-    void testWaitSocialValues6() throws InterruptedException {
+    void testWaitSocialValues6() throws Exception {
         Social social = new Social(simulation, "Test Social", "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
@@ -994,8 +993,8 @@ class SimulationTests {
         Thread socialThread = new Thread(() -> {
             try {
                 simulation.waitSocialValues(social);
-            } catch (InterruptedException e) {
-                fail("InterruptedException occurred");
+            } catch (Exception e) {
+                fail("Exception occurred");
             }
         });
         
@@ -1024,7 +1023,7 @@ class SimulationTests {
 
     // 1 socialToPaint and 0 politicalToPaint
     @Test
-    void testWaitSocialGraphsPainted1() throws InterruptedException {
+    void testWaitSocialGraphsPainted1() throws Exception {
         Social social = new Social(simulation, "Test Social", "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
@@ -1035,8 +1034,8 @@ class SimulationTests {
         Thread socialThread = new Thread(() -> {
             try {
                 simulation.waitSocialGraphsPainted(social);
-            } catch (InterruptedException e) {
-                fail("InterruptedException occurred");
+            } catch (Exception e) {
+                fail("Exception occurred");
             }
         });
 
@@ -1057,7 +1056,7 @@ class SimulationTests {
 
     // 1 socialToPaint and 2 politicalToPaint
     @Test
-    void testWaitSocialGraphsPainted2() throws InterruptedException {
+    void testWaitSocialGraphsPainted2() throws Exception {
         Social social = new Social(simulation, "Test Social", "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
@@ -1068,8 +1067,8 @@ class SimulationTests {
         Thread socialThread = new Thread(() -> {
             try {
                 simulation.waitSocialGraphsPainted(social);
-            } catch (InterruptedException e) {
-                fail("InterruptedException occurred");
+            } catch (Exception e) {
+                fail("Exception occurred");
             }
         });
 
@@ -1092,7 +1091,7 @@ class SimulationTests {
 
     // 2 socialToPaint and 1 politicalToPaint
     @Test
-    void testWaitSocialGraphsPainted3() throws InterruptedException {
+    void testWaitSocialGraphsPainted3() throws Exception {
         Social social = new Social(simulation, "Test Social", "Test", 0, 100);
         SecureRandom rand = createMock(SecureRandom.class);
 
@@ -1103,8 +1102,8 @@ class SimulationTests {
         Thread socialThread = new Thread(() -> {
             try {
                 simulation.waitSocialGraphsPainted(social);
-            } catch (InterruptedException e) {
-                fail("InterruptedException occurred");
+            } catch (Exception e) {
+                fail("Exception occurred");
             }
         });
 
@@ -1154,12 +1153,12 @@ class SimulationTests {
     }
 
     @Test
-    void testGetTheMutex1() throws InterruptedException {
+    void testGetTheMutex1() throws Exception {
         Thread mutexThread = new Thread(() -> {
             try {
                 simulation.getTheMutex();
-            } catch (InterruptedException e) {
-                fail("InterruptedException occurred");
+            } catch (Exception e) {
+                fail("Exception occurred");
             }
         });
 
@@ -1173,12 +1172,12 @@ class SimulationTests {
     }
 
     @Test
-    void testGetTheMutex2() throws InterruptedException {
+    void testGetTheMutex2() throws Exception {
         Thread mutexThread = new Thread(() -> {
             try {
                 simulation.getTheMutex();
-            } catch (InterruptedException e) {
-                fail("InterruptedException occurred");
+            } catch (Exception e) {
+                fail("Exception occurred");
             }
         });
 

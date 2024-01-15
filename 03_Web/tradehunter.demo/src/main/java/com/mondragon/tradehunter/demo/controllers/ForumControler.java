@@ -55,8 +55,7 @@ public class ForumControler {
     }
 
     @PostMapping(value = "/forum", consumes = { "application/json","application/xml" })
-    public void putMessages(@RequestBody List<RequestMessage> requestMessages) {
-            for (RequestMessage requestMessage : requestMessages) {
+    public void putMessages(@RequestBody RequestMessage requestMessage) {
                 User user = userService.getUserByUsername(requestMessage.getUserUsername());
                 Forum forum = forumService.getForumByID(requestMessage.getForumID()).orElseThrow();
                 Message message = new Message();
@@ -65,6 +64,5 @@ public class ForumControler {
                 message.setUser(user);
                 message.setForum(forum);
                 messageService.saveMessage(message);
-            }
     }
 }
