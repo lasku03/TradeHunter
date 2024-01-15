@@ -1,6 +1,10 @@
 package com.mondragon.tradehunter.demo.simulation;
 
 import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.mondragon.tradehunter.demo.controllers.SimulationController;
 
 public class Political extends Thread {
 
@@ -26,7 +30,7 @@ public class Political extends Thread {
                 Thread.sleep(rand.nextInt(1000, 5000));
                 simulation.waitPoliticalValues(this);
                 simulation.waitPoliticalGraphsPainted(this);
-            } catch (InterruptedException e) {
+            } catch (Exception e) {
                 this.interrupt();
             }
         }
@@ -34,20 +38,22 @@ public class Political extends Thread {
 
     public void giveValue() throws InterruptedException {
         value = rand.nextDouble(min, max);
-        System.out.println("(Political) " + this.getName() + "'s value: " + value);
         Thread.sleep(rand.nextInt(100, 400));
     }
 
-    public void paintGraph() throws InterruptedException {
+    public void paintGraph() throws Exception {
         // Call to paint the graph with the new value
-        System.out.println("\t\t(Political) " + this.getName() + " painting in graph");
+        List<GraphValue> graphValues = new ArrayList<>();
+        graphValues.add(new GraphValue(getName(), value));
+
+        SimulationController.sendValues(graphValues);
         Thread.sleep(rand.nextInt(100, 400));
     }
 
     public double getValue() {
         return value;
     }
-    
+
     public void setValue(double value) {
         this.value = value;
     }

@@ -1,6 +1,10 @@
 package com.mondragon.tradehunter.demo.simulation;
 
 import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.mondragon.tradehunter.demo.controllers.SimulationController;
 
 public class Prediction extends Thread {
     private SecureRandom rand;
@@ -12,7 +16,8 @@ public class Prediction extends Thread {
 
     private double predictedValue;
 
-    public Prediction(Simulation simulation, Social[] socials, Economic[] economics, Political[] politicals, DowJones dowJones) {
+    public Prediction(Simulation simulation, Social[] socials, Economic[] economics, Political[] politicals,
+            DowJones dowJones) {
         super("Prediction");
         this.rand = new SecureRandom();
         this.simulation = simulation;
@@ -28,7 +33,7 @@ public class Prediction extends Thread {
         while (!this.isInterrupted()) {
             try {
                 simulation.waitValues(this);
-            } catch (InterruptedException e) {
+            } catch (Exception e) {
                 this.interrupt();
             }
         }
@@ -36,7 +41,6 @@ public class Prediction extends Thread {
 
     public void makePrediction() {
         predictedValue = askForPrediction();
-        System.out.println("\t" + this.getName() + ": " + predictedValue);
     }
 
     public double askForPrediction() {
@@ -56,9 +60,12 @@ public class Prediction extends Thread {
         return value;
     }
 
-    public void paintGraph() {
+    public void paintGraph() throws Exception {
         // Call to paint the graph with the new value
-        System.out.println("\t\t\t(Prediction) painting in graph");
+        List<GraphValue> graphValues = new ArrayList<>();
+        graphValues.add(new GraphValue(getName(), predictedValue));
+
+        SimulationController.sendValues(graphValues);
     }
 
     public Simulation getSimulation() {
