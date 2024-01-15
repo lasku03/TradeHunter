@@ -56,4 +56,8 @@ public class UserService {
         }
         return verified;
     }
+
+    public User getUserByEmail(String email) {
+        return userRepository.findUserByEmail(email);
+    }
 }

@@ -1,16 +1,28 @@
 package com.mondragon.tradehunter.demo.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
+import com.mondragon.tradehunter.demo.model.Forum;
+import com.mondragon.tradehunter.demo.model.Message;
 import com.mondragon.tradehunter.demo.repository.MessageRepository;
-import com.mondragon.tradehunter.demo.repository.UserRepository;
 
 @Service
 public class MessageService {
-    @Autowired
+
     MessageRepository messageRepository;
 
-    @Autowired
-    UserRepository userRepository;
+    public MessageService(MessageRepository messageRepository){
+        this.messageRepository = messageRepository;
+    }
+
+    public List<Message> getMessagesByForum(Optional<Forum> forum){
+        return messageRepository.findByForum(forum);
+    }
+
+    public Message saveMessage(Message message){
+        return messageRepository.save(message);
+    }
 }
