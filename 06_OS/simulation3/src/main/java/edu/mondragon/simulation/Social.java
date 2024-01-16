@@ -1,22 +1,24 @@
 package edu.mondragon.simulation;
 
-import java.util.Random;
+import java.security.SecureRandom;
 
 public class Social extends Thread {
 
     private Simulation simulation;
-    private Random rand;
+    private SecureRandom rand;
+    String dbName;
     private double min;
     private double max;
     private double value;
 
-    public Social(Simulation simulation, String name, double min, double max) {
+    public Social(Simulation simulation, String name, String dbName, double min, double max) {
         super(name);
         this.simulation = simulation;
-        this.rand = new Random();
+        this.dbName = dbName;
+        this.rand = new SecureRandom();
         this.min = min;
         this.max = max;
-        this.value = max + min / 2;
+        this.value = (max + min) / 2;
     }
 
     @Override
