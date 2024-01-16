@@ -31,7 +31,7 @@ public class SimulationMaker {
 
     public void createSocialThreads() {
         socials[0] = new Social(simulation, "Death rate", "Defunciones", 6, 12);
-        socials[1] = new Social(simulation, "Birth rate", "Births", 1100, 900);
+        socials[1] = new Social(simulation, "Birth rate", "Births", 900, 1100);
         socials[2] = new Social(simulation, "Debt per capita", "Debt_per_Capita", 25000, 29000);
     }
 
