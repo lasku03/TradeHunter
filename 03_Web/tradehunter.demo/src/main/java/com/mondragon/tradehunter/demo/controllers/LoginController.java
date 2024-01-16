@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mondragon.tradehunter.demo.model.User;
+import com.mondragon.tradehunter.demo.request_models.RequestUser;
 import com.mondragon.tradehunter.demo.services.UserService;
 
 @RestController
@@ -23,13 +24,14 @@ public class LoginController {
     }
 
     @PostMapping(value = "/login", produces = {"applicacion/xml", "application/json"}, consumes = {"application/xml", "application/json"})
-    public ResponseEntity<User> login(@RequestBody Map<String, String> loginRequest){
+    public ResponseEntity<RequestUser> login(@RequestBody Map<String, String> loginRequest){
         String username = loginRequest.get("username");
         String password = loginRequest.get("password");
         User user = userService.login(username, password);
-        ResponseEntity<User> responseEntity;
+        ResponseEntity<RequestUser> responseEntity;
         if(user != null){
-            responseEntity = new ResponseEntity<>(user, HttpStatus.OK);
+            RequestUser requestUser = new RequestUser(user.getName(), user.getSurname(), user.getUsername(), user.getPassword(), user.getEmail(), user.getAge(), user.isPremium());
+            responseEntity = new ResponseEntity<>(requestUser, HttpStatus.OK);
         }else{
             responseEntity = ResponseEntity.notFound().build();
         }
