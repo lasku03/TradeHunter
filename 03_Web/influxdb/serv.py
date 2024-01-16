@@ -26,7 +26,7 @@ class Serv(BaseHTTPRequestHandler):
                 "High": item[3],
                 "Low": item[4],
                 "Open": item[5]
-                }
+                } 
                 result_list_of_dicts.append(result_dict)
 
             # Serialize the result to JSON

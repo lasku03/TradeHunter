@@ -55,16 +55,14 @@ public class ForumControler {
     }
 
     @PostMapping(value = "/forum", consumes = { "application/json","application/xml" })
-    public void putMessages(@RequestBody List<RequestMessage> requestMessages) {
-            for (RequestMessage requestMessage : requestMessages) {
-                User user = userService.getUserByUsername(requestMessage.getUserUsername());
-                Forum forum = forumService.getForumByID(requestMessage.getForumID()).orElseThrow();
-                Message message = new Message();
-                message.setDate(requestMessage.getDate());
-                message.setContent(requestMessage.getContent());
-                message.setUser(user);
-                message.setForum(forum);
-                messageService.saveMessage(message);
-            }
+    public void putMessages(@RequestBody RequestMessage requestMessage) {
+        User user = userService.getUserByUsername(requestMessage.getUserUsername());
+        Forum forum = forumService.getForumByID(requestMessage.getForumID()).orElseThrow();
+        Message message = new Message();
+        message.setDate(requestMessage.getDate());
+        message.setContent(requestMessage.getContent());
+        message.setUser(user);
+        message.setForum(forum);
+        messageService.saveMessage(message);
     }
 }
