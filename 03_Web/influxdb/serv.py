@@ -2,6 +2,7 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 from search import Search 
 import json
 from urllib.parse import urlparse, parse_qs
+import pandas as pd
 
 class Serv(BaseHTTPRequestHandler):
     def do_GET(self):
@@ -15,22 +16,29 @@ class Serv(BaseHTTPRequestHandler):
 
             # Assuming you want to add a range of dates to the search list
             search = Search()
+            internal_data = search.createInternalSearch(start_date, end_date)
             result = search.createSearch(start_date, end_date)
 
-            result_list_of_dicts = []
-            for item in result:
+            result = pd.DataFrame(result)
+
+            result.to_csv('dee.csv', index=False, header=False)
+
+            search.createImages('dee.csv')
+
+            internal_data_dict = []
+            for item in internal_data:
                 result_dict = {
-                "date": item[0],
+                "Date": item[0],
                 "AdjClose": item[1],
                 "Close": item[2],
                 "High": item[3],
                 "Low": item[4],
                 "Open": item[5]
                 }
-                result_list_of_dicts.append(result_dict)
+                internal_data_dict.append(result_dict)
 
             # Serialize the result to JSON
-            result_json = json.dumps(result_list_of_dicts, indent=2)
+            result_json = json.dumps(internal_data_dict, indent=2)
 
             # Send the response headers
             self.send_response(200)
