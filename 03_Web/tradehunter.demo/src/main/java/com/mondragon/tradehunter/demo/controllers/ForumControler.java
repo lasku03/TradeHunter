@@ -1,8 +1,13 @@
 package com.mondragon.tradehunter.demo.controllers;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,8 +47,9 @@ public class ForumControler {
         if (forum.isPresent()) {
             List<Message> messages = messageService.getMessagesByForum(forum);
             List<RequestMessage> requestMessages = new ArrayList<>();
-            for(Message message : messages){
-                RequestMessage requestMessage = new RequestMessage(message.getContent(), message.getUser().getUsername(), message.getForum().getForumID(), message.getDate());
+            for (Message message : messages) {
+                RequestMessage requestMessage = new RequestMessage(message.getContent(),
+                        message.getUser().getUsername(), message.getForum().getForumID(), message.getDate());
                 requestMessages.add(requestMessage);
             }
             responseEntity = new ResponseEntity<>(requestMessages, HttpStatus.OK);
@@ -54,15 +60,16 @@ public class ForumControler {
         return responseEntity;
     }
 
-    @PostMapping(value = "/forum", consumes = { "application/json","application/xml" })
-    public void putMessages(@RequestBody RequestMessage requestMessage) {
-                User user = userService.getUserByUsername(requestMessage.getUserUsername());
-                Forum forum = forumService.getForumByID(requestMessage.getForumID()).orElseThrow();
-                Message message = new Message();
-                message.setDate(requestMessage.getDate());
-                message.setContent(requestMessage.getContent());
-                message.setUser(user);
-                message.setForum(forum);
-                messageService.saveMessage(message);
+    @GetMapping(value = "/forum")
+    public void putMessages() {
+        try {
+            JAXBContext jaxbContext = JAXBContext.newInstance(RequestMessage.class);
+            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+            File XMLfile = new File(".\\src\\main\\resources\\schemas\\requestMessage.xml");
+            RequestMessage requestMessage = (RequestMessage) jaxbUnmarshaller.unmarshal(XMLfile);
+            System.out.println(requestMessage.toString());
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
     }
 }
