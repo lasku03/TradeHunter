@@ -1,54 +1,60 @@
 package edu.mondragon.simulation;
 
+import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
-public class ValueSender {
-    public static void main(String[] args) {
-        // Crear una cola bloqueante con capacidad de 5 elementos
-        BlockingQueue<String> blockingQueue = new ArrayBlockingQueue<>(5);
+public class ValueSender extends Thread {
 
-        // Hilo productor
-        Thread producerThread = new Thread(() -> {
-            try {
-                while (true) {
-                    blockingQueue.put("Dato 1");
-                    blockingQueue.put("Dato 2");
-                    blockingQueue.put("Dato 3");
-                    Thread.sleep(100);
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        });
+    private BlockingQueue<List<GraphValue>> blockingQueue;
+    private SecureRandom rand;
 
-        // Hilo consumidor
-        Thread consumerThread = new Thread(() -> {
-            try {
-                while (true) {
-                    String data = blockingQueue.take();
-                    System.out.println("Dato recibido: " + data);
-                    Thread.sleep(1000);
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        });
+    public ValueSender() {
+        this.blockingQueue = new ArrayBlockingQueue<>(3);
+        this.rand = new SecureRandom();
+    }
 
-        // Iniciar los hilos
-        producerThread.start();
-        consumerThread.start();
-
-        try {
-            Thread.sleep(10000);
-            producerThread.join();
-            producerThread.interrupt();
-            consumerThread.join();
-            consumerThread.interrupt();
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+    public void putInQueue(List<GraphValue> graphValues) throws InterruptedException {
+        List<GraphValue> graphValues2 = new ArrayList<>();
+        for (GraphValue graphValue : graphValues) {
+            graphValues2.add(new GraphValue(graphValue.getName(), graphValue.getValue()));
         }
+        blockingQueue.put(graphValues2);
+    }
 
+    @Override
+    public void run() {
+        while (!this.isInterrupted()) {
+            try {
+                Thread.sleep(rand.nextInt(1000, 2000));
+                List<GraphValue> graphValues = blockingQueue.take();
+                sendGraphValues(graphValues);
+            } catch (InterruptedException e) {
+                this.interrupt();
+            }
+        }
+    }
+
+    public void sendGraphValues(List<GraphValue> graphValues) {
+        // SimulationController.sendValues(graphValues);
+        System.out.println("\t\tValues painting in graphs:");
+        for (GraphValue value : graphValues) {
+            System.out.println("\t\t\t" + value.getName() + ": " + value.getValue());
+        }
+    }
+
+    public BlockingQueue<List<GraphValue>> getBlockingQueue() {
+        return blockingQueue;
+    }
+    public void setBlockingQueue(BlockingQueue<List<GraphValue>> blockingQueue) {
+        this.blockingQueue = blockingQueue;
+    }
+    public SecureRandom getRand() {
+        return rand;
+    }
+    public void setRand(SecureRandom rand) {
+        this.rand = rand;
     }
 }

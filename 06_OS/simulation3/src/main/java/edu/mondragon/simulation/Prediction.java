@@ -60,4 +60,11 @@ public class Prediction extends Thread {
         System.out.println("\t\t\t(Prediction) painting in graph");
         Thread.sleep(rand.nextInt(100, 400));
     }
+
+    public double getPredictedValue() {
+        return predictedValue;
+    }
+    public void setPredictedValue(double predictedValue) {
+        this.predictedValue = predictedValue;
+    }
 }

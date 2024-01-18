@@ -27,7 +27,7 @@ public class DowJones extends Thread {
             try {
                 Thread.sleep(rand.nextInt(5000, 10000));
                 simulation.waitDowJonesValues(this);
-                simulation.waitDowJonesGraphPainted(this);
+                simulation.waitDowJonesPredictionDone(this);
             } catch (InterruptedException e) {
                 this.interrupt();
             }

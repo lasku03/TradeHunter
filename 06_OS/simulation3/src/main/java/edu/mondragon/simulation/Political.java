@@ -27,7 +27,7 @@ public class Political extends Thread {
             try {
                 Thread.sleep(rand.nextInt(1000, 5000));
                 simulation.waitPoliticalValues(this);
-                simulation.waitPoliticalGraphsPainted(this);
+                simulation.waitPoliticalPredictionDone(this);
             } catch (InterruptedException e) {
                 this.interrupt();
             }

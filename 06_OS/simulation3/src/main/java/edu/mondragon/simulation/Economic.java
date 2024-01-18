@@ -27,7 +27,7 @@ public class Economic extends Thread {
             try {
                 Thread.sleep(rand.nextInt(1000, 5000));
                 simulation.waitEconomicValues(this);
-                simulation.waitEconomicGraphsPainted(this);
+                simulation.waitEconomicPredictionDone(this);
             } catch (InterruptedException e) {
                 this.interrupt();
             }

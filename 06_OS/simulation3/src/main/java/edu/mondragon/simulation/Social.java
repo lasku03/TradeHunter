@@ -27,7 +27,7 @@ public class Social extends Thread {
             try {
                 Thread.sleep(rand.nextInt(1000, 5000));
                 simulation.waitSocialValues(this);
-                simulation.waitSocialGraphsPainted(this);
+                simulation.waitSocialPredictionDone(this);
             } catch (InterruptedException e) {
                 this.interrupt();
             }

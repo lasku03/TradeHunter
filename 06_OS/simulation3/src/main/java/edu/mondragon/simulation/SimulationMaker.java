@@ -12,9 +12,11 @@ public class SimulationMaker {
     private Political[] politicals;
     private DowJones dowJones;
     private Prediction prediction;
+    private ValueSender valueSender;
 
     public SimulationMaker() {
-        simulation = new Simulation();
+        valueSender = new ValueSender();
+        simulation = new Simulation(valueSender);
 
         socials = new Social[NSOCIALS];
         economics = new Economic[NECONOMICS];
@@ -61,6 +63,7 @@ public class SimulationMaker {
         }
         dowJones.start();
         prediction.start();
+        valueSender.start();
     }
 
     public void interruptThreads() {
@@ -75,6 +78,7 @@ public class SimulationMaker {
         }
         dowJones.interrupt();
         prediction.interrupt();
+        valueSender.interrupt();
     }
 
     public void waitEndOfThreads() {
@@ -90,6 +94,7 @@ public class SimulationMaker {
             }
             dowJones.join();
             prediction.join();
+            valueSender.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -103,6 +108,14 @@ public class SimulationMaker {
             e1.printStackTrace();
         }
     }
+
+    public ValueSender getValueSender() {
+        return valueSender;
+    }
+    public void setValueSender(ValueSender valueSender) {
+        this.valueSender = valueSender;
+    }
+
     public static void main(String[] args) {
         SimulationMaker app = new SimulationMaker();
 
