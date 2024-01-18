@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<requestMessage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="schemasMessage.xsd">
+    <content>de</content>
+    <userUsername>dede</userUsername>
+    <forumID>1</forumID>
+    <date>2014-01-01T19:00:00Z</date>
+</requestMessage>
