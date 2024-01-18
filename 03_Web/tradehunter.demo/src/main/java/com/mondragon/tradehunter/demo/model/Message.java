@@ -1,8 +1,7 @@
 package com.mondragon.tradehunter.demo.model;
 
 
-import java.time.LocalDateTime;
-
+import java.util.Date;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -23,7 +22,7 @@ public class Message {
     private int messageID;
 
     private String content;
-    private LocalDateTime date;
+    private Date date;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "userID")
@@ -33,7 +32,7 @@ public class Message {
     @JoinColumn(name = "forumID")
     private Forum forum;
 
-    public Message(int messageID, String content, LocalDateTime date, User user, Forum forum) {
+    public Message(int messageID, String content, Date date, User user, Forum forum) {
         this.messageID = messageID;
         this.content = content;
         this.date = date;
@@ -57,11 +56,11 @@ public class Message {
         this.content = content;
     }
 
-    public LocalDateTime getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
