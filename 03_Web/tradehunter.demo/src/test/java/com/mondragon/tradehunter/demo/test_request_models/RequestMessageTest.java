@@ -2,7 +2,7 @@ package com.mondragon.tradehunter.demo.test_request_models;
 
 import static org.junit.Assert.assertEquals;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +19,7 @@ class RequestMessageTest {
     @Test
     void testDateGetterAndSetter() {
         RequestMessage message = new RequestMessage();
-        LocalDateTime now = LocalDateTime.now();
+        Date now = new Date();
         message.setDate(now);
         assertEquals(now, message.getDate());
     }
@@ -40,7 +40,7 @@ class RequestMessageTest {
 
     @Test
     void testConstructor(){
-        LocalDateTime date = LocalDateTime.now();
+        Date date = new Date();
         RequestMessage message = new RequestMessage("Message content", "User", 1, date);
         assertEquals("Message content", message.getContent());
         assertEquals(date, message.getDate());
