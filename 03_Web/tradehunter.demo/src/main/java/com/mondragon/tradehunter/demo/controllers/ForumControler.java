@@ -14,13 +14,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mondragon.tradehunter.demo.model.Forum;
 import com.mondragon.tradehunter.demo.model.Message;
-import com.mondragon.tradehunter.demo.model.User;
 import com.mondragon.tradehunter.demo.request_models.RequestMessage;
 import com.mondragon.tradehunter.demo.services.ForumService;
 import com.mondragon.tradehunter.demo.services.MessageService;
@@ -61,15 +58,14 @@ public class ForumControler {
     }
 
     @GetMapping(value = "/forum")
-    public void putMessages() {
+    public void putMessages() throws JAXBException {
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance(RequestMessage.class);
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            File XMLfile = new File(".\\src\\main\\resources\\schemas\\requestMessage.xml");
-            RequestMessage requestMessage = (RequestMessage) jaxbUnmarshaller.unmarshal(XMLfile);
-            System.out.println(requestMessage.toString());
+            File xmlFile = new File(".\\src\\main\\resources\\schemas\\requestMessage.xml");
+            jaxbUnmarshaller.unmarshal(xmlFile);
         } catch (JAXBException e) {
-            e.printStackTrace();
+            throw new JAXBException("An error ocurred during message putting");
         }
     }
 }

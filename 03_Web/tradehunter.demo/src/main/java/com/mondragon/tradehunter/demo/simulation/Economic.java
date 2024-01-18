@@ -1,10 +1,6 @@
 package com.mondragon.tradehunter.demo.simulation;
 
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.mondragon.tradehunter.demo.controllers.SimulationController;
 
 public class Economic extends Thread {
 
@@ -31,7 +27,7 @@ public class Economic extends Thread {
             try {
                 Thread.sleep(rand.nextInt(1000, 5000));
                 simulation.waitEconomicValues(this);
-                simulation.waitEconomicGraphsPainted(this);
+                simulation.waitEconomicPredictionDone(this);
             } catch (Exception e) {
                 this.interrupt();
             }
@@ -40,16 +36,6 @@ public class Economic extends Thread {
 
     public void giveValue() throws InterruptedException {
         value = rand.nextDouble(min, max);
-        Thread.sleep(rand.nextInt(100, 400));
-    }
-
-    public void paintGraph() throws Exception {
-        // Call to paint the graph with the new value
-        List<GraphValue> graphValues = new ArrayList<>();
-        graphValues.add(new GraphValue(getName(), value));
-
-        SimulationController.sendValues(graphValues);
-
         Thread.sleep(rand.nextInt(100, 400));
     }
 
@@ -91,5 +77,13 @@ public class Economic extends Thread {
 
     public void setRand(SecureRandom rand) {
         this.rand = rand;
+    }
+    
+    public String getDbName() {
+        return dbName;
+    }
+
+    public void setDbName(String dbName) {
+        this.dbName = dbName;
     }
 }

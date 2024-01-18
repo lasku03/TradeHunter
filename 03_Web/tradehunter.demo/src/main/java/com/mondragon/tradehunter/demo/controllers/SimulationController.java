@@ -2,8 +2,6 @@ package com.mondragon.tradehunter.demo.controllers;
 
 import java.util.List;
 
-import org.apache.catalina.connector.Response;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -25,7 +23,7 @@ public class SimulationController {
     SimulationMaker simulationMaker = new SimulationMaker();
 
     @GetMapping("/simulation/start")
-    public void startSimulation() throws InterruptedException {
+    public void startSimulation() {
 
         simulationMaker.makeSimulation();
     }
@@ -36,7 +34,7 @@ public class SimulationController {
         simulationMaker.stopSimulation();
     }
 
-    public static void sendValues(List<GraphValue> graphValues) throws Exception {
+    public static void sendValues(List<GraphValue> graphValues) throws InterruptedException {
         RestTemplate restTemplate = new RestTemplate();
         String url = "http://localhost:1880/simulation/graph";
 
@@ -52,7 +50,7 @@ public class SimulationController {
         List<GraphValue> newValues = response.getBody();
 
         if (newValues == null){
-            throw new Exception("The list is null");
+            throw new InterruptedException("The list is null");
         }
     }
 

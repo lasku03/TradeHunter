@@ -30,7 +30,7 @@ class PredictionTests {
         socials = new Social[2];
         economics = new Economic[2];
         politicals = new Political[2];
-        simulation = new Simulation();
+        simulation = new Simulation(null);
         dowJones = new DowJones(simulation, "Test", 0, 10);
         prediction = new Prediction(simulation, socials, economics, politicals, dowJones);
     }
@@ -47,7 +47,7 @@ class PredictionTests {
 
     @Test
     void testSetSimulation() {
-        Simulation testSimulation = new Simulation();
+        Simulation testSimulation = new Simulation(null);
         prediction.setSimulation(testSimulation);
         assertEquals(testSimulation, prediction.getSimulation());
     }

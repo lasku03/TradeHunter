@@ -19,7 +19,7 @@ class DowJonesTests {
 
     @BeforeEach
     void setUp() {
-        simulation = new Simulation();
+        simulation = new Simulation(null);
         dowJones = new DowJones(simulation, "High_DJ", 0, 100);
     }
 
@@ -33,7 +33,7 @@ class DowJonesTests {
 
     @Test
     void testSetSimulation() {
-        Simulation testSimulation = new Simulation();
+        Simulation testSimulation = new Simulation(null);
         dowJones.setSimulation(testSimulation);
         assertEquals(testSimulation, dowJones.getSimulation());
     }
@@ -54,6 +54,12 @@ class DowJonesTests {
     void testSetValue() {
         dowJones.setValue(150);
         assertEquals(150, dowJones.getValue(), 0.01);
+    }
+
+    @Test
+    void testSetDbName() {
+        dowJones.setDbName("Test db");
+        assertEquals("Test db", dowJones.getDbName());
     }
 
     @Test

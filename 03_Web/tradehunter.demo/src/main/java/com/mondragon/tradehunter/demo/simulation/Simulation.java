@@ -1,5 +1,7 @@
 package com.mondragon.tradehunter.demo.simulation;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Semaphore;
 
 public class Simulation {
@@ -25,8 +27,10 @@ public class Simulation {
     private Semaphore socialWait;
     private Semaphore socialDone;
     private ReusableBarrier barrier;
+    private ValueSender valueSender;
+    private List<GraphValue> graphValues;
 
-    public Simulation() {
+    public Simulation(ValueSender valueSender) {
         this.nDowJones = 0;
         this.nEconomics = 0;
         this.nPoliticals = 0;
@@ -35,7 +39,7 @@ public class Simulation {
         this.socialToPaint = 0;
         this.predictionInProgress = false;
         this.mutex = new Semaphore(1, true);
-        this.graphMutex = new Semaphore(1, true);
+        this.graphMutex = new Semaphore(0, true);
         this.dowJonesMutex = new Semaphore(1);
         this.economicMutex = new Semaphore(1);
         this.predictionWait = new Semaphore(0);
@@ -48,53 +52,44 @@ public class Simulation {
         this.socialWait = new Semaphore(0, true);
         this.socialDone = new Semaphore(0);
         this.barrier = new ReusableBarrier(3);
+        this.valueSender = valueSender;
+        this.graphValues = new ArrayList<>();
     }
 
-    public void waitValues(Prediction prediction) throws Exception {
+    public void waitValues(Prediction prediction) throws InterruptedException {
         predictionWait.acquire();
         mutex.acquire();
-        graphMutex.acquire();
+        
+        prediction.makePrediction();
+        graphValues.add(new GraphValue(prediction.getName(), prediction.getPredictedValue()));
+        graphMutex.release();
+
         if (nDowJones == 1) {
-            prediction.makePrediction();
-            graphMutex.release();
             dowJonesWait.release();
             dowJonesDone.acquire();
-            prediction.paintGraph();
         } else if (nEconomics == 3) {
-            prediction.makePrediction();
-            graphMutex.release();
             economicWait.release();
             economicDone.acquire();
-            prediction.paintGraph();
         } else if (politicalToPaint == 3) {
-            prediction.makePrediction();
-            graphMutex.release();
             politicalWait.release();
             politicalDone.acquire();
-            prediction.paintGraph();
         } else if (politicalToPaint == 2 && socialToPaint == 1) {
-            prediction.makePrediction();
-            graphMutex.release();
             politicalWait.release();
             socialWait.release();
             politicalDone.acquire();
             socialDone.acquire();
-            prediction.paintGraph();
         } else if (socialToPaint == 3) {
-            prediction.makePrediction();
-            graphMutex.release();
             socialWait.release();
             socialDone.acquire();
-            prediction.paintGraph();
         } else {
-            prediction.makePrediction();
-            graphMutex.release();
             socialWait.release();
             politicalWait.release();
             socialDone.acquire();
             politicalDone.acquire();
-            prediction.paintGraph();
         }
+
+        valueSender.putInQueue(graphValues);
+        graphValues.clear();
         mutex.release();
     }
 
@@ -111,11 +106,11 @@ public class Simulation {
         dowJonesWait.acquire();
     }
 
-    public void waitDowJonesGraphPainted(DowJones dowJones) throws Exception {
+    public void waitDowJonesPredictionDone(DowJones dowJones) throws InterruptedException {
         graphMutex.acquire();
-
-        dowJones.paintGraph();
+        
         nDowJones--;
+        graphValues.add(new GraphValue(dowJones.getName(), dowJones.getValue()));
 
         dowJonesDone.release();
         dowJonesMutex.release();
@@ -141,11 +136,11 @@ public class Simulation {
         economicWait.acquire();
     }
 
-    public void waitEconomicGraphsPainted(Economic economic) throws Exception {
+    public void waitEconomicPredictionDone(Economic economic) throws InterruptedException {
         graphMutex.acquire();
-
-        economic.paintGraph();
+        
         nEconomics--;
+        graphValues.add(new GraphValue(economic.getName(), economic.getValue()));
         if (nEconomics == 0) {
             economicDone.release();
             economicMutex.release();
@@ -185,11 +180,10 @@ public class Simulation {
 
         politicalToPaint++;
 
-        if ((politicalToPaint == 3) || (politicalToPaint == 2 && socialToPaint == 1)
-                || (politicalToPaint == 1 && socialToPaint == 2)) {
+        if ((politicalToPaint == 3) || (politicalToPaint == 2 && socialToPaint == 1) || (politicalToPaint == 1 && socialToPaint == 2)) {    
             predictionWait.release();
         }
-
+        
         if (isLast) {
             mutex.release();
         }
@@ -197,11 +191,11 @@ public class Simulation {
         politicalWait.acquire();
     }
 
-    public void waitPoliticalGraphsPainted(Political political) throws Exception {
+    public void waitPoliticalPredictionDone(Political political) throws InterruptedException {
         graphMutex.acquire();
 
-        political.paintGraph();
         politicalToPaint--;
+        graphValues.add(new GraphValue(political.getName(), political.getValue()));
         if (politicalToPaint == 0) {
             politicalDone.release();
             if (socialToPaint == 0) {
@@ -210,6 +204,7 @@ public class Simulation {
         } else {
             politicalWait.release();
         }
+
         graphMutex.release();
     }
 
@@ -239,14 +234,13 @@ public class Simulation {
         }
 
         barrier.waitBarrier();
-
+        
         socialToPaint++;
 
-        if ((socialToPaint == 3) || (socialToPaint == 2 && politicalToPaint == 1)
-                || (socialToPaint == 1 && politicalToPaint == 2)) {
+        if ((socialToPaint == 3) || (socialToPaint == 2 && politicalToPaint == 1) || (socialToPaint == 1 && politicalToPaint == 2)) {
             predictionWait.release();
         }
-
+        
         if (isLast) {
             mutex.release();
         }
@@ -254,11 +248,11 @@ public class Simulation {
         socialWait.acquire();
     }
 
-    public void waitSocialGraphsPainted(Social social) throws Exception {
+    public void waitSocialPredictionDone(Social social) throws InterruptedException {
         graphMutex.acquire();
 
-        social.paintGraph();
         socialToPaint--;
+        graphValues.add(new GraphValue(social.getName(), social.getValue()));
         if (socialToPaint == 0) {
             socialDone.release();
             if (politicalToPaint == 0) {
@@ -287,176 +281,147 @@ public class Simulation {
             mutex.acquire();
             if (predictionInProgress) {
                 mutex.release();
-                Thread.sleep(100);
             }
-        } while (predictionInProgress);
+        } while(predictionInProgress);
     }
 
     public int getnDowJones() {
         return nDowJones;
     }
-
     public void setnDowJones(int nDowJones) {
         this.nDowJones = nDowJones;
     }
-
     public int getnEconomics() {
         return nEconomics;
     }
-
     public void setnEconomics(int nEconomics) {
         this.nEconomics = nEconomics;
     }
-
     public int getnPoliticals() {
         return nPoliticals;
     }
-
     public void setnPoliticals(int nPoliticals) {
         this.nPoliticals = nPoliticals;
     }
-
     public int getnSocials() {
         return nSocials;
     }
-
     public void setnSocials(int nSocials) {
         this.nSocials = nSocials;
     }
-
     public int getPoliticalToPaint() {
         return politicalToPaint;
     }
-
     public void setPoliticalToPaint(int politicalToPaint) {
         this.politicalToPaint = politicalToPaint;
     }
-
     public int getSocialToPaint() {
         return socialToPaint;
     }
-
     public void setSocialToPaint(int socialToPaint) {
         this.socialToPaint = socialToPaint;
     }
-
     public boolean isPredictionInProgress() {
         return predictionInProgress;
     }
-
     public void setPredictionInProgress(boolean predictionInProgress) {
         this.predictionInProgress = predictionInProgress;
     }
-
     public Semaphore getGraphMutex() {
         return graphMutex;
     }
-
     public void setGraphMutex(Semaphore graphMutex) {
         this.graphMutex = graphMutex;
     }
-
     public Semaphore getDowJonesMutex() {
         return dowJonesMutex;
     }
-
     public void setDowJonesMutex(Semaphore dowJonesMutex) {
         this.dowJonesMutex = dowJonesMutex;
     }
-
     public Semaphore getEconomicMutex() {
         return economicMutex;
     }
-
     public void setEconomicMutex(Semaphore economicMutex) {
         this.economicMutex = economicMutex;
     }
-
     public Semaphore getPredictionWait() {
         return predictionWait;
     }
-
     public void setPredictionWait(Semaphore predictionWait) {
         this.predictionWait = predictionWait;
     }
-
     public Semaphore getDowJonesWait() {
         return dowJonesWait;
     }
-
     public void setDowJonesWait(Semaphore dowJonesWait) {
         this.dowJonesWait = dowJonesWait;
     }
-
     public Semaphore getDowJonesDone() {
         return dowJonesDone;
     }
-
     public void setDowJonesDone(Semaphore dowJonesDone) {
         this.dowJonesDone = dowJonesDone;
     }
-
     public Semaphore getEconomicWait() {
         return economicWait;
     }
-
     public void setEconomicWait(Semaphore economicWait) {
         this.economicWait = economicWait;
     }
-
     public Semaphore getEconomicDone() {
         return economicDone;
     }
-
     public void setEconomicDone(Semaphore economicDone) {
         this.economicDone = economicDone;
     }
-
     public Semaphore getPoliticalWait() {
         return politicalWait;
     }
-
     public void setPoliticalWait(Semaphore politicalWait) {
         this.politicalWait = politicalWait;
     }
-
     public Semaphore getPoliticalDone() {
         return politicalDone;
     }
-
     public void setPoliticalDone(Semaphore politicalDone) {
         this.politicalDone = politicalDone;
     }
-
     public Semaphore getSocialWait() {
         return socialWait;
     }
-
     public void setSocialWait(Semaphore socialWait) {
         this.socialWait = socialWait;
     }
-
     public Semaphore getSocialDone() {
         return socialDone;
     }
-
     public void setSocialDone(Semaphore socialDone) {
         this.socialDone = socialDone;
     }
-
     public ReusableBarrier getBarrier() {
         return barrier;
     }
-
     public void setBarrier(ReusableBarrier barrier) {
         this.barrier = barrier;
     }
-
     public Semaphore getMutex() {
         return mutex;
     }
-
     public void setMutex(Semaphore mutex) {
         this.mutex = mutex;
     }
+    public ValueSender getValueSender() {
+        return valueSender;
+    }
+    public void setValueSender(ValueSender valueSender) {
+        this.valueSender = valueSender;
+    }
+    public List<GraphValue> getGraphValues() {
+        return graphValues;
+    }
+    public void setGraphValues(List<GraphValue> graphValues) {
+        this.graphValues = graphValues;
+    }
 }
+
