@@ -2,7 +2,7 @@ package com.mondragon.tradehunter.demo.test_model;
 
 import static org.junit.Assert.assertEquals;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 import org.junit.jupiter.api.Test;
 
@@ -28,7 +28,7 @@ class MessageTest {
     @Test
     void testDateGetterAndSetter() {
         Message message = new Message();
-        LocalDateTime now = LocalDateTime.now();
+        Date now = new Date();
         message.setDate(now);
         assertEquals(now, message.getDate());
     }
@@ -53,7 +53,7 @@ class MessageTest {
     void testConstructor(){
         User user = new User();
         Forum forum = new Forum();
-        LocalDateTime date = LocalDateTime.now();
+        Date date = new Date();
         Message message = new Message(1, "Message content",date, user, forum);
         assertEquals(1, message.getMessageID());
         assertEquals("Message content", message.getContent());
