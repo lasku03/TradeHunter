@@ -58,15 +58,14 @@ public class ForumControler {
     }
 
     @GetMapping(value = "/forum")
-    public void putMessages() {
+    public void putMessages() throws JAXBException {
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance(RequestMessage.class);
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            File XMLfile = new File(".\\src\\main\\resources\\schemas\\requestMessage.xml");
-            RequestMessage requestMessage = (RequestMessage) jaxbUnmarshaller.unmarshal(XMLfile);
-            System.out.println(requestMessage.toString());
+            File xmlFile = new File(".\\src\\main\\resources\\schemas\\requestMessage.xml");
+            jaxbUnmarshaller.unmarshal(xmlFile);
         } catch (JAXBException e) {
-            e.printStackTrace();
+            throw new JAXBException("An error ocurred during message putting");
         }
     }
 }

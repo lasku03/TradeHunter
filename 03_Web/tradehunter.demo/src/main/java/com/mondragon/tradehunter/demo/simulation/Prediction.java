@@ -1,10 +1,6 @@
 package com.mondragon.tradehunter.demo.simulation;
 
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.mondragon.tradehunter.demo.controllers.SimulationController;
 
 public class Prediction extends Thread {
     private SecureRandom rand;
@@ -58,14 +54,6 @@ public class Prediction extends Thread {
         value += dowJones.getValue();
         // Ask the AI server for the prediction
         return value;
-    }
-
-    public void paintGraph() throws Exception {
-        // Call to paint the graph with the new value
-        List<GraphValue> graphValues = new ArrayList<>();
-        graphValues.add(new GraphValue(getName(), predictedValue));
-
-        SimulationController.sendValues(graphValues);
     }
 
     public Simulation getSimulation() {

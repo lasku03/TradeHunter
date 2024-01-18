@@ -19,7 +19,7 @@ class EconomicTests {
 
     @BeforeEach
     void setUp() {
-        simulation = new Simulation();
+        simulation = new Simulation(null);
         economic = new Economic(simulation, "Test Economic", "Test", 0, 100);
     }
 
@@ -34,7 +34,7 @@ class EconomicTests {
 
     @Test
     void testSetSimulation() {
-        Simulation testSimulation = new Simulation();
+        Simulation testSimulation = new Simulation(null);
         economic.setSimulation(testSimulation);
         assertEquals(testSimulation, economic.getSimulation());
     }
@@ -62,6 +62,12 @@ class EconomicTests {
         SecureRandom random = new SecureRandom();
         economic.setRand(random);
         assertEquals(random, economic.getRand());
+    }
+
+    @Test
+    void testSetDbName() {
+        economic.setDbName("Test db");
+        assertEquals("Test db", economic.getDbName());
     }
 
     @Test

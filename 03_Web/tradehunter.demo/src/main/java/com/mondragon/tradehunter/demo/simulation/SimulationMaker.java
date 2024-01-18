@@ -12,9 +12,11 @@ public class SimulationMaker {
     private Political[] politicals;
     private DowJones dowJones;
     private Prediction prediction;
+    private ValueSender valueSender;
 
     public SimulationMaker() {
-        simulation = new Simulation();
+        valueSender = new ValueSender();
+        simulation = new Simulation(valueSender);
 
         socials = new Social[NSOCIALS];
         economics = new Economic[NECONOMICS];
@@ -32,7 +34,7 @@ public class SimulationMaker {
     public void createSocialThreads() {
         socials[0] = new Social(simulation, "Death rate", "Defunciones", 6, 12);
         socials[1] = new Social(simulation, "Birth rate", "Births", 900, 1100);
-        socials[2] = new Social(simulation, "Debt per capita", "Debt_per_Capita", 25000, 29000);
+        socials[2] = new Social(simulation, "Debt per capita", "Debt_per_capita", 25000, 29000);
     }
 
     public void createEconomicThreads() {
