@@ -75,7 +75,7 @@ class Serv(BaseHTTPRequestHandler):
             result_json = json.dumps(valores_yhat, indent=2)
         elif path_parts[1] == 'scrapping':
             scrapping = Scrapping()
-            scrapping.init_scrapping()
+            a = scrapping.init_scrapping()
         else:
             # Handle other requests or paths here if needed
             result_json = json.dumps({"error": "Invalid path"}, indent=2)

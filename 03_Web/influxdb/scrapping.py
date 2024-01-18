@@ -1,10 +1,14 @@
 import requests
 from bs4 import BeautifulSoup
 import datetime
+import csv
+import pandas as pd
+import Factors
 
 class Scrapping:
 
     def __init__(self):
+        self.activity_activos = 0
         self.activity_ocupados = 0
         self.activity_parados = 0
         self.activity_activity_rate = 0
@@ -29,9 +33,10 @@ class Scrapping:
         self.IBEX_low = 0
         self.IBEX_high = 0
         self.IPC = 0
+        self.euribor = 0
         self.row = []
 
-    def activity_scrapping():
+    def activity_scrapping(self):
         page = requests.get("https://www.ine.es/dyngs/INEbase/es/operacion.htm?c=Estadistica_C&cid=1254736176918&menu=ultiDatos&idp=1254735976595")
         soup = BeautifulSoup(page.text, 'html.parser')
 
@@ -45,6 +50,22 @@ class Scrapping:
         parados = parados[0]
         print(parados)
 
+        # Remove periods (thousand separators)
+        ocupados = ocupados.replace('.', '')
+        # Replace commas (decimal separators) with periods
+        ocupados = ocupados.replace(',', '.')
+        # Convert to float
+        ocupados = pd.to_numeric(ocupados, errors='coerce')
+
+        # Remove periods (thousand separators)
+        parados = parados.replace('.', '')
+        # Replace commas (decimal separators) with periods
+        parados = parados.replace(',', '.')
+        # Convert to float
+        parados = pd.to_numeric(parados, errors='coerce')
+
+        activos = ocupados + parados
+
         activityRate = soup.select(".contenTabla.paddingDef tbody tr:nth-of-type(3) td:nth-of-type(2)")
         activityRate = activityRate[0].text.split()
         activityRate = activityRate[0]
@@ -55,9 +76,9 @@ class Scrapping:
         unemploymentRate = unemploymentRate[0]
         print(unemploymentRate)
 
-        return ocupados, parados, activityRate, unemploymentRate
+        return activos, ocupados, parados, activityRate, unemploymentRate
 
-    def births_scrapping():
+    def births_scrapping(self):
         page = requests.get("https://countrymeters.info/es/Spain")
         soup = BeautifulSoup(page.text, 'html.parser')
 
@@ -72,7 +93,7 @@ class Scrapping:
 
         return births
 
-    def deaths_scrapping():
+    def deaths_scrapping(self):
         page = requests.get("https://countrymeters.info/es/Spain")
         soup = BeautifulSoup(page.text, 'html.parser')
 
@@ -87,7 +108,7 @@ class Scrapping:
 
         return deaths
     
-    def debt_scrapping():
+    def debt_scrapping(self):
         page = requests.get("https://datosmacro.expansion.com/deuda/espana")
         soup = BeautifulSoup(page.text, 'html.parser')
 
@@ -110,7 +131,7 @@ class Scrapping:
 
         return debtTotal, debtPercentage, debtPerCapita
 
-    def DJ_scrapping():
+    def DJ_scrapping(self):
         page = requests.get("https://markets.businessinsider.com/index/dow_jones")
         soup = BeautifulSoup(page.text, 'html.parser')
 
@@ -136,7 +157,7 @@ class Scrapping:
 
         return close, low, high, open
 
-    def EUR_scrapping():
+    def EUR_scrapping(self):
         page = requests.get("https://finance.yahoo.com/quote/EURUSD=X/?guccounter=1")
         soup = BeautifulSoup(page.text, 'html.parser')
 
@@ -160,7 +181,7 @@ class Scrapping:
 
         return open, low, high, current
 
-    def GDP_scrapping():
+    def GDP_scrapping(self):
         page = requests.get("https://datosmacro.expansion.com/pib/espana")
         soup = BeautifulSoup(page.text, 'html.parser')
 
@@ -172,7 +193,7 @@ class Scrapping:
 
         return gdp
 
-    def IBEX_scrapping():
+    def IBEX_scrapping(self):
         page = requests.get("https://www.bolsamania.com/indice/IBEX-35")
         soup = BeautifulSoup(page.text, 'html.parser')
 
@@ -210,7 +231,7 @@ class Scrapping:
 
         return close, adjClose, open, low, high
 
-    def IPC_scrapping():
+    def IPC_scrapping(self):
         page = requests.get("https://www.ine.es/prensa/ipc_tabla.htm")
         soup = BeautifulSoup(page.text, 'html.parser')
 
@@ -222,9 +243,13 @@ class Scrapping:
         else:
             print("No data found")
         return IPC_value
+    
+    def euribor_scrapping(self):
+        page = requests.get("https://www.ine.es/prensa/ipc_tabla.htm")
+        soup = BeautifulSoup(page.text, 'html.parser')
 
     def init_scrapping(self):
-        self.activity_ocupados, self.activity_parados, self.activity_activity_rate, self.activity_unemployment_rate= self.activity_scrapping()
+        self.activity_activos, self.activity_ocupados, self.activity_parados, self.activity_activity_rate, self.activity_unemployment_rate = self.activity_scrapping()
         self.births = self.births_scrapping()
         self.deaths = self.deaths_scrapping()
         self.total_debt, self.debt_percentage, self.debt_per_capita = self.debt_scrapping()
@@ -233,3 +258,30 @@ class Scrapping:
         self.GDP = self.GDP_scrapping()
         self.IBEX_close, self.IBEX_adjclose, self.IBEX_open, self.IBEX_low, self.IBEX_high = self.IBEX_scrapping()
         self.IPC = self.IPC_scrapping()
+        #self.euribor = self.euribor_scrapping()
+        headers = ["Date", "Activity(%)","Activos", "AdjClose", "Births", "Close", "Close_DJ", "Debt", "Debt_per_capita", "Deaths",
+               "Euribor", "GDP_Value", "High_DJ", "High_EURO", "High_y", "IPC", "Low_DJ", "Low_EURO", "Low_y", "Ocupados",
+               "Open_DJ", "Open_EURO", "Open_y", "Parados", "Paro(%)", "Percentage", "Price_EURO"]
+        new_data = []
+        current_date = datetime.date.today().strftime("%Y-%m-%d")
+
+        new_row = [current_date, self.activity_activity_rate, self.activity_activos, self.IBEX_adjclose, self.births, self.IBEX_close, self.DJ_close, self.total_debt, self.debt_per_capita, self.deaths,
+                   self.euribor, self.GDP, self.DJ_high, self.EUR_high, self.IBEX_high, self.IPC, self.DJ_low, self.EUR_low, self.IBEX_low, self.activity_ocupados, self.DJ_open,
+                   self.EUR_open, self.IBEX_open, self.activity_parados, self.activity_unemployment_rate, self.debt_percentage, self.EUR_current]
+
+        new_data.append(headers)
+        i = -1
+        for col in headers:
+            i = i + 1
+            if col != 'Date' and not isinstance(new_row[i], int) and not isinstance(new_row[i], float):
+                # Remove periods (thousand separators)
+                new_row[i] = new_row[i].replace('.', '')
+                # Replace commas (decimal separators) with periods
+                new_row[i] = new_row[i].replace(',', '.')
+                # Convert to float
+                new_row[i] = pd.to_numeric(new_row[i], errors='coerce')
+        new_data.append(new_row)
+        data = pd.DataFrame(new_data)
+        data.to_csv("new_data.csv", index=False, header=None)
+        Factors.insertFactors("new_data.csv")
+        return None

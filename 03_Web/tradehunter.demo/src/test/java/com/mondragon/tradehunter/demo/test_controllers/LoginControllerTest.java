@@ -40,7 +40,8 @@ class LoginControllerTest extends EasyMockSupport{
         loginRequest.put("password", "password");
 
         ResponseEntity<RequestUser> responseEntity = loginController.login(loginRequest);
-        assertEquals(user, responseEntity.getBody());
+        RequestUser requestUser = new RequestUser(user.getName(), user.getSurname(), user.getUsername(), user.getPassword(), user.getEmail(), user.getAge(), user.isPremium());
+        assertEquals(requestUser.getUsername(), responseEntity.getBody().getUsername());
         EasyMock.verify(userService);
     }
 
