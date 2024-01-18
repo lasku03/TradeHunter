@@ -7,6 +7,7 @@ import os
 import numpy as np
 import matplotlib .pyplot as plt
 import seaborn as sns
+import csv
 
 def reorganizar_resultados(result):
     # Inicializa un diccionario para almacenar los datos reorganizados
@@ -74,6 +75,38 @@ def get_factors(start, stop):
     client.close()
 
     return resultados_reorganizados
+
+def insertFactors(path):
+    url = "http://tradehunter.duckdns.org:8086"
+    token = "KYrAp2dOqBHVBNr0XIT--Rm_PaSF2sWP_b7YZO-QD9MCPuejpe0Dzu7j3-6mxSK7xcCbVWJJYHdVgFdAQHbEFw=="
+    org = "Trade Hunter"
+    bucket = "Trade Hunter Real Time Data"
+    measurement = "Factors"
+
+    #Initialize the InfluxDB client
+    client = InfluxDBClient(url=url, token=token, org=org)
+    #Initialize the synchronous write API
+    write_api = client.write_api(write_options=SYNCHRONOUS)
+
+    with open(path, 'r') as csv_file:
+        csv_reader = csv.DictReader(csv_file)
+
+        for row in csv_reader:
+
+            # Convert the date string to a timestamp
+            timestamp = int(datetime.strptime(row['Date'], '%Y-%m-%d').timestamp()) * 1000000000
+
+            # Create an InfluxDB data point for each row
+            data = Point(measurement).time(timestamp)
+
+            # Iterate over each column in the row (excluding 'Date')
+            for key, value in row.items():
+                if key != 'Date':
+                    # Convert non-date values to floats and add them as fields
+                    data.field(key, float(value))
+
+            # Write the data point to InfluxDB
+            write_api.write(bucket=bucket, record=data, timeout=20)
 
 def analyzeData(path):
 

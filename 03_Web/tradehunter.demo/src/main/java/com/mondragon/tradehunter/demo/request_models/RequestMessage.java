@@ -1,6 +1,6 @@
 package com.mondragon.tradehunter.demo.request_models;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -15,15 +15,15 @@ public class RequestMessage {
     private int forumID;
 
     @XmlElement
-    public LocalDateTime getDate() {
+    public Date getDate() {
         return date;
     }
-    public void setDate(LocalDateTime date) {
+    public void setDate(Date date) {
         this.date = date;
     }
-    private LocalDateTime date;
+    private Date date;
     
-    public RequestMessage(String content, String userUsername, int forumID, LocalDateTime date) {
+    public RequestMessage(String content, String userUsername, int forumID, Date date) {
         this.content = content;
         this.userUsername = userUsername;
         this.forumID = forumID;
