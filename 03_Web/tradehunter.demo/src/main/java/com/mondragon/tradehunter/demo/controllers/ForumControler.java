@@ -47,8 +47,9 @@ public class ForumControler {
         if (forum.isPresent()) {
             List<Message> messages = messageService.getMessagesByForum(forum);
             List<RequestMessage> requestMessages = new ArrayList<>();
-            for(Message message : messages){
-                RequestMessage requestMessage = new RequestMessage(message.getContent(), message.getUser().getUsername(), message.getForum().getForumID(), message.getDate());
+            for (Message message : messages) {
+                RequestMessage requestMessage = new RequestMessage(message.getContent(),
+                        message.getUser().getUsername(), message.getForum().getForumID(), message.getDate());
                 requestMessages.add(requestMessage);
             }
             responseEntity = new ResponseEntity<>(requestMessages, HttpStatus.OK);
