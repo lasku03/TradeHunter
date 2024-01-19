@@ -50,6 +50,7 @@ class Serv(BaseHTTPRequestHandler):
 
             # Send the JSON data as the response
             self.wfile.write(result_json.encode('utf-8'))
+
         elif path_parts[1] == 'predict':
             # Load the model from the pkl file
             with open('modelo_prophet.pkl', 'rb') as f:
@@ -66,16 +67,28 @@ class Serv(BaseHTTPRequestHandler):
                 return forecast.to_dict(orient='records')
 
             predictions = make_prediction(data)
+            predictionsData = pd.DataFrame(predictions)
 
-            ultimas_dos_filas_yhat = predictions[19]
+            ultimos_dos_yhat = predictionsData['yhat'].tail(2)
 
-            valores_yhat = ultimas_dos_filas_yhat
+            # Convertir la serie a una lista
+            ultimos_dos_yhat_list = ultimos_dos_yhat.tolist()
 
-            # Serialize the predictions to JSON
-            result_json = json.dumps(valores_yhat, indent=2)
+            # Convertir la lista a JSON
+            result_json = json.dumps(ultimos_dos_yhat_list)
+
+            print(result_json)
+            # Send the response headers
+            self.send_response(200)
+            self.send_header('Content-type', 'application/json')
+            self.end_headers()
+
+            # Send the JSON data as the response
+            self.wfile.write(result_json.encode('utf-8'))
+
         elif path_parts[1] == 'scrapping':
             scrapping = Scrapping()
-            a = scrapping.init_scrapping()
+            scrapping.init_scrapping()
         else:
             # Handle other requests or paths here if needed
             result_json = json.dumps({"error": "Invalid path"}, indent=2)
