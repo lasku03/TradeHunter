@@ -1,8 +1,8 @@
 @echo off
 
 :: Definir los parámetros
-set projectKey=TradeHunter
-set projectName=TradeHunter
+set projectKey=TradeHunter-Rest
+set projectName=TradeHunter-Rest
 set sonarHostUrl=http://tradehunter.duckdns.org:9090
 set sonarToken=sqp_da68d7414f64af769598308acaa1f089006ed0a7
 
