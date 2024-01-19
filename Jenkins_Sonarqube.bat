@@ -4,7 +4,7 @@
 set projectKey=TradeHunter
 set projectName=TradeHunter
 set sonarHostUrl=http://tradehunter.duckdns.org:9090
-set sonarToken=sqp_8d39669dbee2d132b4e24a9cd4a2db45b8d050b7
+set sonarToken=sqp_da68d7414f64af769598308acaa1f089006ed0a7
 
 :: Comando Maven
 set sonarCommand=mvn clean verify sonar:sonar -f "03_Web\tradehunter.demo\pom.xml" -Dsonar.projectKey=%projectKey% -Dsonar.projectName="%projectName%" -Dsonar.host.url=%sonarHostUrl% -Dsonar.token=%sonarToken%

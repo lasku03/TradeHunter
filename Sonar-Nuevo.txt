@@ -1,0 +1,1 @@
+mvn clean verify sonar:sonar -Dsonar.projectKey=TradeHunter-Rest -Dsonar.projectName='TradeHunter-Rest' -Dsonar.host.url=http://tradehunter.duckdns.org:9090 -Dsonar.token=sqp_da68d7414f64af769598308acaa1f089006ed0a7
