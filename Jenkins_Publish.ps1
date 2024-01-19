@@ -12,14 +12,14 @@ if ($LASTEXITCODE -eq 0) {
     # Si la construcción del JAR fue exitosa, mostrar mensaje
     Write-Host "Successfully built JAR file." -BackgroundColor Green
 
-    # Mover el archivo JAR a la carpeta /home/trade_hunter_ai/web
+    # Mover el archivo JAR a la carpeta /home/unai_laskurain/web
     # Obtener la versión del archivo POM
     $doc = [xml](Get-Content ($directorioProyecto + "/pom.xml")) 
     $versionPOM = $doc.project.version
     
     $sourceJar = Join-Path -Path $directorioProyecto -ChildPath "target/tradehunter.demo-$versionPOM.jar"
     #Copy to the Web foled of TradeHunterAI
-    $destinationFolder = "/home/trade_hunter_ai/web"
+    $destinationFolder = "/home/unai_laskurain/web"
     Move-Item -Path $sourceJar -Destination $destinationFolder -Force
 
     if ($LASTEXITCODE -eq 0) {
