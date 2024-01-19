@@ -63,6 +63,7 @@ public class SimulationMaker {
         }
         dowJones.start();
         prediction.start();
+        valueSender.start();
     }
 
     public void interruptThreads() {
@@ -77,6 +78,7 @@ public class SimulationMaker {
         }
         dowJones.interrupt();
         prediction.interrupt();
+        valueSender.interrupt();
     }
 
     public void waitEndOfThreads() throws InterruptedException {
@@ -91,6 +93,7 @@ public class SimulationMaker {
         }
         dowJones.join();
         prediction.join();
+        valueSender.join();
     }
 
     public Simulation getSimulation() {
