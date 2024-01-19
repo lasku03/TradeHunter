@@ -1,4 +1,4 @@
-package com.mondragon.tradehunter.demo.simulation;
+package edu.mondragon.simulation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -410,18 +410,6 @@ public class Simulation {
     }
     public void setMutex(Semaphore mutex) {
         this.mutex = mutex;
-    }
-    public ValueSender getValueSender() {
-        return valueSender;
-    }
-    public void setValueSender(ValueSender valueSender) {
-        this.valueSender = valueSender;
-    }
-    public List<GraphValue> getGraphValues() {
-        return graphValues;
-    }
-    public void setGraphValues(List<GraphValue> graphValues) {
-        this.graphValues = graphValues;
     }
 }
 

@@ -1,10 +1,10 @@
-package com.mondragon.tradehunter.demo.simulation;
+package edu.mondragon.simulation;
 
 public class SimulationMaker {
 
-    public static final int NSOCIALS = 3;
-    public static final int NECONOMICS = 5;
-    public static final int NPOLITICALS = 3;
+    static final int NSOCIALS = 3;
+    static final int NECONOMICS = 5;
+    static final int NPOLITICALS = 3;
 
     private Simulation simulation;
     private Social[] socials;
@@ -34,7 +34,7 @@ public class SimulationMaker {
     public void createSocialThreads() {
         socials[0] = new Social(simulation, "Death rate", "Defunciones", 6, 12);
         socials[1] = new Social(simulation, "Birth rate", "Births", 900, 1100);
-        socials[2] = new Social(simulation, "Debt per capita", "Debt_per_capita", 25000, 29000);
+        socials[2] = new Social(simulation, "Debt per capita", "Debt_per_Capita", 25000, 29000);
     }
 
     public void createEconomicThreads() {
@@ -81,77 +81,50 @@ public class SimulationMaker {
         valueSender.interrupt();
     }
 
-    public void waitEndOfThreads() throws InterruptedException {
-        for (int i = 0; i < NSOCIALS; i++) {
-            socials[i].join();
+    public void waitEndOfThreads() {
+        try {
+            for (int i = 0; i < NSOCIALS; i++) {
+                socials[i].join();
+            }
+            for (int i = 0; i < NECONOMICS; i++) {
+                economics[i].join();
+            }
+            for (int i = 0; i < NPOLITICALS; i++) {
+                politicals[i].join();
+            }
+            dowJones.join();
+            prediction.join();
+            valueSender.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-        for (int i = 0; i < NECONOMICS; i++) {
-            economics[i].join();
+    }
+
+    private void waitForSimulationInterruption() {
+        // This will change in the future to be waiting until the user cancels the simulation
+        try {
+            Thread.sleep(200000);
+        } catch (InterruptedException e1) {
+            e1.printStackTrace();
         }
-        for (int i = 0; i < NPOLITICALS; i++) {
-            politicals[i].join();
-        }
-        dowJones.join();
-        prediction.join();
-        valueSender.join();
     }
 
-    public Simulation getSimulation() {
-        return simulation;
+    public ValueSender getValueSender() {
+        return valueSender;
+    }
+    public void setValueSender(ValueSender valueSender) {
+        this.valueSender = valueSender;
     }
 
-    public void setSimulation(Simulation simulation) {
-        this.simulation = simulation;
-    }
+    public static void main(String[] args) {
+        SimulationMaker app = new SimulationMaker();
 
-    public Social[] getSocials() {
-        return socials;
-    }
+        app.createThreads();
+        app.startThreads();
+        
+        app.waitForSimulationInterruption();
 
-    public void setSocials(Social[] socials) {
-        this.socials = socials;
+        app.interruptThreads();
+        app.waitEndOfThreads();
     }
-
-    public Economic[] getEconomics() {
-        return economics;
-    }
-
-    public void setEconomics(Economic[] economics) {
-        this.economics = economics;
-    }
-
-    public Political[] getPoliticals() {
-        return politicals;
-    }
-
-    public void setPoliticals(Political[] politicals) {
-        this.politicals = politicals;
-    }
-
-    public DowJones getDowJones() {
-        return dowJones;
-    }
-
-    public void setDowJones(DowJones dowJones) {
-        this.dowJones = dowJones;
-    }
-
-    public Prediction getPrediction() {
-        return prediction;
-    }
-
-    public void setPrediction(Prediction prediction) {
-        this.prediction = prediction;
-    }
-
-    public void makeSimulation() {
-        createThreads();
-        startThreads();
-    }
-
-    public void stopSimulation() throws InterruptedException {
-        interruptThreads();
-        waitEndOfThreads();
-    }
-
 }

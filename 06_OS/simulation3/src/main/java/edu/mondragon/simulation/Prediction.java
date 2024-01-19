@@ -1,21 +1,19 @@
-package com.mondragon.tradehunter.demo.simulation;
+package edu.mondragon.simulation;
 
-import java.security.SecureRandom;
+import java.util.Random;
 
 public class Prediction extends Thread {
-    private SecureRandom rand;
+    private Random rand;
     private Simulation simulation;
     private Social[] socials;
     private Economic[] economics;
     private Political[] politicals;
     private DowJones dowJones;
-
     private double predictedValue;
 
-    public Prediction(Simulation simulation, Social[] socials, Economic[] economics, Political[] politicals,
-            DowJones dowJones) {
+    public Prediction(Simulation simulation, Social[] socials, Economic[] economics, Political[] politicals, DowJones dowJones) {
         super("Prediction");
-        this.rand = new SecureRandom();
+        this.rand = new Random();
         this.simulation = simulation;
         this.socials = socials;
         this.economics = economics;
@@ -29,17 +27,18 @@ public class Prediction extends Thread {
         while (!this.isInterrupted()) {
             try {
                 simulation.waitValues(this);
-            } catch (Exception e) {
+            } catch (InterruptedException e) {
                 this.interrupt();
             }
         }
     }
 
-    public void makePrediction() {
+    public void makePrediction() throws InterruptedException {
         predictedValue = askForPrediction();
+        System.out.println("\t" + this.getName() + ": " + predictedValue);
     }
 
-    public double askForPrediction() {
+    private double askForPrediction() {
         // This will change once the predictedValue can be made
         double value = 0;
         for (int i = 0; i < socials.length; i++) {
@@ -56,58 +55,15 @@ public class Prediction extends Thread {
         return value;
     }
 
-    public Simulation getSimulation() {
-        return simulation;
-    }
-
-    public void setSimulation(Simulation simulation) {
-        this.simulation = simulation;
-    }
-
-    public Social[] getSocials() {
-        return socials;
-    }
-
-    public void setSocials(Social[] socials) {
-        this.socials = socials;
-    }
-
-    public Economic[] getEconomics() {
-        return economics;
-    }
-
-    public void setEconomics(Economic[] economics) {
-        this.economics = economics;
-    }
-
-    public Political[] getPoliticals() {
-        return politicals;
-    }
-
-    public void setPoliticals(Political[] politicals) {
-        this.politicals = politicals;
-    }
-
-    public DowJones getDowJones() {
-        return dowJones;
-    }
-
-    public void setDowJones(DowJones dowJones) {
-        this.dowJones = dowJones;
-    }
-
-    public SecureRandom getRand() {
-        return rand;
-    }
-
-    public void setRand(SecureRandom rand) {
-        this.rand = rand;
+    public void paintGraph() throws InterruptedException {
+        // Call to paint the graph with the new value
+        System.out.println("\t\t\t(Prediction) painting in graph");
+        Thread.sleep(rand.nextInt(100, 400));
     }
 
     public double getPredictedValue() {
         return predictedValue;
     }
-
     public void setPredictedValue(double predictedValue) {
         this.predictedValue = predictedValue;
     }

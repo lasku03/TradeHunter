@@ -19,7 +19,7 @@ class SocialTests {
 
     @BeforeEach
     void setUp() {
-        simulation = new Simulation();
+        simulation = new Simulation(null);
         social = new Social(simulation, "Test Social", "Test", 0, 100);
     }
 
@@ -34,7 +34,7 @@ class SocialTests {
 
     @Test
     void testSetSimulation() {
-        Simulation testSimulation = new Simulation();
+        Simulation testSimulation = new Simulation(null);
         social.setSimulation(testSimulation);
         assertEquals(testSimulation, social.getSimulation());
     }
@@ -62,6 +62,12 @@ class SocialTests {
         SecureRandom random = new SecureRandom();
         social.setRand(random);
         assertEquals(random, social.getRand());
+    }
+
+    @Test
+    void testSetDbName() {
+        social.setDbName("Test db");
+        assertEquals("Test db", social.getDbName());
     }
 
     @Test

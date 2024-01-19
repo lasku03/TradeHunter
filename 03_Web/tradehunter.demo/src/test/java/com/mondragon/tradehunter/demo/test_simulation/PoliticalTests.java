@@ -19,7 +19,7 @@ class PoliticalTests {
 
     @BeforeEach
     void setUp() {
-        simulation = new Simulation();
+        simulation = new Simulation(null);
         political = new Political(simulation, "Test Political", "Test", 0, 100);
     }
 
@@ -34,7 +34,7 @@ class PoliticalTests {
 
     @Test
     void testSetSimulation() {
-        Simulation testSimulation = new Simulation();
+        Simulation testSimulation = new Simulation(null);
         political.setSimulation(testSimulation);
         assertEquals(testSimulation, political.getSimulation());
     }
@@ -62,6 +62,12 @@ class PoliticalTests {
         SecureRandom random = new SecureRandom();
         political.setRand(random);
         assertEquals(random, political.getRand());
+    }
+
+    @Test
+    void testSetDbName() {
+        political.setDbName("Test db");
+        assertEquals("Test db", political.getDbName());
     }
 
     @Test
