@@ -73,7 +73,6 @@ public class ForumControler {
             messageService.saveMessage(message);
             responseEntity = new ResponseEntity<>("Message created successfully", HttpStatus.CREATED);
         } catch (JAXBException e) {
-            e.printStackTrace();
             responseEntity = ResponseEntity.badRequest().build();
         }
         return responseEntity;

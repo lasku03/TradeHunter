@@ -1,8 +1,5 @@
 package com.mondragon.tradehunter.demo.test_controllers;
 
-import org.easymock.EasyMockSupport;
-import org.junit.jupiter.api.BeforeEach;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -12,6 +9,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.easymock.EasyMock;
+import org.easymock.EasyMockSupport;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -76,26 +75,25 @@ class ForumControllerTest extends EasyMockSupport {
     }
 
     @Test
-    void testPutMessageSuccess(){
+    void testPutMessageSuccess() {
         // Mock the behavior of the forumService and userService
         EasyMock.expect(forumService.getForumByID(EasyMock.anyInt())).andReturn(Optional.of(new Forum()));
         EasyMock.expect(userService.getUserByUsername(EasyMock.anyString())).andReturn(new User());
-    
+
         // Simulate the call to the void method saveMessage
         EasyMock.expect(messageService.saveMessage(EasyMock.anyObject(Message.class))).andReturn(new Message());
         EasyMock.expectLastCall();
-    
+
         // Replay the mocked objects
         EasyMock.replay(messageService, forumService, userService);
-    
+
         // Call the method to test
         ResponseEntity<String> response = forumController.putMessage();
-    
+
         // Verify the response
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-    
+
         // Verify that the mocked methods were called
         EasyMock.verify(messageService, forumService, userService);
     }
-    
 }

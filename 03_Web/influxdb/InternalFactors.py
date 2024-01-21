@@ -35,8 +35,8 @@ def reorganizar_resultados(result):
 
 def get_internal_factors(start, stop):
     url = "http://tradehunter.duckdns.org:8086"
-    token = "KYrAp2dOqBHVBNr0XIT--Rm_PaSF2sWP_b7YZO-QD9MCPuejpe0Dzu7j3-6mxSK7xcCbVWJJYHdVgFdAQHbEFw=="
-    org = "Trade Hunter"
+    token = "I7MLtkx-A_vJ3-JITkcYQqmhtxvc3zABaMBD-gmWY1eP2rcy4BqMzH_sVhNC7LhyDrGJKdIOxHptmgkuy28VFA=="
+    org = "TradeHunter"
     bucket = "Trade Hunter Real Time Data"
     measurement = "Internal_Factors"
     # Crea el cliente InfluxDB
