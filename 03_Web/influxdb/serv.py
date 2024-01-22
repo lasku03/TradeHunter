@@ -24,9 +24,9 @@ class Serv(BaseHTTPRequestHandler):
 
             result = pd.DataFrame(result)
 
-            result.to_csv('dee.csv', index=False, header=False)
+            result.to_csv('search.csv', index=False, header=False)
 
-            search.createImages('dee.csv')
+            search.createImages('search.csv')
 
             internal_data_dict = []
             for item in internal_data:
