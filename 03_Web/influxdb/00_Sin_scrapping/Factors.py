@@ -53,8 +53,8 @@ def reorganizar_resultados(result):
 
 def get_factors(start, stop):
     url = "http://tradehunter.duckdns.org:8086"
-    token = "I7MLtkx-A_vJ3-JITkcYQqmhtxvc3zABaMBD-gmWY1eP2rcy4BqMzH_sVhNC7LhyDrGJKdIOxHptmgkuy28VFA=="
-    org = "TradeHunter"
+    token = "KYrAp2dOqBHVBNr0XIT--Rm_PaSF2sWP_b7YZO-QD9MCPuejpe0Dzu7j3-6mxSK7xcCbVWJJYHdVgFdAQHbEFw=="
+    org = "Trade Hunter"
     bucket = "Trade Hunter Real Time Data"
     measurement = "Factors"
     # Crea el cliente InfluxDB
@@ -78,8 +78,8 @@ def get_factors(start, stop):
 
 def insertFactors(path):
     url = "http://tradehunter.duckdns.org:8086"
-    token = "I7MLtkx-A_vJ3-JITkcYQqmhtxvc3zABaMBD-gmWY1eP2rcy4BqMzH_sVhNC7LhyDrGJKdIOxHptmgkuy28VFA=="
-    org = "TradeHunter"
+    token = "KYrAp2dOqBHVBNr0XIT--Rm_PaSF2sWP_b7YZO-QD9MCPuejpe0Dzu7j3-6mxSK7xcCbVWJJYHdVgFdAQHbEFw=="
+    org = "Trade Hunter"
     bucket = "Trade Hunter Real Time Data"
     measurement = "Factors"
 
@@ -113,9 +113,9 @@ def analyzeData(path):
     data = pd.read_csv(path, header=0)
 
     # Create the 'Images' folder if it doesn't exist
-    images_folder = '/home/unai_laskurain/images'
-    #if not os.path.exists(images_folder):
-        #os.makedirs(images_folder)
+    images_folder = 'Images'
+    if not os.path.exists(images_folder):
+        os.makedirs(images_folder)
 
     # Correlation matrix between all the factors
     plt.figure(figsize=(20, 20))  # Adjust the width and height as needed
@@ -129,9 +129,9 @@ def analyzeData(path):
     plt.savefig(os.path.join(images_folder, 'heatmap.png'))
 
     # Create the 'Images' folder if it doesn't exist
-    images_folder = '/home/unai_laskurain/images'
-    #if not os.path.exists(images_folder):
-        #os.makedirs(images_folder)
+    images_folder = 'Images'
+    if not os.path.exists(images_folder):
+        os.makedirs(images_folder)
 
     # Convert 'Date' column to datetime for proper plotting
     data['Date'] = pd.to_datetime(data['Date'])
@@ -158,9 +158,9 @@ def analyzeData(path):
     columns_to_plot = ['Euribor', 'IPC', 'Debt', 'Price_EURO', 'Activos', 'Parados', 'Ocupados', 'Actividad(%)', 'Paro(%)', 'GDP_Value', 'High_DJ', 'Births', 'Defunciones']
 
     # Create the 'Images' folder if it doesn't exist
-    images_folder = '/home/unai_laskurain/images'
-    #if not os.path.exists(images_folder):
-       # os.makedirs(images_folder)
+    images_folder = 'Images'
+    if not os.path.exists(images_folder):
+        os.makedirs(images_folder)
 
     # Iterate over the list of columns
     for i, col in enumerate(columns_to_plot):
@@ -190,9 +190,9 @@ def analyzeData(path):
                     'Actividad(%)', 'Paro(%)', 'GDP_Value', 'High_DJ', 'Births', 'Defunciones']
 
     # Create the 'Images' folder if it doesn't exist
-    images_folder = '/home/unai_laskurain/images'
-    #if not os.path.exists(images_folder):
-       # os.makedirs(images_folder)
+    images_folder = 'Images'
+    if not os.path.exists(images_folder):
+        os.makedirs(images_folder)
 
     # Creating dual-axis line plots for each column compared with 'High_y'
     for i, col in enumerate(columns_to_plot, 1):
