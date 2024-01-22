@@ -287,4 +287,3 @@ class Scrapping:
         data.to_csv("new_data.csv", index=False, header=None)
         Factors.insertFactors("new_data.csv")
         InternalFactors.insertInternalFactors("new_data.csv")
-        return None

@@ -84,7 +84,7 @@ def insertInternalFactors(path):
 
             # Iterate over each column in the row (excluding 'Date')
             for key, value in row.items():
-                if key != 'Date' and (key == 'High' or key == 'Low' or key == 'Open' or key == 'Close'):
+                if key != 'Date' and (key == 'High' or key == 'Low' or key == 'Open' or key == 'Close' or key == 'AdjClose'):
                     # Convert non-date values to floats and add them as fields
                     data.field(key, float(value))
 
