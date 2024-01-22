@@ -5,7 +5,6 @@ from urllib.parse import urlparse, parse_qs
 import pandas as pd
 from prophet import Prophet 
 import pickle
-from scrapping import Scrapping
 
 class Serv(BaseHTTPRequestHandler):
     def do_GET(self):
@@ -86,9 +85,6 @@ class Serv(BaseHTTPRequestHandler):
             # Send the JSON data as the response
             self.wfile.write(result_json.encode('utf-8'))
 
-        elif path_parts[1] == 'scrapping':
-            scrapping = Scrapping()
-            scrapping.init_scrapping()
         else:
             # Handle other requests or paths here if needed
             result_json = json.dumps({"error": "Invalid path"}, indent=2)
