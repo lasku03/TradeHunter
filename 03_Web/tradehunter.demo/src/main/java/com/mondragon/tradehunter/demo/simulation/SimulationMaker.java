@@ -21,11 +21,11 @@ public class SimulationMaker {
     }
 
     public void createThreads() {
+        valueSender = new ValueSender();
+        simulation = new Simulation(valueSender);
         createSocialThreads();
         createEconomicThreads();
         createPoliticalThreads();
-        valueSender = new ValueSender();
-        simulation = new Simulation(valueSender);
         dowJones = new DowJones(simulation, "High_DJ", 22500, 32000);
         prediction = new Prediction(simulation, socials, economics, politicals, dowJones);
     }
