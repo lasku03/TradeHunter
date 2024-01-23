@@ -53,8 +53,8 @@ def reorganizar_resultados(result):
 
 def get_factors(start, stop):
     url = "http://tradehunter.duckdns.org:8086"
-    token = "KYrAp2dOqBHVBNr0XIT--Rm_PaSF2sWP_b7YZO-QD9MCPuejpe0Dzu7j3-6mxSK7xcCbVWJJYHdVgFdAQHbEFw=="
-    org = "Trade Hunter"
+    token = "I7MLtkx-A_vJ3-JITkcYQqmhtxvc3zABaMBD-gmWY1eP2rcy4BqMzH_sVhNC7LhyDrGJKdIOxHptmgkuy28VFA=="
+    org = "TradeHunter"
     bucket = "Trade Hunter Real Time Data"
     measurement = "Factors"
     # Crea el cliente InfluxDB
@@ -78,8 +78,8 @@ def get_factors(start, stop):
 
 def insertFactors(path):
     url = "http://tradehunter.duckdns.org:8086"
-    token = "KYrAp2dOqBHVBNr0XIT--Rm_PaSF2sWP_b7YZO-QD9MCPuejpe0Dzu7j3-6mxSK7xcCbVWJJYHdVgFdAQHbEFw=="
-    org = "Trade Hunter"
+    token = "I7MLtkx-A_vJ3-JITkcYQqmhtxvc3zABaMBD-gmWY1eP2rcy4BqMzH_sVhNC7LhyDrGJKdIOxHptmgkuy28VFA=="
+    org = "TradeHunter"
     bucket = "Trade Hunter Real Time Data"
     measurement = "Factors"
 
@@ -113,25 +113,25 @@ def analyzeData(path):
     data = pd.read_csv(path, header=0)
 
     # Create the 'Images' folder if it doesn't exist
-    images_folder = 'Images'
-    if not os.path.exists(images_folder):
-        os.makedirs(images_folder)
+    images_folder = '/home/unai_laskurain/images'
+    #if not os.path.exists(images_folder):
+        #os.makedirs(images_folder)
 
     # Correlation matrix between all the factors
     plt.figure(figsize=(20, 20))  # Adjust the width and height as needed
 
-    cor = sns.heatmap(data[['Births', 'Euribor', 'IPC', 'Price_EURO', 'Open_EURO',
-                            'High_EURO', 'Low_EURO', 'Defunciones', 'Debt', 'Percentage',
+    cor = sns.heatmap(data[['Births', 'Euribor', 'IPC', 'Price_EUR', 'Open_EUR',
+                            'High_EUR', 'Low_EUR', 'Defunciones', 'Total_debt', 'Percentage',
                             'Debt_per_capita', 'Activos', 'Ocupados', 'Parados', 'Actividad(%)',
-                            'Paro(%)', 'GDP_Value', 'Open_DJ', 'High_DJ', 'Low_DJ', 'Close_DJ', 'Open_y', 'High_y', 'Low_y', 'Close', 'AdjClose']].corr(), annot=True, fmt=".2f")
+                            'Paro(%)', 'GDP_Value', 'Open_DJ', 'High_DJ', 'Low_DJ', 'Close_DJ', 'Open', 'High', 'Low', 'Close', 'AdjClose']].corr(), annot=True, fmt=".2f")
 
     # Save the plot in the 'Images' folder
     plt.savefig(os.path.join(images_folder, 'heatmap.png'))
 
     # Create the 'Images' folder if it doesn't exist
-    images_folder = 'Images'
-    if not os.path.exists(images_folder):
-        os.makedirs(images_folder)
+    images_folder = '/home/unai_laskurain/images'
+    #if not os.path.exists(images_folder):
+        #os.makedirs(images_folder)
 
     # Convert 'Date' column to datetime for proper plotting
     data['Date'] = pd.to_datetime(data['Date'])
@@ -139,28 +139,28 @@ def analyzeData(path):
     # Sorting the data by Date to ensure the line is continuous
     data.sort_values('Date', inplace=True)
 
-    # Time Series Plot for 'High_y'
+    # Time Series Plot for 'High'
     plt.figure(figsize=(12, 6))
-    plt.plot(data['Date'], data['High_y'], label='IBEX High Values (High_y)')
-    plt.title('Time Series of IBEX High Values (High_y)')
+    plt.plot(data['Date'], data['High'], label='IBEX High Values (High)')
+    plt.title('Time Series of IBEX High Values (High)')
     plt.xlabel('Date')
     plt.ylabel('IBEX High Value')
     plt.legend()
     plt.tight_layout()
 
     # Save the plot in the 'Images' folder before showing it
-    plt.savefig(os.path.join(images_folder, 'IBEX_High_y_timeseries.png'))
+    plt.savefig(os.path.join(images_folder, 'IBEX_High_timeseries.png'))
 
     # Convert 'Date' column to datetime
     data['Date'] = pd.to_datetime(data['Date'])
 
     # List of columns to plot
-    columns_to_plot = ['Euribor', 'IPC', 'Debt', 'Price_EURO', 'Activos', 'Parados', 'Ocupados', 'Actividad(%)', 'Paro(%)', 'GDP_Value', 'High_DJ', 'Births', 'Defunciones']
+    columns_to_plot = ['Euribor', 'IPC', 'Total_debt', 'Price_EUR', 'Activos', 'Parados', 'Ocupados', 'Actividad(%)', 'Paro(%)', 'GDP_Value', 'High_DJ', 'Births', 'Defunciones']
 
     # Create the 'Images' folder if it doesn't exist
-    images_folder = 'Images'
-    if not os.path.exists(images_folder):
-        os.makedirs(images_folder)
+    images_folder = '/home/unai_laskurain/images'
+    #if not os.path.exists(images_folder):
+       # os.makedirs(images_folder)
 
     # Iterate over the list of columns
     for i, col in enumerate(columns_to_plot):
@@ -185,16 +185,16 @@ def analyzeData(path):
     # Convert 'Date' column to datetime
     data['Date'] = pd.to_datetime(data['Date'])
 
-    # List of columns to compare with 'High_y'
-    columns_to_plot = ['Euribor', 'IPC', 'Debt', 'Price_EURO', 'Activos', 'Parados', 'Ocupados', 
+    # List of columns to compare with 'High'
+    columns_to_plot = ['Euribor', 'IPC', 'Total_debt', 'Price_EUR', 'Activos', 'Parados', 'Ocupados', 
                     'Actividad(%)', 'Paro(%)', 'GDP_Value', 'High_DJ', 'Births', 'Defunciones']
 
     # Create the 'Images' folder if it doesn't exist
-    images_folder = 'Images'
-    if not os.path.exists(images_folder):
-        os.makedirs(images_folder)
+    images_folder = '/home/unai_laskurain/images'
+    #if not os.path.exists(images_folder):
+       # os.makedirs(images_folder)
 
-    # Creating dual-axis line plots for each column compared with 'High_y'
+    # Creating dual-axis line plots for each column compared with 'High'
     for i, col in enumerate(columns_to_plot, 1):
         plt.figure(figsize=(15, 5))
         ax1 = plt.gca()
@@ -202,7 +202,7 @@ def analyzeData(path):
         ax1.set_ylabel(col, color='blue')
         
         ax2 = ax1.twinx()
-        sns.lineplot(x=data['Date'], y=data['High_y'], ax=ax2, color='red', label='IBEX-35 Values')
+        sns.lineplot(x=data['Date'], y=data['High'], ax=ax2, color='red', label='IBEX-35 Values')
         ax2.set_ylabel('IBEX-35 Value', color='red')
 
         plt.title(f'{col} vs IBEX-35 Value Over Time')

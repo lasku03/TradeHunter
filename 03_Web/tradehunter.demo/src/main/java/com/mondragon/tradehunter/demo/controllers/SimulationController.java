@@ -54,4 +54,25 @@ public class SimulationController {
         }
     }
 
+    public static double sendPredictionValues(List<GraphValue> graphValues) throws InterruptedException {
+        RestTemplate restTemplate = new RestTemplate();
+        String url = "http://localhost:1880/simulation/predictionValues";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<List<GraphValue>> request = new HttpEntity<>(graphValues, headers);
+
+        ResponseEntity<Double> response = restTemplate.exchange(url, HttpMethod.POST, request,
+                Double.class);
+
+        Double prediction = response.getBody();
+
+        if (prediction == null){
+            throw new InterruptedException("The prediction is null");
+        }
+
+        return prediction;
+    }
+
 }

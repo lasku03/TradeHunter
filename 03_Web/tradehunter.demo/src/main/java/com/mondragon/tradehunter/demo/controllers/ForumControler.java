@@ -9,7 +9,6 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,14 +25,15 @@ import com.mondragon.tradehunter.demo.services.UserService;
 @RestController
 // @RequestMapping("")
 public class ForumControler {
-    @Autowired
     ForumService forumService;
-
-    @Autowired
+    MessageService messageService;
     UserService userService;
 
-    @Autowired
-    MessageService messageService;
+    public ForumControler(ForumService forumService, MessageService messageService, UserService userService){
+        this.forumService = forumService;
+        this.messageService = messageService;
+        this.userService = userService;
+    }
 
     @GetMapping(value = "/forum/{forumID}", produces = { "application/json",
             "application/xml" })
@@ -58,14 +58,23 @@ public class ForumControler {
     }
 
     @GetMapping(value = "/forum")
-    public void putMessages() throws JAXBException {
+    public ResponseEntity<String> putMessage() {
+        ResponseEntity<String> responseEntity;
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance(RequestMessage.class);
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            File xmlFile = new File(".\\src\\main\\resources\\schemas\\requestMessage.xml");
-            jaxbUnmarshaller.unmarshal(xmlFile);
+            File xmlFile = new File("/home/unai_laskurain/web/XMLschemas/requestMessage.xml");
+            RequestMessage requestMessage = (RequestMessage) jaxbUnmarshaller.unmarshal(xmlFile);
+            Message message = new Message();
+            message.setContent(requestMessage.getContent());
+            message.setDate(requestMessage.getDate());
+            message.setForum(forumService.getForumByID(requestMessage.getForumID()).orElse(null));
+            message.setUser(userService.getUserByUsername(requestMessage.getUserUsername()));
+            messageService.saveMessage(message);
+            responseEntity = new ResponseEntity<>("Message created successfully", HttpStatus.CREATED);
         } catch (JAXBException e) {
-            throw new JAXBException("An error ocurred during message putting");
+            responseEntity = ResponseEntity.badRequest().build();
         }
+        return responseEntity;
     }
 }

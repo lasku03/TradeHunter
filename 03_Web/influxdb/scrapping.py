@@ -4,6 +4,7 @@ import datetime
 import csv
 import pandas as pd
 import Factors
+import InternalFactors
 
 class Scrapping:
 
@@ -282,6 +283,7 @@ class Scrapping:
                 new_row[i] = pd.to_numeric(new_row[i], errors='coerce')
         new_data.append(new_row)
         data = pd.DataFrame(new_data)
+
         data.to_csv("new_data.csv", index=False, header=None)
         Factors.insertFactors("new_data.csv")
-        return None
+        InternalFactors.insertInternalFactors("new_data.csv")
