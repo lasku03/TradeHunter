@@ -5,6 +5,7 @@ from urllib.parse import urlparse, parse_qs
 import pandas as pd
 from prophet import Prophet 
 import pickle
+from simulation import Simulation
 
 class Serv(BaseHTTPRequestHandler):
     def do_GET(self):
@@ -85,9 +86,20 @@ class Serv(BaseHTTPRequestHandler):
             # Send the JSON data as the response
             self.wfile.write(result_json.encode('utf-8'))
 
+        elif path_parts[1] == "predictValues":
+            content_length = int(self.headers['Content-Length'])
+            body = self.rfile.read(content_length)
+            data = json.loads(body.decode('utf-8'))
+
+            simulation = Simulation()
+            simulation.update_excel(data)
+
         else:
-            # Handle other requests or paths here if needed
             result_json = json.dumps({"error": "Invalid path"}, indent=2)
+            self.send_response(404)
+            self.send_header('Content-type', 'application/json')
+            self.end_headers()
+            self.wfile.write(result_json.encode('utf-8'))
 
 httpd = HTTPServer(('localhost', 8080), Serv)
 httpd.serve_forever()

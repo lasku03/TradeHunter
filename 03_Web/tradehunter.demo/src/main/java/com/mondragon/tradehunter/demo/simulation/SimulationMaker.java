@@ -40,9 +40,9 @@ public class SimulationMaker {
     public void createEconomicThreads() {
         economics[0] = new Economic(simulation, "Euribor", "Euribor", -1, 1);
         economics[1] = new Economic(simulation, "IPC", "IPC", -2, 1.5);
-        economics[2] = new Economic(simulation, "Euro", "Price_EURO", 1.1, 1.3);
-        economics[3] = new Economic(simulation, "Debt", "Debt", 1.2, 1.4);
-        economics[4] = new Economic(simulation, "Gross Domestic Product", "GDP", -11, 18);
+        economics[2] = new Economic(simulation, "Euro", "Price_EUR", 1.1, 1.3);
+        economics[3] = new Economic(simulation, "Debt", "Total_debt", 1.2, 1.4);
+        economics[4] = new Economic(simulation, "Gross Domestic Product", "GDP_Value", -11, 18);
     }
 
     public void createPoliticalThreads() {
