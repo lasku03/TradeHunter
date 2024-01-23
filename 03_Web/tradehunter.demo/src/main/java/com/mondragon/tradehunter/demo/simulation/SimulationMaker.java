@@ -15,9 +15,6 @@ public class SimulationMaker {
     private ValueSender valueSender;
 
     public SimulationMaker() {
-        valueSender = new ValueSender();
-        simulation = new Simulation(valueSender);
-
         socials = new Social[NSOCIALS];
         economics = new Economic[NECONOMICS];
         politicals = new Political[NPOLITICALS];
@@ -29,6 +26,8 @@ public class SimulationMaker {
         createPoliticalThreads();
         dowJones = new DowJones(simulation, "High_DJ", 22500, 32000);
         prediction = new Prediction(simulation, socials, economics, politicals, dowJones);
+        valueSender = new ValueSender();
+        simulation = new Simulation(valueSender);
     }
 
     public void createSocialThreads() {
