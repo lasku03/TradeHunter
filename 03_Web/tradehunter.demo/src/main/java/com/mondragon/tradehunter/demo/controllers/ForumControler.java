@@ -63,7 +63,7 @@ public class ForumControler {
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance(RequestMessage.class);
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            File xmlFile = new File("\\home\\unai_laskurain\\web\\XMLschemas\\requestMessage.xml");
+            File xmlFile = new File("/home/unai_laskurain/web/XMLschemas/requestMessage.xml");
             RequestMessage requestMessage = (RequestMessage) jaxbUnmarshaller.unmarshal(xmlFile);
             Message message = new Message();
             message.setContent(requestMessage.getContent());
