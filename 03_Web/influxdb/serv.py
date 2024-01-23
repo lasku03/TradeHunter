@@ -5,7 +5,6 @@ from urllib.parse import urlparse, parse_qs
 import pandas as pd
 from prophet import Prophet 
 import pickle
-from scrapping import Scrapping
 from simulation import Simulation
 
 class Serv(BaseHTTPRequestHandler):
@@ -25,9 +24,9 @@ class Serv(BaseHTTPRequestHandler):
 
             result = pd.DataFrame(result)
 
-            result.to_csv('search.csv', index=False, header=False)
+            result.to_csv('dee.csv', index=False, header=False)
 
-            search.createImages('search.csv')
+            search.createImages('dee.csv')
 
             internal_data_dict = []
             for item in internal_data:
@@ -86,23 +85,69 @@ class Serv(BaseHTTPRequestHandler):
 
             # Send the JSON data as the response
             self.wfile.write(result_json.encode('utf-8'))
-
+            
+        elif path_parts[1] == 'start':
+            data = pd.read_csv("merged_dataset1.csv")
+            data.to_csv("simulation/merged_dataset1.csv", index=False)
+            self.send_response(200)
+        
         elif path_parts[1] == 'scrapping':
             scrapping = Scrapping()
             scrapping.init_scrapping()
 
-        elif path_parts[1] == "predictValues":
+        else:
+            result_json = json.dumps({"error": "Invalid path"}, indent=2)
+            self.send_response(404)
+            self.send_header('Content-type', 'application/json')
+            self.end_headers()
+            self.wfile.write(result_json.encode('utf-8'))
+
+    def do_POST(self):
+        parsed_path = urlparse(self.path)
+        path_parts = parsed_path.path.split('/')
+
+        if path_parts[1] == "predictValues":
             content_length = int(self.headers['Content-Length'])
             body = self.rfile.read(content_length)
             data = json.loads(body.decode('utf-8'))
 
             simulation = Simulation()
             simulation.update_excel(data)
-            
-            self.send_response(200)
 
+            # Load the model from the pkl file
+            with open('simulation/modelo_prophet2.pkl', 'rb') as f:
+                model = pickle.load(f)
+
+            # Load your data for prediction here
+            data = pd.read_csv("simulation/merged_dataset1.csv")
+            data['ds'] = data['Date']
+            data['y'] = data['AdjClose']
+
+            # Do the prediction using the created model
+            def make_prediction(input_data):
+                forecast = model.predict(input_data)
+                return forecast.to_dict(orient='records')
+
+            predictions = make_prediction(data)
+            predictionsData = pd.DataFrame(predictions)
+
+            ultimos_dos_yhat = predictionsData['yhat'].tail(2)
+
+            # Convertir la serie a una lista
+            ultimos_dos_yhat_list = ultimos_dos_yhat.tolist()
+
+            # Convertir la lista a JSON
+            result_json = json.dumps(ultimos_dos_yhat_list)
+
+            print(result_json)
+            # Send the response headers
+            self.send_response(200)
+            self.send_header('Content-type', 'application/json')
+            self.end_headers()
+
+            # Send the JSON data as the response
+            self.wfile.write(result_json.encode('utf-8'))
         else:
-            # Handle other requests or paths here if needed
             result_json = json.dumps({"error": "Invalid path"}, indent=2)
             self.send_response(404)
             self.send_header('Content-type', 'application/json')

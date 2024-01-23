@@ -1,28 +1,27 @@
 import pandas as pd
+from datetime import datetime, timedelta
 
 class Simulation:
     def update_excel(self, values):
         data = pd.read_csv("simulation/merged_dataset1.csv")
         last_row = data.iloc[-1]
+        if last_row['Date'] == "2023-12-31":
+            data = pd.read_csv("merged_dataset1.csv")
+        last_row = data.iloc[-1].copy()
 
-        for value in values:
-            last_row[value.name] = value.value
+        for entry in values:
+            name = entry['name']
+            value = entry['value']
+            
+            if name in last_row.index:
+                last_row[name] = value
 
-        data.iloc[-1] = last_row
+        date_obj = datetime.strptime(last_row['Date'], "%Y-%m-%d")
 
-        data.to_csv("simulation/mergedataset.csv", index=True)
+        next_date = date_obj + timedelta(days=1)
 
-class DataObject:
-    def __init__(self, name, value):
-        self.name = name
-        self.value = value
+        last_row['Date'] = next_date.strftime("%Y-%m-%d")
 
-# Crear una lista de objetos
-data_objects = [
-    DataObject(name='Births', value=100),
-    DataObject(name='Defunciones', value=2.789),
-    DataObject(name='Total_debt', value=1.1234)
-]
+        data = data._append(last_row, ignore_index=True)
 
-simulation_instance = Simulation()
-simulation_instance.update_excel(data_objects)
+        data.to_csv("simulation/merged_dataset1.csv", index=False)

@@ -53,7 +53,7 @@ public class Prediction extends Thread {
             values.add(new GraphValue(politicals[i].getDbName(), politicals[i].getValue()));
         }
         values.add(new GraphValue(dowJones.getDbName(), dowJones.getValue()));
-
+        
         predictedValue = askForPrediction(values);
     }
 

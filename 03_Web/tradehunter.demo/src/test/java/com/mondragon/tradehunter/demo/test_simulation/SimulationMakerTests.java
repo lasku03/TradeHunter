@@ -24,7 +24,6 @@ class SimulationMakerTests {
 
     @Test
     void testConstructor() {
-        assertNotNull(simulationMaker.getSimulation());
         assertNotNull(simulationMaker.getSocials());
         assertNotNull(simulationMaker.getEconomics());
         assertNotNull(simulationMaker.getPoliticals());
@@ -87,6 +86,7 @@ class SimulationMakerTests {
     @Test
     void testCreateThreads() {
         simulationMaker.createThreads();
+        assertNotNull(simulationMaker.getSimulation());
         assertNotNull(simulationMaker.getSocials());
         assertNotNull(simulationMaker.getEconomics());
         assertNotNull(simulationMaker.getPoliticals());
@@ -161,7 +161,7 @@ class SimulationMakerTests {
 
         assertEquals(simulationMaker.getSimulation(), economics[2].getSimulation());
         assertEquals("Euro", economics[2].getName());
-        assertEquals("Price_EURO", economics[2].getDbName());
+        assertEquals("Price_EUR", economics[2].getDbName());
         assertEquals(1.1, economics[2].getMin());
         assertEquals(1.3, economics[2].getMax());
     }
@@ -173,7 +173,7 @@ class SimulationMakerTests {
 
         assertEquals(simulationMaker.getSimulation(), economics[3].getSimulation());
         assertEquals("Debt", economics[3].getName());
-        assertEquals("Debt", economics[3].getDbName());
+        assertEquals("Total_debt", economics[3].getDbName());
         assertEquals(1.2, economics[3].getMin());
         assertEquals(1.4, economics[3].getMax());
     }
@@ -185,7 +185,7 @@ class SimulationMakerTests {
 
         assertEquals(simulationMaker.getSimulation(), economics[4].getSimulation());
         assertEquals("Gross Domestic Product", economics[4].getName());
-        assertEquals("GDP", economics[4].getDbName());
+        assertEquals("GDP_Value", economics[4].getDbName());
         assertEquals(-11, economics[4].getMin());
         assertEquals(18, economics[4].getMax());
     }
