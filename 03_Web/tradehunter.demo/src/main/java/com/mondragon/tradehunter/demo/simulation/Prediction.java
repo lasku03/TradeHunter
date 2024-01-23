@@ -1,6 +1,10 @@
 package com.mondragon.tradehunter.demo.simulation;
 
 import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.mondragon.tradehunter.demo.controllers.SimulationController;
 
 public class Prediction extends Thread {
     private SecureRandom rand;
@@ -9,6 +13,7 @@ public class Prediction extends Thread {
     private Economic[] economics;
     private Political[] politicals;
     private DowJones dowJones;
+    private List<GraphValue> values;
 
     private double predictedValue;
 
@@ -21,6 +26,7 @@ public class Prediction extends Thread {
         this.economics = economics;
         this.politicals = politicals;
         this.dowJones = dowJones;
+        this.values = new ArrayList<>();
         this.predictedValue = 0;
     }
 
@@ -35,24 +41,25 @@ public class Prediction extends Thread {
         }
     }
 
-    public void makePrediction() {
-        predictedValue = askForPrediction();
-    }
-
-    public double askForPrediction() {
-        // This will change once the predictedValue can be made
-        double value = 0;
+    public void makePrediction() throws InterruptedException {
+        values.clear();
         for (int i = 0; i < socials.length; i++) {
-            value += socials[i].getValue();
+            values.add(new GraphValue(socials[i].getDbName(), socials[i].getValue()));
         }
         for (int i = 0; i < economics.length; i++) {
-            value += economics[i].getValue();
+            values.add(new GraphValue(economics[i].getDbName(), economics[i].getValue()));
         }
         for (int i = 0; i < politicals.length; i++) {
-            value += politicals[i].getValue();
+            values.add(new GraphValue(politicals[i].getDbName(), politicals[i].getValue()));
         }
-        value += dowJones.getValue();
+        values.add(new GraphValue(dowJones.getDbName(), dowJones.getValue()));
+
+        predictedValue = askForPrediction(values);
+    }
+
+    public double askForPrediction(List<GraphValue> values) throws InterruptedException {
         // Ask the AI server for the prediction
+        double value = SimulationController.sendPredictionValues(values);
         return value;
     }
 
@@ -102,6 +109,13 @@ public class Prediction extends Thread {
 
     public void setRand(SecureRandom rand) {
         this.rand = rand;
+    }
+
+    public List<GraphValue> getValues() {
+        return values;
+    }
+    public void setValues(List<GraphValue> values) {
+        this.values = values;
     }
 
     public double getPredictedValue() {

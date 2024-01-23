@@ -6,11 +6,15 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.easymock.EasyMock;
 import org.junit.jupiter.api.BeforeEach;
 
 import com.mondragon.tradehunter.demo.simulation.DowJones;
 import com.mondragon.tradehunter.demo.simulation.Economic;
+import com.mondragon.tradehunter.demo.simulation.GraphValue;
 import com.mondragon.tradehunter.demo.simulation.Political;
 import com.mondragon.tradehunter.demo.simulation.Prediction;
 import com.mondragon.tradehunter.demo.simulation.Simulation;
@@ -88,29 +92,42 @@ class PredictionTests {
     }
 
     @Test
-    void testAskForPrediction() {
-        socials[0] = new Social(simulation, "Death rate", "Test", 0, 5);
-        socials[1] = new Social(simulation, "Birth rate", "Test", 5, 10);
-        politicals[0] = new Political(simulation, "Unemployment rate", "Test", 0, 10);
-        politicals[1] = new Political(simulation, "Employment rate", "Test", 5, 5);
-        economics[0] = new Economic(simulation, "Euro", "Test", 3, 9);
-        economics[1] = new Economic(simulation, "IPC", "Test", 4, 10);
-
-        double predictedValue = prediction.askForPrediction();
-        assertEquals(38, predictedValue, 0.01);
+    void testSetValues() {
+        List<GraphValue> values = new ArrayList<>();
+        prediction.setValues(values);
+        assertEquals(values, prediction.getValues());
     }
 
     @Test
     void testMakePrediction() throws InterruptedException {
-        socials[0] = new Social(simulation, "Death rate", "Test", 0, 5);
-        socials[1] = new Social(simulation, "Birth rate", "Test", 5, 10);
-        politicals[0] = new Political(simulation, "Unemployment rate", "Test", 0, 10);
-        politicals[1] = new Political(simulation, "Employment rate", "Test", 5, 5);
-        economics[0] = new Economic(simulation, "Euro", "Test", 3, 9);
-        economics[1] = new Economic(simulation, "IPC", "Test", 4, 10);
+        Prediction predictionMock = EasyMock.partialMockBuilder(Prediction.class)
+                .addMockedMethod("askForPrediction", List.class)
+                .createMock();
+                
+        socials = new Social[1];
+        economics = new Economic[1];
+        politicals = new Political[1];
 
-        prediction.makePrediction();
-        double predictedValue = prediction.getPredictedValue();
-        assertEquals(38, predictedValue, 0.01);
+        socials[0] = new Social(simulation, "Death rate", "Test", 0, 5);
+        politicals[0] = new Political(simulation, "Unemployment rate", "Test", 0, 10);
+        economics[0] = new Economic(simulation, "Euro", "Test", 3, 9);
+
+        predictionMock.setSocials(socials);
+        predictionMock.setPoliticals(politicals);
+        predictionMock.setEconomics(economics);
+        predictionMock.setDowJones(new DowJones(simulation, "Test", 0, 10));
+
+        double expectedPrediction = 18.5;
+
+        predictionMock.setValues(new ArrayList<>());
+        EasyMock.expect(predictionMock.askForPrediction(predictionMock.getValues())).andReturn(expectedPrediction);
+
+        EasyMock.replay(predictionMock);
+
+        predictionMock.makePrediction();
+
+        assertEquals(expectedPrediction, predictionMock.getPredictedValue(), 0.01);
+
+        EasyMock.verify(predictionMock);
     }
 }
