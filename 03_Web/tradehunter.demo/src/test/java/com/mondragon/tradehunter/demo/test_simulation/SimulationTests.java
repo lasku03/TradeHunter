@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
+import org.easymock.EasyMock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -35,8 +36,18 @@ class SimulationTests {
 
     @Test
     void testWaitValues1() throws InterruptedException {
-        Prediction prediction = new Prediction(simulation, new Social[0], new Economic[0], new Political[0], new DowJones(simulation, "Test", 0, 100));
-        
+        Prediction prediction = EasyMock.partialMockBuilder(Prediction.class)
+                .addMockedMethod("askForPrediction", List.class)
+                .createMock();
+        prediction.setSimulation(simulation);
+        prediction.setSocials(new Social[0]);
+        prediction.setEconomics(new Economic[0]);
+        prediction.setPoliticals(new Political[0]);
+        prediction.setDowJones(new DowJones(simulation, "Test", 0, 100));
+        prediction.setValues(new ArrayList<>());
+
+        EasyMock.expect(prediction.askForPrediction(prediction.getValues())).andReturn(50.0);
+
         Thread predictionThread = new Thread(() -> {
             try {
                 simulation.waitValues(prediction);
@@ -52,6 +63,8 @@ class SimulationTests {
         simulation.setnDowJones(1);
         simulation.getDowJonesDone().release();
 
+        EasyMock.replay(prediction);
+
         predictionThread.start();
         predictionThread.join();
         predictionThread.interrupt();
@@ -61,12 +74,24 @@ class SimulationTests {
         assertEquals(1, simulation.getDowJonesWait().availablePermits());
         assertEquals(0, simulation.getDowJonesDone().availablePermits());
         assertEquals(0, simulation.getGraphValues().size());
+        
+        EasyMock.verify(prediction);
     }
 
     @Test
     void testWaitValues2() throws InterruptedException {
-        Prediction prediction = new Prediction(simulation, new Social[0], new Economic[0], new Political[0], new DowJones(simulation, "Test", 0, 100));
-        
+        Prediction prediction = EasyMock.partialMockBuilder(Prediction.class)
+                .addMockedMethod("askForPrediction", List.class)
+                .createMock();
+        prediction.setSimulation(simulation);
+        prediction.setSocials(new Social[0]);
+        prediction.setEconomics(new Economic[0]);
+        prediction.setPoliticals(new Political[0]);
+        prediction.setDowJones(new DowJones(simulation, "Test", 0, 100));
+        prediction.setValues(new ArrayList<>());
+
+        EasyMock.expect(prediction.askForPrediction(prediction.getValues())).andReturn(50.0);
+
         Thread predictionThread = new Thread(() -> {
             try {
                 simulation.waitValues(prediction);
@@ -82,6 +107,8 @@ class SimulationTests {
         simulation.setnEconomics(3);
         simulation.getEconomicDone().release();
 
+        EasyMock.replay(prediction);
+
         predictionThread.start();
         predictionThread.join();
         predictionThread.interrupt();
@@ -95,8 +122,18 @@ class SimulationTests {
 
     @Test
     void testWaitValues3() throws InterruptedException {
-        Prediction prediction = new Prediction(simulation, new Social[0], new Economic[0], new Political[0], new DowJones(simulation, "Test", 0, 100));
-        
+        Prediction prediction = EasyMock.partialMockBuilder(Prediction.class)
+                .addMockedMethod("askForPrediction", List.class)
+                .createMock();
+        prediction.setSimulation(simulation);
+        prediction.setSocials(new Social[0]);
+        prediction.setEconomics(new Economic[0]);
+        prediction.setPoliticals(new Political[0]);
+        prediction.setDowJones(new DowJones(simulation, "Test", 0, 100));
+        prediction.setValues(new ArrayList<>());
+
+        EasyMock.expect(prediction.askForPrediction(prediction.getValues())).andReturn(50.0);
+
         Thread predictionThread = new Thread(() -> {
             try {
                 simulation.waitValues(prediction);
@@ -112,6 +149,8 @@ class SimulationTests {
         simulation.setPoliticalToPaint(3);
         simulation.getPoliticalDone().release();
 
+        EasyMock.replay(prediction);
+
         predictionThread.start();
         predictionThread.join();
         predictionThread.interrupt();
@@ -125,8 +164,18 @@ class SimulationTests {
 
     @Test
     void testWaitValues4() throws InterruptedException {
-        Prediction prediction = new Prediction(simulation, new Social[0], new Economic[0], new Political[0], new DowJones(simulation, "Test", 0, 100));
-        
+        Prediction prediction = EasyMock.partialMockBuilder(Prediction.class)
+                .addMockedMethod("askForPrediction", List.class)
+                .createMock();
+        prediction.setSimulation(simulation);
+        prediction.setSocials(new Social[0]);
+        prediction.setEconomics(new Economic[0]);
+        prediction.setPoliticals(new Political[0]);
+        prediction.setDowJones(new DowJones(simulation, "Test", 0, 100));
+        prediction.setValues(new ArrayList<>());
+
+        EasyMock.expect(prediction.askForPrediction(prediction.getValues())).andReturn(50.0);
+
         Thread predictionThread = new Thread(() -> {
             try {
                 simulation.waitValues(prediction);
@@ -143,6 +192,8 @@ class SimulationTests {
         simulation.setSocialToPaint(1);
         simulation.getPoliticalDone().release();
         simulation.getSocialDone().release();
+
+        EasyMock.replay(prediction);
 
         predictionThread.start();
         predictionThread.join();
@@ -159,8 +210,18 @@ class SimulationTests {
 
     @Test
     void testWaitValues5() throws InterruptedException {
-        Prediction prediction = new Prediction(simulation, new Social[0], new Economic[0], new Political[0], new DowJones(simulation, "Test", 0, 100));
-        
+        Prediction prediction = EasyMock.partialMockBuilder(Prediction.class)
+                .addMockedMethod("askForPrediction", List.class)
+                .createMock();
+        prediction.setSimulation(simulation);
+        prediction.setSocials(new Social[0]);
+        prediction.setEconomics(new Economic[0]);
+        prediction.setPoliticals(new Political[0]);
+        prediction.setDowJones(new DowJones(simulation, "Test", 0, 100));
+        prediction.setValues(new ArrayList<>());
+
+        EasyMock.expect(prediction.askForPrediction(prediction.getValues())).andReturn(50.0);
+
         Thread predictionThread = new Thread(() -> {
             try {
                 simulation.waitValues(prediction);
@@ -176,6 +237,8 @@ class SimulationTests {
         simulation.setSocialToPaint(3);
         simulation.getSocialDone().release();
 
+        EasyMock.replay(prediction);
+
         predictionThread.start();
         predictionThread.join();
         predictionThread.interrupt();
@@ -189,8 +252,18 @@ class SimulationTests {
 
     @Test
     void testWaitValues6() throws InterruptedException {
-        Prediction prediction = new Prediction(simulation, new Social[0], new Economic[0], new Political[0], new DowJones(simulation, "Test", 0, 100));
-        
+        Prediction prediction = EasyMock.partialMockBuilder(Prediction.class)
+                .addMockedMethod("askForPrediction", List.class)
+                .createMock();
+        prediction.setSimulation(simulation);
+        prediction.setSocials(new Social[0]);
+        prediction.setEconomics(new Economic[0]);
+        prediction.setPoliticals(new Political[0]);
+        prediction.setDowJones(new DowJones(simulation, "Test", 0, 100));
+        prediction.setValues(new ArrayList<>());
+
+        EasyMock.expect(prediction.askForPrediction(prediction.getValues())).andReturn(50.0);
+
         Thread predictionThread = new Thread(() -> {
             try {
                 simulation.waitValues(prediction);
@@ -208,6 +281,8 @@ class SimulationTests {
         simulation.getSocialDone().release();
         simulation.getPoliticalDone().release();
 
+        EasyMock.replay(prediction);
+
         predictionThread.start();
         predictionThread.join();
         predictionThread.interrupt();
@@ -223,8 +298,18 @@ class SimulationTests {
 
     @Test
     void testWaitValues7() throws InterruptedException {
-        Prediction prediction = new Prediction(simulation, new Social[0], new Economic[0], new Political[0], new DowJones(simulation, "Test", 0, 100));
-        
+        Prediction prediction = EasyMock.partialMockBuilder(Prediction.class)
+                .addMockedMethod("askForPrediction", List.class)
+                .createMock();
+        prediction.setSimulation(simulation);
+        prediction.setSocials(new Social[0]);
+        prediction.setEconomics(new Economic[0]);
+        prediction.setPoliticals(new Political[0]);
+        prediction.setDowJones(new DowJones(simulation, "Test", 0, 100));
+        prediction.setValues(new ArrayList<>());
+
+        EasyMock.expect(prediction.askForPrediction(prediction.getValues())).andReturn(50.0);
+
         Thread predictionThread = new Thread(() -> {
             try {
                 simulation.waitValues(prediction);
@@ -242,6 +327,8 @@ class SimulationTests {
         simulation.getSocialDone().release();
         simulation.getPoliticalDone().release();
 
+        EasyMock.replay(prediction);
+
         predictionThread.start();
         predictionThread.join();
         predictionThread.interrupt();
@@ -257,7 +344,17 @@ class SimulationTests {
 
     @Test
     void testWaitValues8() throws InterruptedException {
-        Prediction prediction = new Prediction(simulation, new Social[0], new Economic[0], new Political[0], new DowJones(simulation, "Test", 0, 100));
+        Prediction prediction = EasyMock.partialMockBuilder(Prediction.class)
+                .addMockedMethod("askForPrediction", List.class)
+                .createMock();
+        prediction.setSimulation(simulation);
+        prediction.setSocials(new Social[0]);
+        prediction.setEconomics(new Economic[0]);
+        prediction.setPoliticals(new Political[0]);
+        prediction.setDowJones(new DowJones(simulation, "Test", 0, 100));
+        prediction.setValues(new ArrayList<>());
+
+        EasyMock.expect(prediction.askForPrediction(prediction.getValues())).andReturn(50.0);
         
         Thread predictionThread = new Thread(() -> {
             try {
@@ -275,6 +372,8 @@ class SimulationTests {
         simulation.setPoliticalToPaint(1);
         simulation.getSocialDone().release();
         simulation.getPoliticalDone().release();
+
+        EasyMock.replay(prediction);
 
         predictionThread.start();
         predictionThread.join();
