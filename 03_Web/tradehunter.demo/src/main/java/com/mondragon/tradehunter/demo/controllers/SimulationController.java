@@ -30,9 +30,7 @@ public class SimulationController {
 
     @GetMapping("/simulation/stop")
     public void stopSimulation() throws InterruptedException {
-        if (simulationMaker.getDowJones().isAlive()) {
-            simulationMaker.stopSimulation();
-        }
+        simulationMaker.stopSimulation();
     }
 
     public static void sendValues(List<GraphValue> graphValues) throws InterruptedException {

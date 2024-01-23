@@ -85,6 +85,11 @@ class Serv(BaseHTTPRequestHandler):
 
             # Send the JSON data as the response
             self.wfile.write(result_json.encode('utf-8'))
+            
+        elif path_parts[1] == 'start':
+            data = pd.read_csv("merged_dataset1.csv")
+            data.to_csv("simulation/merged_dataset1.csv", index=False)
+            self.send_response(200)
         
         elif path_parts[1] == 'scrapping':
             scrapping = Scrapping()
