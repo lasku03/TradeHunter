@@ -7,7 +7,7 @@ import datetime
 # Importa el módulo que contiene la función que quieres probar
 import requests
 
-class Scapping_object:
+class Scrapping_object:
     def __init__(self):
         self.text = ""
 
@@ -47,7 +47,7 @@ class TestScrapping(unittest.TestCase):
     def test_births_scrapping(self, mock_beautifulsoup):
         # Set up your mock BeautifulSoup object
         mock_soup = MagicMock()
-        scrapping_object = Scapping_object()
+        scrapping_object = Scrapping_object()
         scrapping_object.text = '373'
         mock_soup.find.return_value = scrapping_object  # You can set any string you want here
         mock_beautifulsoup.return_value = mock_soup
@@ -65,7 +65,7 @@ class TestScrapping(unittest.TestCase):
     def test_deaths_scrapping(self, mock_beautifulsoup):
         # Set up your mock BeautifulSoup object
         mock_soup = MagicMock()
-        scrapping_object = Scapping_object()
+        scrapping_object = Scrapping_object()
         scrapping_object.text = '373'
         mock_soup.find.return_value = scrapping_object  # You can set any string you want here
         mock_beautifulsoup.return_value = mock_soup
@@ -82,14 +82,78 @@ class TestScrapping(unittest.TestCase):
     @patch('scrapping.BeautifulSoup')
     def test_IPC_scrapping(self, mock_beautifulsoup):
         mock_soup = MagicMock()
-        scrapping_object = Scapping_object()
-        scrapping_object.text = '1'
+        scrapping_object1 = Scrapping_object()
+        scrapping_object2 = Scrapping_object()
+        scrapping_object = [scrapping_object1, scrapping_object2]
+        scrapping_object[0].text = '1'
         mock_soup.select.return_value = scrapping_object
         mock_beautifulsoup.return_value = mock_soup
 
         result = Scrapping.IPC_scrapping(self)
 
-        self.assertEqual(result, 1)
+        self.assertEqual(result, "1")
+    
+    @patch('scrapping.BeautifulSoup')
+    def test_EUR_scrapping(self, mock_beautifulsoup):
+        mock_soup = MagicMock()
+        scrapping_object1 = Scrapping_object()
+        scrapping_object2 = Scrapping_object()
+        scrapping_object3 = Scrapping_object()
+        scrapping_object4 = Scrapping_object()
+        scrapping_object = [scrapping_object1, scrapping_object2, scrapping_object3, scrapping_object4]
+        scrapping_object[1].text = '1'
+        scrapping_object[3].text = '0 - 2'
+        mock_soup.findAll.return_value = scrapping_object
+        scrapping_object5 = Scrapping_object()
+        scrapping_object5.text = '3 - Dolares - estadounidenses'
+        mock_soup.find.return_value = scrapping_object5
+        mock_beautifulsoup.return_value = mock_soup
+
+        open, low, high, current = Scrapping.EUR_scrapping(self)
+
+        self.assertEqual(open, "1")
+        self.assertEqual(high, "2")
+        self.assertEqual(low, "0")
+        self.assertEqual(current, "3")
+
+    @patch('scrapping.BeautifulSoup')
+    def test_GDP_scrapping(self, mock_beautifulsoup):
+        mock_soup = MagicMock()
+        scrapping_object1 = Scrapping_object()
+        scrapping_object = [scrapping_object1]
+        scrapping_object[0].text = '0,4%'
+        mock_soup.select.return_value = scrapping_object
+        mock_beautifulsoup.return_value = mock_soup
+
+        result = Scrapping.GDP_scrapping(self)
+
+        self.assertEqual(result, "0,4")
+
+    @patch('scrapping.BeautifulSoup')
+    def test_DJ_scrapping(self, mock_beautifulsoup):
+        mock_soup = MagicMock()
+        scrapping_object1 = Scrapping_object()
+        scrapping_object2 = Scrapping_object()
+        scrapping_object3 = Scrapping_object()
+        scrapping_object4 = Scrapping_object()
+        scrapping_object = [scrapping_object1, scrapping_object2, scrapping_object3, scrapping_object4]
+
+        mock_soup.find.return_value.text = '4'
+        mock_soup.select.side_effect = [
+            [MagicMock(text='1')],
+            [MagicMock(text='2')],
+            [MagicMock(text='3')],
+        ]
+        mock_beautifulsoup.return_value = mock_soup
+
+        # Call the DJ_scrapping method
+        close, low, high, open = Scrapping.DJ_scrapping(self)
+
+        # Perform assertions
+        self.assertEqual(close, "4")
+        self.assertEqual(low, "1")
+        self.assertEqual(high, "2")
+        self.assertEqual(open, "3")
 
 
 if __name__ == '__main__':

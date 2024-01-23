@@ -176,7 +176,8 @@ class Scrapping:
         page = requests.get("https://www.xe.com/es/currencyconverter/convert/?Amount=1&From=EUR&To=USD")
         soup = BeautifulSoup(page.text, 'html.parser')
 
-        current = soup.find(class_="result__BigRate-sc-1bsijpp-1 dPdXSB").text.split()
+        current = soup.find(class_="result__BigRate-sc-1bsijpp-1 dPdXSB")
+        current = current.text.split()
         current = current[0]
         print(current)
 
