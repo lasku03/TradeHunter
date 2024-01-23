@@ -2,16 +2,27 @@ import pandas as pd
 
 class Simulation:
     def update_excel(self, values):
-        data = pd.read_csv("simulation/mergedataset.csv")
+        data = pd.read_csv("simulation/merged_dataset1.csv")
         last_row = data.iloc[-1]
 
-        for name, value in values.items():
-            last_row[name] = value
+        for value in values:
+            last_row[value.name] = value.value
 
         data.iloc[-1] = last_row
 
         data.to_csv("simulation/mergedataset.csv", index=True)
 
+class DataObject:
+    def __init__(self, name, value):
+        self.name = name
+        self.value = value
+
+# Crear una lista de objetos
+data_objects = [
+    DataObject(name='Births', value=100),
+    DataObject(name='Defunciones', value=2.789),
+    DataObject(name='Total_debt', value=1.1234)
+]
+
 simulation_instance = Simulation()
-values = {'Births': 1234567, 'Defunciones': 21234567, 'Total_debt': 31234567}
-simulation_instance.update_excel(values)
+simulation_instance.update_excel(data_objects)
