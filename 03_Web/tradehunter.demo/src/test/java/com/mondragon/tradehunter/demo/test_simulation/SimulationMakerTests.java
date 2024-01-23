@@ -24,7 +24,6 @@ class SimulationMakerTests {
 
     @Test
     void testConstructor() {
-        assertNotNull(simulationMaker.getSimulation());
         assertNotNull(simulationMaker.getSocials());
         assertNotNull(simulationMaker.getEconomics());
         assertNotNull(simulationMaker.getPoliticals());
@@ -87,6 +86,7 @@ class SimulationMakerTests {
     @Test
     void testCreateThreads() {
         simulationMaker.createThreads();
+        assertNotNull(simulationMaker.getSimulation());
         assertNotNull(simulationMaker.getSocials());
         assertNotNull(simulationMaker.getEconomics());
         assertNotNull(simulationMaker.getPoliticals());
