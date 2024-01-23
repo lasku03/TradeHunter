@@ -98,6 +98,8 @@ class Serv(BaseHTTPRequestHandler):
 
             simulation = Simulation()
             simulation.update_excel(data)
+            
+            self.send_response(200)
 
         else:
             # Handle other requests or paths here if needed
