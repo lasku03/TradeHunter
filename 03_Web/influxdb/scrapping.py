@@ -225,12 +225,6 @@ class Scrapping:
         high = high[0]
         print(high)
 
-        page = requests.get("https://es.marketscreener.com/cotizacion/indice/IBEX-35-7629/")
-        soup = BeautifulSoup(page.text, 'html.parser')
-
-        data = soup.findAll('h1')
-        print(data)
-
         return close, adjClose, open, low, high
 
     def IPC_scrapping(self):
@@ -247,8 +241,12 @@ class Scrapping:
         return IPC_value
     
     def euribor_scrapping(self):
-        page = requests.get("https://www.ine.es/prensa/ipc_tabla.htm")
+        page = requests.get("https://www.expansion.com/mercados/euribor.html")
         soup = BeautifulSoup(page.text, 'html.parser')
+        data = soup.select('.col-4.izquierda table:nth-of-type(2)> tbody > tr:nth-of-type(1) > td:nth-of-type(2)')
+        data = data[0].text.split()
+        data = data[0]
+        return data
 
     def init_scrapping(self):
         self.activity_activos, self.activity_ocupados, self.activity_parados, self.activity_activity_rate, self.activity_unemployment_rate = self.activity_scrapping()
@@ -260,7 +258,7 @@ class Scrapping:
         self.GDP = self.GDP_scrapping()
         self.IBEX_close, self.IBEX_adjclose, self.IBEX_open, self.IBEX_low, self.IBEX_high = self.IBEX_scrapping()
         self.IPC = self.IPC_scrapping()
-        #self.euribor = self.euribor_scrapping()
+        self.euribor = self.euribor_scrapping()
         headers = ["Date", "Activity(%)","Activos", "AdjClose", "Births", "Close", "Close_DJ", "Debt", "Debt_per_capita", "Deaths",
                "Euribor", "GDP_Value", "High_DJ", "High_EURO", "High_y", "IPC", "Low_DJ", "Low_EURO", "Low_y", "Ocupados",
                "Open_DJ", "Open_EURO", "Open_y", "Parados", "Paro(%)", "Percentage", "Price_EURO"]
