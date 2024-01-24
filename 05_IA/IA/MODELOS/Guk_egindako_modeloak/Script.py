@@ -4,7 +4,7 @@ from prophet import Prophet
 import json
 
   
-data = pd.read_csv("archive_2/merged_dataset1.csv")
+data = pd.read_csv("merged_dataset1.csv")
 
 
 # Charge the model. Pkl archive.

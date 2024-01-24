@@ -1,15 +1,11 @@
 import unittest
 from unittest.mock import MagicMock, patch, Mock
 from scrapping import Scrapping  # Replace with your actual import for the Scrapping class
-from unittest.mock import patch
 import datetime
+import coverage
 
 # Importa el módulo que contiene la función que quieres probar
 import requests
-
-class Scapping_object:
-    def __init__(self):
-        self.text = ""
 
 class TestScrapping(unittest.TestCase):
 
@@ -25,71 +21,205 @@ class TestScrapping(unittest.TestCase):
         self.assertEqual(scraper.total_debt, 0)
         self.assertEqual(scraper.debt_percentage, 0)
         self.assertEqual(scraper.debt_per_capita, 0)
-        self.assertEqual(scraper.DJ_close, 0)
-        self.assertEqual(scraper.DJ_low, 0)
-        self.assertEqual(scraper.DJ_high, 0)
-        self.assertEqual(scraper.DJ_open, 0)
-        self.assertEqual(scraper.EUR_open, 0)
-        self.assertEqual(scraper.EUR_low, 0)
-        self.assertEqual(scraper.EUR_high, 0)
-        self.assertEqual(scraper.EUR_current, 0)
+        self.assertEqual(scraper.dj_close, 0)
+        self.assertEqual(scraper.dj_low, 0)
+        self.assertEqual(scraper.dj_high, 0)
+        self.assertEqual(scraper.dj_open, 0)
+        self.assertEqual(scraper.eur_open, 0)
+        self.assertEqual(scraper.eur_low, 0)
+        self.assertEqual(scraper.eur_high, 0)
+        self.assertEqual(scraper.eur_current, 0)
         self.assertEqual(scraper.GDP, 0)
-        self.assertEqual(scraper.IBEX_close, 0)
-        self.assertEqual(scraper.IBEX_adjclose, 0)
-        self.assertEqual(scraper.IBEX_open, 0)
-        self.assertEqual(scraper.IBEX_low, 0)
-        self.assertEqual(scraper.IBEX_high, 0)
+        self.assertEqual(scraper.ibex_close, 0)
+        self.assertEqual(scraper.ibex_adjclose, 0)
+        self.assertEqual(scraper.ibex_open, 0)
+        self.assertEqual(scraper.ibex_low, 0)
+        self.assertEqual(scraper.ibex_high, 0)
         self.assertEqual(scraper.IPC, 0)
         self.assertEqual(scraper.euribor, 0)
         self.assertEqual(scraper.row, [])
 
     @patch('scrapping.BeautifulSoup')
     def test_births_scrapping(self, mock_beautifulsoup):
-        # Set up your mock BeautifulSoup object
         mock_soup = MagicMock()
-        scrapping_object = Scapping_object()
-        scrapping_object.text = '373'
-        mock_soup.find.return_value = scrapping_object  # You can set any string you want here
+
+        mock_soup.find.return_value.text.split.return_value = ['300']
         mock_beautifulsoup.return_value = mock_soup
+        births = Scrapping.births_scrapping(self)
         TIME = datetime.datetime.now()
-        births = 373/TIME.hour
-        births = int(births * 24)
-
-        # Call the method you want to test
-        result = Scrapping.births_scrapping(self)
-
-        # Assert that the method returned the expected result
-        self.assertEqual(result, births)
+        result = 300/TIME.hour
+        result = int(result * 24)
+        self.assertEqual(births, result)
 
     @patch('scrapping.BeautifulSoup')
     def test_deaths_scrapping(self, mock_beautifulsoup):
-        # Set up your mock BeautifulSoup object
         mock_soup = MagicMock()
-        scrapping_object = Scapping_object()
-        scrapping_object.text = '373'
-        mock_soup.find.return_value = scrapping_object  # You can set any string you want here
+
+        mock_soup.find.return_value.text.split.return_value = ['300']
         mock_beautifulsoup.return_value = mock_soup
+        deaths = Scrapping.deaths_scrapping(self)
         TIME = datetime.datetime.now()
-        deaths = 373/TIME.hour
-        deaths = int(deaths * 24)
-
-        # Call the method you want to test
-        result = Scrapping.deaths_scrapping(self)
-
-        # Assert that the method returned the expected result
-        self.assertEqual(result, deaths)
+        result = 300/TIME.hour
+        result = int(result * 24)
+        self.assertEqual(deaths, result)
 
     @patch('scrapping.BeautifulSoup')
-    def test_IPC_scrapping(self, mock_beautifulsoup):
+    def test_ipc_scrapping(self, mock_beautifulsoup):
+
         mock_soup = MagicMock()
-        scrapping_object = Scapping_object()
-        scrapping_object.text = '1'
-        mock_soup.select.return_value = scrapping_object
+
+        # Mocking the necessary soup select operation
+        mock_soup.select.side_effect = [
+            [MagicMock(text='1')],
+        ]
+
         mock_beautifulsoup.return_value = mock_soup
 
-        result = Scrapping.IPC_scrapping(self)
+        # Call the ipc_scrapping method
+        ipc_value = Scrapping.ipc_scrapping(self)
 
-        self.assertEqual(result, 1)
+        # Perform assertions
+        self.assertEqual(ipc_value, '1')
+    
+    @patch('scrapping.BeautifulSoup')
+    def test_eur_scrapping(self, mock_beautifulsoup):
+        mock_soup = MagicMock()
+
+        # Mocking the necessary soup findAll and find operations
+        mock_soup.findAll.side_effect = [
+            [MagicMock(text=''),
+            MagicMock(text='1'),
+            MagicMock(text=''),
+            MagicMock(text='0 - 2')],
+        ]
+        mock_soup.find.return_value.text.split.return_value = ['5']
+
+        mock_beautifulsoup.side_effect = [mock_soup, mock_soup]
+
+        # Call the eur_scrapping method
+        open_value, low_value, high_value, current_value = Scrapping.eur_scrapping(self)
+
+        # Perform assertions
+        self.assertEqual(open_value, '1')
+        self.assertEqual(low_value, '0')
+        self.assertEqual(high_value, '2')
+        self.assertEqual(current_value, '5')
+
+    @patch('scrapping.BeautifulSoup')
+    def test_gdp_scrapping(self, mock_beautifulsoup):
+        mock_soup = MagicMock()
+
+        # Mocking the necessary soup select operation
+        mock_soup.select.side_effect = [
+            [MagicMock(text='0.4%')],
+        ]
+
+        mock_beautifulsoup.return_value = mock_soup
+
+        # Call the gdp_scrapping method
+        gdp_value = Scrapping.gdp_scrapping(self)
+
+        # Perform assertions
+        self.assertEqual(gdp_value, '0.4')
+
+    @patch('scrapping.BeautifulSoup')
+    def test_dj_scrapping(self, mock_beautifulsoup):
+        mock_soup = MagicMock()
+
+        mock_soup.find.return_value.text = '4'
+        mock_soup.select.side_effect = [
+            [MagicMock(text='1')],
+            [MagicMock(text='2')],
+            [MagicMock(text='3')],
+        ]
+        mock_beautifulsoup.return_value = mock_soup
+
+        # Call the DJ_scrapping method
+        close, low, high, _open = Scrapping.dj_scrapping(self)
+
+        # Perform assertions
+        self.assertEqual(close, "4")
+        self.assertEqual(low, "1")
+        self.assertEqual(high, "2")
+        self.assertEqual(_open, "3")
+
+
+    @patch('scrapping.BeautifulSoup')
+    def test_ibex_scrapping(self, mock_beautifulsoup):
+        mock_soup = MagicMock()
+        # Mocking the necessary soup select and findAll operations
+        mock_soup.select.side_effect = [
+            [
+                MagicMock(text='Close:1'),
+                MagicMock(text='Open:2')],
+                [MagicMock(text=''),
+                MagicMock(text='3'),
+                MagicMock(text='4')
+            ]
+        ]
+        mock_beautifulsoup.return_value = mock_soup
+
+        # Call the IBEX_scrapping method
+        close, adj_close, _open, low, high = Scrapping.ibex_scrapping(self)
+
+        # Perform assertions
+        self.assertEqual(close, "1")
+        self.assertEqual(adj_close, "1")
+        self.assertEqual(_open, "2")
+        self.assertEqual(low, "3")
+        self.assertEqual(high, "4")
+
+    @patch('scrapping.BeautifulSoup')
+    def test_euribor_scrapping(self, mock_beautifulsoup):
+        mock_soup = MagicMock()
+
+        # Mocking the necessary soup select operation
+        mock_soup.select.side_effect = [
+            [MagicMock(text='3,672')],
+        ]
+
+        mock_beautifulsoup.return_value = mock_soup
+
+        # Call the euribor_scrapping method
+        euribor_value = Scrapping.euribor_scrapping(self)
+
+        # Perform assertions
+        self.assertEqual(euribor_value, '3,672')
+
+    @patch('scrapping.BeautifulSoup')
+    def test_debt_scrapping(self, mock_beautifulsoup):
+        mock_soup = MagicMock()
+        # Mocking the necessary soup select and findAll operations
+        mock_soup.select.side_effect = [
+            [MagicMock(text='1')],
+            [MagicMock(text='2%')],
+            [MagicMock(text='3')],
+        ]
+        mock_beautifulsoup.return_value = mock_soup
+
+        debt_total, debt_percentage, debt_per_capita = Scrapping.debt_scrapping(self)
+        self.assertEqual(debt_total, "1")
+        self.assertEqual(debt_percentage, "2")
+        self.assertEqual(debt_per_capita, "3")
+
+    @patch('scrapping.BeautifulSoup')
+    def test_activity_scrapping(self, mock_beautifulsoup):
+        mock_soup = MagicMock()
+        # Mocking the necessary soup select and findAll operations
+        mock_soup.select.side_effect = [
+            [MagicMock(text='3,5')],
+            [MagicMock(text='4,5')],
+            [MagicMock(text='1')],
+            [MagicMock(text='2')],
+        ]
+        mock_beautifulsoup.return_value = mock_soup
+
+        activos, ocupados, parados, activity_rate, unemployment_rate = Scrapping.activity_scrapping(self)
+        self.assertEqual(activos, 8)
+        self.assertEqual(ocupados, 3.5)
+        self.assertEqual(parados, 4.5)
+        self.assertEqual(activity_rate, "1")
+        self.assertEqual(unemployment_rate, "2")
 
 
 if __name__ == '__main__':

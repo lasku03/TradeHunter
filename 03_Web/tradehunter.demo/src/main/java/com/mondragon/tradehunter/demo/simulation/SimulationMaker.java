@@ -15,15 +15,14 @@ public class SimulationMaker {
     private ValueSender valueSender;
 
     public SimulationMaker() {
-        valueSender = new ValueSender();
-        simulation = new Simulation(valueSender);
-
         socials = new Social[NSOCIALS];
         economics = new Economic[NECONOMICS];
         politicals = new Political[NPOLITICALS];
     }
 
     public void createThreads() {
+        valueSender = new ValueSender();
+        simulation = new Simulation(valueSender);
         createSocialThreads();
         createEconomicThreads();
         createPoliticalThreads();
