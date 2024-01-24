@@ -2,7 +2,6 @@ import unittest
 from unittest.mock import Mock, patch
 from datetime import datetime, timedelta
 from InternalFactors import get_internal_factors, reorganizar_resultados
-import coverage
 
 class test_factors(unittest.TestCase):
     def test_reorganizar_resultados(self):

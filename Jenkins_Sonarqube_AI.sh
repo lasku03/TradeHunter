@@ -6,6 +6,7 @@ sonarHostUrl="http://tradehunter.duckdns.org:9090"
 sonarToken="sqp_6cd9a8d70893a822b4f20768fc900ad55d1c1de3"
 
 cd 03_Web/influxdb
+sudo pip install coverage
 sudo coverage run -m unittest discover
 sudo coverage html
 sudo coverage xml
