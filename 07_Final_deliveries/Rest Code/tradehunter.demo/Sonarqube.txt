@@ -1,0 +1,1 @@
+mvn clean verify sonar:sonar -Dsonar.projectKey=TradeHunter -Dsonar.projectName='TradeHunter' -Dsonar.host.url=http://104.199.11.194:9090 -Dsonar.token=sqp_446b24c9e7d429a2ab2df19ddd7e3438869ca294

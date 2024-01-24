@@ -1,10 +1,9 @@
 import unittest
 from unittest.mock import MagicMock, patch, Mock
-from scrapping import Scrapping  # Replace with your actual import for the Scrapping class
+from scrapping import Scrapping 
 import datetime
 import coverage
 
-# Importa el módulo que contiene la función que quieres probar
 import requests
 
 class TestScrapping(unittest.TestCase):
@@ -68,24 +67,20 @@ class TestScrapping(unittest.TestCase):
 
         mock_soup = MagicMock()
 
-        # Mocking the necessary soup select operation
         mock_soup.select.side_effect = [
             [MagicMock(text='1')],
         ]
 
         mock_beautifulsoup.return_value = mock_soup
 
-        # Call the ipc_scrapping method
         ipc_value = Scrapping.ipc_scrapping(self)
 
-        # Perform assertions
         self.assertEqual(ipc_value, '1')
     
     @patch('scrapping.BeautifulSoup')
     def test_eur_scrapping(self, mock_beautifulsoup):
         mock_soup = MagicMock()
 
-        # Mocking the necessary soup findAll and find operations
         mock_soup.findAll.side_effect = [
             [MagicMock(text=''),
             MagicMock(text='1'),
@@ -96,10 +91,8 @@ class TestScrapping(unittest.TestCase):
 
         mock_beautifulsoup.side_effect = [mock_soup, mock_soup]
 
-        # Call the eur_scrapping method
         open_value, low_value, high_value, current_value = Scrapping.eur_scrapping(self)
 
-        # Perform assertions
         self.assertEqual(open_value, '1')
         self.assertEqual(low_value, '0')
         self.assertEqual(high_value, '2')
@@ -109,17 +102,14 @@ class TestScrapping(unittest.TestCase):
     def test_gdp_scrapping(self, mock_beautifulsoup):
         mock_soup = MagicMock()
 
-        # Mocking the necessary soup select operation
         mock_soup.select.side_effect = [
             [MagicMock(text='0.4%')],
         ]
 
         mock_beautifulsoup.return_value = mock_soup
 
-        # Call the gdp_scrapping method
         gdp_value = Scrapping.gdp_scrapping(self)
 
-        # Perform assertions
         self.assertEqual(gdp_value, '0.4')
 
     @patch('scrapping.BeautifulSoup')
@@ -134,10 +124,8 @@ class TestScrapping(unittest.TestCase):
         ]
         mock_beautifulsoup.return_value = mock_soup
 
-        # Call the DJ_scrapping method
         close, low, high, _open = Scrapping.dj_scrapping(self)
 
-        # Perform assertions
         self.assertEqual(close, "4")
         self.assertEqual(low, "1")
         self.assertEqual(high, "2")
@@ -147,7 +135,6 @@ class TestScrapping(unittest.TestCase):
     @patch('scrapping.BeautifulSoup')
     def test_ibex_scrapping(self, mock_beautifulsoup):
         mock_soup = MagicMock()
-        # Mocking the necessary soup select and findAll operations
         mock_soup.select.side_effect = [
             [
                 MagicMock(text='Close:1'),
@@ -159,10 +146,8 @@ class TestScrapping(unittest.TestCase):
         ]
         mock_beautifulsoup.return_value = mock_soup
 
-        # Call the IBEX_scrapping method
         close, adj_close, _open, low, high = Scrapping.ibex_scrapping(self)
 
-        # Perform assertions
         self.assertEqual(close, "1")
         self.assertEqual(adj_close, "1")
         self.assertEqual(_open, "2")
@@ -173,23 +158,20 @@ class TestScrapping(unittest.TestCase):
     def test_euribor_scrapping(self, mock_beautifulsoup):
         mock_soup = MagicMock()
 
-        # Mocking the necessary soup select operation
         mock_soup.select.side_effect = [
             [MagicMock(text='3,672')],
         ]
 
         mock_beautifulsoup.return_value = mock_soup
 
-        # Call the euribor_scrapping method
         euribor_value = Scrapping.euribor_scrapping(self)
 
-        # Perform assertions
         self.assertEqual(euribor_value, '3,672')
 
     @patch('scrapping.BeautifulSoup')
     def test_debt_scrapping(self, mock_beautifulsoup):
         mock_soup = MagicMock()
-        # Mocking the necessary soup select and findAll operations
+
         mock_soup.select.side_effect = [
             [MagicMock(text='1')],
             [MagicMock(text='2%')],
@@ -205,7 +187,7 @@ class TestScrapping(unittest.TestCase):
     @patch('scrapping.BeautifulSoup')
     def test_activity_scrapping(self, mock_beautifulsoup):
         mock_soup = MagicMock()
-        # Mocking the necessary soup select and findAll operations
+        
         mock_soup.select.side_effect = [
             [MagicMock(text='3,5')],
             [MagicMock(text='4,5')],
