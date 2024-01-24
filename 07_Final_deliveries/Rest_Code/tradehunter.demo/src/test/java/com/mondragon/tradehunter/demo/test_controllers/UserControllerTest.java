@@ -7,6 +7,7 @@ import org.easymock.EasyMock;
 import org.easymock.EasyMockSupport;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.mondragon.tradehunter.demo.controllers.UserController;
@@ -48,5 +49,18 @@ class UserControllerTest extends EasyMockSupport {
         ResponseEntity<User> responseEntity = userController.editUser(requestUser);
         assertNull(responseEntity.getBody());
         EasyMock.verify(userService);
+    }
+
+    @Test
+    void testDeleteUser() {
+        EasyMock.expect(userService.getUserByUsername("username")).andReturn(user);
+        userService.deleteUser(user);
+        EasyMock.replay(userService);
+
+        ResponseEntity<RequestUser> responseEntity = userController.deleteUser("username");
+
+        EasyMock.verify(userService);
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 }

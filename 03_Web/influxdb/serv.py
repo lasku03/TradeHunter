@@ -1,5 +1,4 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
-from scrapping import Scrapping
 from search import Search 
 import json
 from urllib.parse import urlparse, parse_qs
@@ -7,7 +6,7 @@ import pandas as pd
 from prophet import Prophet 
 import pickle
 from simulation import Simulation
-
+from scrapping import Scrapping
 
 class Serv(BaseHTTPRequestHandler):
     def do_GET(self):
@@ -46,7 +45,6 @@ class Serv(BaseHTTPRequestHandler):
             self.finish_json(result_json=result_json, code=200, application=application_json)
 
         elif path_parts[1] == 'predict':
-            # Load the model
             with open('modelo_prophet.pkl', 'rb') as f:
                 model = pickle.load(f)
 
@@ -54,7 +52,6 @@ class Serv(BaseHTTPRequestHandler):
             data['ds'] = data['Date']
             data['y'] = data['AdjClose']
 
-            # prediction 
             def make_prediction(input_data):
                 forecast = model.predict(input_data)
                 return forecast.to_dict(orient='records')
@@ -97,15 +94,13 @@ class Serv(BaseHTTPRequestHandler):
             simulation = Simulation()
             simulation.update_excel(data)
 
-            # Load the model
-            with open('simulation/modelo_prophet.pkl', 'rb') as f:
+            with open('simulation/modelo_prophet2.pkl', 'rb') as f:
                 model = pickle.load(f)
 
             data = pd.read_csv("simulation/merged_dataset1.csv")
             data['ds'] = data['Date']
             data['y'] = data['AdjClose']
 
-            # prediction
             def make_prediction(input_data):
                 forecast = model.predict(input_data)
                 return forecast.to_dict(orient='records')
