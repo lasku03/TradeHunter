@@ -1,0 +1,110 @@
+package com.mondragon.tradehunter.demo.test_controllers;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.easymock.EasyMock;
+import org.easymock.EasyMockSupport;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+import com.mondragon.tradehunter.demo.controllers.LoginController;
+import com.mondragon.tradehunter.demo.model.User;
+import com.mondragon.tradehunter.demo.request_models.RequestUser;
+import com.mondragon.tradehunter.demo.services.UserService;
+
+class LoginControllerTest extends EasyMockSupport {
+
+    public UserService userService;
+    public User user;
+    public LoginController loginController;
+
+    @BeforeEach
+    void SetUp() {
+        userService = createMock(UserService.class);
+        user = new User(1, "Name", "Surname", "username", "password", "name.surname@gmail.com", 25, false, null, null,
+                null, null);
+        loginController = new LoginController(userService);
+    }
+
+    @Test
+    void testLogin() {
+        EasyMock.expect(userService.login("username", "password")).andReturn(user);
+        EasyMock.replay(userService);
+
+        Map<String, String> loginRequest = new HashMap<>();
+        loginRequest.put("username", "username");
+        loginRequest.put("password", "password");
+
+        ResponseEntity<RequestUser> responseEntity = loginController.login(loginRequest);
+        RequestUser requestUser = new RequestUser(user.getName(), user.getSurname(), user.getUsername(),
+                user.getPassword(), user.getEmail(), user.getAge(), user.isPremium());
+        assertEquals(requestUser.getUsername(), responseEntity.getBody().getUsername());
+        EasyMock.verify(userService);
+    }
+
+    @Test
+    void testLoginNull() {
+        EasyMock.expect(userService.login("new_username", "new_password")).andReturn(null);
+        EasyMock.replay(userService);
+
+        Map<String, String> loginRequest = new HashMap<>();
+        loginRequest.put("username", "new_username");
+        loginRequest.put("password", "new_password");
+
+        ResponseEntity<RequestUser> responseEntity = loginController.login(loginRequest);
+        assertNull(responseEntity.getBody());
+        EasyMock.verify(userService);
+    }
+
+    @Test
+    void testEmail() {
+        String testEmail = "email@email.com";
+        EasyMock.expect(userService.getUserByEmail(testEmail)).andReturn(user);
+        EasyMock.replay(userService);
+
+        ResponseEntity<User> responseEntity = loginController.getUser(testEmail);
+        assertEquals(user, responseEntity.getBody());
+        EasyMock.verify(userService);
+    }
+
+    @Test
+    void testNullEmail() {
+        String testEmail = "null@email.com";
+        EasyMock.expect(userService.getUserByEmail(testEmail)).andReturn(null);
+        EasyMock.replay(userService);
+
+        ResponseEntity<User> responseEntity = loginController.getUser(testEmail);
+        assertNull(responseEntity.getBody());
+        EasyMock.verify(userService);
+    }
+
+    @Test
+    void testGetUser() {
+        String testEmail = "name.surname@gmail.com";
+        EasyMock.expect(userService.getUserByEmail(testEmail)).andReturn(user);
+        EasyMock.replay(userService);
+
+        ResponseEntity<User> responseEntity = loginController.getUser(testEmail);
+        assertEquals(user, responseEntity.getBody());
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        EasyMock.verify(userService);
+    }
+
+    @Test
+    void testInvalidEmailFormat(){
+        String invalidEmail = "invalidemail@gmail.com";
+        EasyMock.expect(userService.getUserByEmail(invalidEmail)).andReturn(null);
+        EasyMock.replay(userService);
+    
+        ResponseEntity<User> responseEntity = loginController.getUser(invalidEmail);
+        assertNull(responseEntity.getBody());
+        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+        EasyMock.verify(userService);
+    }
+}

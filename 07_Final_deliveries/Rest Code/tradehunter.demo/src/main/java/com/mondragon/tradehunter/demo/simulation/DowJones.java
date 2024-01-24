@@ -1,0 +1,89 @@
+package com.mondragon.tradehunter.demo.simulation;
+
+import java.security.SecureRandom;
+
+public class DowJones extends Thread {
+
+    private Simulation simulation;
+    private SecureRandom rand;
+    String dbName;
+    private double min;
+    private double max;
+    private double value;
+
+    public DowJones(Simulation simulation, String dbName, double min, double max) {
+        super("Dow Jones");
+        this.simulation = simulation;
+        this.dbName = dbName;
+        this.rand = new SecureRandom();
+        this.min = min;
+        this.max = max;
+        this.value = (max + min) / 2;
+    }
+
+    @Override
+    public void run() {
+        while (!this.isInterrupted()) {
+            try {
+                Thread.sleep(rand.nextInt(5000, 10000));
+                simulation.waitDowJonesValues(this);
+                simulation.waitDowJonesPredictionDone(this);
+            } catch (Exception e) {
+                this.interrupt();
+            }
+        }
+    }
+
+    public void giveValue() throws InterruptedException {
+        value = rand.nextDouble(min, max);
+        Thread.sleep(rand.nextInt(100, 400));
+    }
+
+    public double getValue() {
+        return value;
+    }
+
+    public void setValue(double value) {
+        this.value = value;
+    }
+
+    public double getMin() {
+        return min;
+    }
+
+    public void setMin(double min) {
+        this.min = min;
+    }
+
+    public double getMax() {
+        return max;
+    }
+
+    public void setMax(double max) {
+        this.max = max;
+    }
+
+    public Simulation getSimulation() {
+        return simulation;
+    }
+
+    public void setSimulation(Simulation simulation) {
+        this.simulation = simulation;
+    }
+
+    public SecureRandom getRand() {
+        return rand;
+    }
+
+    public void setRand(SecureRandom rand) {
+        this.rand = rand;
+    }
+
+    public String getDbName() {
+        return dbName;
+    }
+    
+    public void setDbName(String dbName) {
+        this.dbName = dbName;
+    }
+}

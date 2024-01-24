@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<requestMessage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="schemasMessage.xsd">
+    <content>joder</content>
+    <userUsername>admin</userUsername>
+    <forumID>1</forumID>
+    <date>2024-01-18T09:04:19.049Z</date>
+</requestMessage>
