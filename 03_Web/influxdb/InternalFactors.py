@@ -18,7 +18,6 @@ def reorganizar_resultados(result):
 
             tiempo = tiempo + timedelta(days=1)
 
-            #campo = record.values['_field']
             valor = record.values['_value']
 
             # Convierte el tiempo a una cadena en el formato deseado (ajusta según sea necesario)
@@ -43,9 +42,6 @@ def get_internal_factors(start, stop):
     # Crea el cliente InfluxDB
     client = InfluxDBClient(url=url, token=token, org=org)
 
-    # Crea el cliente de escritura
-    write_api = client.write_api(write_options=SYNCHRONOUS)
-
     # Consulta de ejemplo
     query = f'from(bucket: "{bucket}")' \
                 f'  |> range(start: {start}, stop: {stop})' \
@@ -59,7 +55,7 @@ def get_internal_factors(start, stop):
 
     return resultados_reorganizados
 
-def insertInternalFactors(path):
+def insert_internal_factors(path):
     url = "http://tradehunter.duckdns.org:8086"
     token = "I7MLtkx-A_vJ3-JITkcYQqmhtxvc3zABaMBD-gmWY1eP2rcy4BqMzH_sVhNC7LhyDrGJKdIOxHptmgkuy28VFA=="
     org = "TradeHunter"

@@ -3,16 +3,16 @@ import Factors
 class Search:
     def __init__(self):
         self.search_list = []
-        self.initialDate = None
-        self.finalDate = None
+        self.initial_date = None
+        self.final_date = None
 
-    def createInternalSearch(self, initialDate, finalDate):
-        return InternalFactors.get_internal_factors(initialDate, finalDate)
+    def create_internal_search(self, initial_date, final_date):
+        return InternalFactors.get_internal_factors(initial_date, final_date)
     
     
-    def createSearch(self, initialDate, finalDate):
-        return Factors.get_factors(initialDate, finalDate)
+    def create_search(self, initial_date, final_date):
+        return Factors.get_factors(initial_date, final_date)
     
-    def createImages(self, path):
-        return Factors.analyzeData(path)
+    def create_images(self, path):
+        return Factors.analyze_data(path)
     

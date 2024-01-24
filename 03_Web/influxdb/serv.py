@@ -11,6 +11,7 @@ class Serv(BaseHTTPRequestHandler):
     def do_GET(self):
         parsed_path = urlparse(self.path)
         path_parts = parsed_path.path.split('/')
+        application_json = 'application/json'
 
         if len(path_parts) == 4 and path_parts[1] == 'search':
             # Extract the path variables
@@ -19,14 +20,14 @@ class Serv(BaseHTTPRequestHandler):
 
             # Assuming you want to add a range of dates to the search list
             search = Search()
-            internal_data = search.createInternalSearch(start_date, end_date)
-            result = search.createSearch(start_date, end_date)
+            internal_data = search.create_internal_search(start_date, end_date)
+            result = search.create_search(start_date, end_date)
 
             result = pd.DataFrame(result)
 
             result.to_csv('dee.csv', index=False, header=False)
 
-            search.createImages('dee.csv')
+            search.create_images('dee.csv')
 
             internal_data_dict = []
             for item in internal_data:
@@ -44,12 +45,7 @@ class Serv(BaseHTTPRequestHandler):
             result_json = json.dumps(internal_data_dict, indent=2)
 
             # Send the response headers
-            self.send_response(200)
-            self.send_header('Content-type', 'application/json')
-            self.end_headers()
-
-            # Send the JSON data as the response
-            self.wfile.write(result_json.encode('utf-8'))
+            self.finish_json(result_json=result_json, code=200, application=application_json)
 
         elif path_parts[1] == 'predict':
             # Load the model from the pkl file
@@ -67,9 +63,9 @@ class Serv(BaseHTTPRequestHandler):
                 return forecast.to_dict(orient='records')
 
             predictions = make_prediction(data)
-            predictionsData = pd.DataFrame(predictions)
+            predictions_data = pd.DataFrame(predictions)
 
-            ultimos_dos_yhat = predictionsData['yhat'].tail(2)
+            ultimos_dos_yhat = predictions_data['yhat'].tail(2)
 
             # Convertir la serie a una lista
             ultimos_dos_yhat_list = ultimos_dos_yhat.tolist()
@@ -78,13 +74,7 @@ class Serv(BaseHTTPRequestHandler):
             result_json = json.dumps(ultimos_dos_yhat_list)
 
             print(result_json)
-            # Send the response headers
-            self.send_response(200)
-            self.send_header('Content-type', 'application/json')
-            self.end_headers()
-
-            # Send the JSON data as the response
-            self.wfile.write(result_json.encode('utf-8'))
+            self.finish_json(result_json=result_json, code=200, application=application_json)
             
         elif path_parts[1] == 'start':
             data = pd.read_csv("merged_dataset1.csv")
@@ -97,14 +87,12 @@ class Serv(BaseHTTPRequestHandler):
 
         else:
             result_json = json.dumps({"error": "Invalid path"}, indent=2)
-            self.send_response(404)
-            self.send_header('Content-type', 'application/json')
-            self.end_headers()
-            self.wfile.write(result_json.encode('utf-8'))
+            self.finish_json(result_json=result_json, code=404, application=application_json)
 
     def do_POST(self):
         parsed_path = urlparse(self.path)
         path_parts = parsed_path.path.split('/')
+        application_json = 'application/json'
 
         if path_parts[1] == "predictValues":
             content_length = int(self.headers['Content-Length'])
@@ -129,9 +117,9 @@ class Serv(BaseHTTPRequestHandler):
                 return forecast.to_dict(orient='records')
 
             predictions = make_prediction(data)
-            predictionsData = pd.DataFrame(predictions)
+            predictions_data = pd.DataFrame(predictions)
 
-            ultimos_dos_yhat = predictionsData['yhat'].tail(2)
+            ultimos_dos_yhat = predictions_data['yhat'].tail(2)
 
             # Convertir la serie a una lista
             ultimos_dos_yhat_list = ultimos_dos_yhat.tolist()
@@ -139,20 +127,17 @@ class Serv(BaseHTTPRequestHandler):
             # Convertir la lista a JSON
             result_json = json.dumps(ultimos_dos_yhat_list)
 
-            print(result_json)
             # Send the response headers
-            self.send_response(200)
-            self.send_header('Content-type', 'application/json')
-            self.end_headers()
-
-            # Send the JSON data as the response
-            self.wfile.write(result_json.encode('utf-8'))
+            self.finish_json(result_json=result_json, code=200, application=application_json)
         else:
             result_json = json.dumps({"error": "Invalid path"}, indent=2)
-            self.send_response(404)
-            self.send_header('Content-type', 'application/json')
-            self.end_headers()
-            self.wfile.write(result_json.encode('utf-8'))
+            self.finish_json(result_json=result_json, code=404, application=application_json)
+
+    def finish_json(self, result_json, code, application):
+        self.send_response(code)
+        self.send_header('Content-type', application)
+        self.end_headers()
+        self.wfile.write(result_json.encode('utf-8'))
 
 httpd = HTTPServer(('localhost', 8080), Serv)
 httpd.serve_forever()
