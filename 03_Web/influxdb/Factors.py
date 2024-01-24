@@ -92,9 +92,11 @@ def analyze_data(path):
 
     data = pd.read_csv(path, header=0)
 
-    images_folder = '/home/unai_laskurain/images'
+    images_folder = 'Images'
+    #if not os.path.exists(images_folder):
+        #os.makedirs(images_folder)
 
-    plt.figure(figsize=(20, 20)) 
+    plt.figure(figsize=(20, 20))
 
     cor = sns.heatmap(data[['Births', 'Euribor', 'IPC', 'Price_EUR', 'Open_EUR',
                             'High_EUR', 'Low_EUR', 'Defunciones', 'Total_debt', 'Percentage',
@@ -102,7 +104,9 @@ def analyze_data(path):
                             'Paro(%)', 'GDP_Value', 'Open_DJ', 'High_DJ', 'Low_DJ', 'Close_DJ', 'Open', 'High', 'Low', 'Close', 'AdjClose']].corr(), annot=True, fmt=".2f")
 
     plt.savefig(os.path.join(images_folder, 'heatmap.png'))
-    
+    #if not os.path.exists(images_folder):
+        #os.makedirs(images_folder)
+
     data['Date'] = pd.to_datetime(data['Date'])
 
     data.sort_values('Date', inplace=True)
@@ -120,6 +124,8 @@ def analyze_data(path):
     data['Date'] = pd.to_datetime(data['Date'])
 
     columns_to_plot = ['Euribor', 'IPC', 'Total_debt', 'Price_EUR', 'Activos', 'Parados', 'Ocupados', 'Actividad(%)', 'Paro(%)', 'GDP_Value', 'High_DJ', 'Births', 'Defunciones']
+    #if not os.path.exists(images_folder):
+       # os.makedirs(images_folder)
 
     for i, col in enumerate(columns_to_plot):
         plt.figure(figsize=(15, 5))
@@ -139,6 +145,8 @@ def analyze_data(path):
 
     columns_to_plot = ['Euribor', 'IPC', 'Total_debt', 'Price_EUR', 'Activos', 'Parados', 'Ocupados', 
                     'Actividad(%)', 'Paro(%)', 'GDP_Value', 'High_DJ', 'Births', 'Defunciones']
+    #if not os.path.exists(images_folder):
+       # os.makedirs(images_folder)
 
     for i, col in enumerate(columns_to_plot, 1):
         plt.figure(figsize=(15, 5))

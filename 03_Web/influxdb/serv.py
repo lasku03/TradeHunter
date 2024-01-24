@@ -1,4 +1,5 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
+from scrapping import Scrapping
 from search import Search 
 import json
 from urllib.parse import urlparse, parse_qs
@@ -6,6 +7,7 @@ import pandas as pd
 from prophet import Prophet 
 import pickle
 from simulation import Simulation
+
 
 class Serv(BaseHTTPRequestHandler):
     def do_GET(self):
@@ -96,7 +98,7 @@ class Serv(BaseHTTPRequestHandler):
             simulation.update_excel(data)
 
             # Load the model
-            with open('simulation/modelo_prophet2.pkl', 'rb') as f:
+            with open('simulation/modelo_prophet.pkl', 'rb') as f:
                 model = pickle.load(f)
 
             data = pd.read_csv("simulation/merged_dataset1.csv")
