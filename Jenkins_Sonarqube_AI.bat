@@ -2,12 +2,10 @@
 
 :: Definir los parámetros
 set projectKey=TradeHunterAI
-set projectName=TradeHunterAI
 set sonarHostUrl=http://tradehunter.duckdns.org:9090
-set sonarToken=sqp_e1f7da136ff093930448ea1c8711c02363792401
+set sonarToken=sqp_6cd9a8d70893a822b4f20768fc900ad55d1c1de3
 
-:: Comando Maven
-set sonarCommand=mvn clean verify sonar:sonar -f "03_Web\tradehunter.demo\pom.xml" -Dsonar.projectKey=%projectKey% -Dsonar.projectName="%projectName%" -Dsonar.host.url=%sonarHostUrl% -Dsonar.token=%sonarToken%
+sonar-scanner.bat -D"sonar.projectKey=%projectKey%" -D"sonar.sources=." -D"sonar.host.url=%sonarHostUrl%" -D"sonar.token=%sonarToken%"
 
 :: Ejecutar el comando Maven
 %sonarCommand%
