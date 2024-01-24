@@ -228,15 +228,15 @@ class Scrapping:
         self.ibex_close, self.ibex_adjclose, self.ibex_open, self.ibex_low, self.ibex_high = self.ibex_scrapping()
         self.IPC = self.ipc_scrapping()
         self.euribor = self.euribor_scrapping()
-        headers = ["Date", "Activity(%)","Activos", "AdjClose", "Births", "Close", "Close_DJ", "Debt", "Debt_per_capita", "Deaths",
-               "Euribor", "GDP_Value", "High_DJ", "High_EURO", "High_y", "IPC", "Low_DJ", "Low_EURO", "Low_y", "Ocupados",
-               "Open_DJ", "Open_EURO", "Open_y", "Parados", "Paro(%)", "Percentage", "Price_EURO"]
+        headers = ["Date", "Activity(%)","Activos", "AdjClose", "Births", "Close", "Close_DJ", "Total_debt", "Debt_per_capita", "Deaths",
+                "Euribor", "GDP_Value", "High_DJ", "High_EUR", "High", "IPC", "Low_DJ", "Low_EUR", "Low", "Ocupados",
+                "Open_DJ", "Open_EUR", "Open", "Parados", "Paro(%)", "Percentage", "Price_EUR"]
         new_data = []
         current_date = datetime.date.today().strftime("%Y-%m-%d")
 
         new_row = [current_date, self.activity_activity_rate, self.activity_activos, self.ibex_adjclose, self.births, self.ibex_close, self.dj_close, self.total_debt, self.debt_per_capita, self.deaths,
-                   self.euribor, self.GDP, self.dj_high, self.eur_high, self.ibex_high, self.IPC, self.dj_low, self.eur_low, self.ibex_low, self.activity_ocupados, self.dj_open,
-                   self.eur_open, self.ibex_open, self.activity_parados, self.activity_unemployment_rate, self.debt_percentage, self.eur_current]
+                    self.euribor, self.GDP, self.dj_high, self.eur_high, self.ibex_high, self.IPC, self.dj_low, self.eur_low, self.ibex_low, self.activity_ocupados, self.dj_open,
+                    self.eur_open, self.ibex_open, self.activity_parados, self.activity_unemployment_rate, self.debt_percentage, self.eur_current]
 
         new_data.append(headers)
         i = -1
