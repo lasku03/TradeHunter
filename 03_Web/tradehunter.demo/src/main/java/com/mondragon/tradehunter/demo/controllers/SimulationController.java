@@ -20,17 +20,16 @@ import com.mondragon.tradehunter.demo.simulation.SimulationMaker;
 // @RequestMapping("")
 public class SimulationController {
 
-    SimulationMaker simulationMaker = new SimulationMaker();
+    SimulationMaker simulationMaker = new SimulationMaker();;
 
     @GetMapping("/simulation/start")
     public void startSimulation() {
-
+        simulationMaker = new SimulationMaker();
         simulationMaker.makeSimulation();
     }
 
     @GetMapping("/simulation/stop")
     public void stopSimulation() throws InterruptedException {
-
         simulationMaker.stopSimulation();
     }
 
