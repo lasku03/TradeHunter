@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <requestMessage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="schemasMessage.xsd">
-    <content>Hola</content>
+    <content>Ask any question you have!</content>
     <userUsername>admin</userUsername>
     <forumID>1</forumID>
-    <date>2024-01-24T10:30:02.786Z</date>
+    <date>2024-01-24T11:05:57.048Z</date>
 </requestMessage>
