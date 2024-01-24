@@ -15,8 +15,6 @@ def reorganizar_resultados(result):
     datos_reorganizados_con_nombres = []
     nombres = []
     date = "Date"
-    #hutsunea = ""
-    #nombres.append(hutsunea)
     nombres.append(date)
     i = 0
     # Procesa cada registro en los resultados
@@ -60,9 +58,6 @@ def get_factors(start, stop):
     # Crea el cliente InfluxDB
     client = InfluxDBClient(url=url, token=token, org=org)
 
-    # Crea el cliente de escritura
-    write_api = client.write_api(write_options=SYNCHRONOUS)
-
     # Consulta de ejemplo
     query = f'from(bucket: "{bucket}")' \
                 f'  |> range(start: {start}, stop: {stop})' \
@@ -76,7 +71,7 @@ def get_factors(start, stop):
 
     return resultados_reorganizados
 
-def insertFactors(path):
+def insert_factors(path):
     url = "http://tradehunter.duckdns.org:8086"
     token = "I7MLtkx-A_vJ3-JITkcYQqmhtxvc3zABaMBD-gmWY1eP2rcy4BqMzH_sVhNC7LhyDrGJKdIOxHptmgkuy28VFA=="
     org = "TradeHunter"
@@ -108,7 +103,7 @@ def insertFactors(path):
             # Write the data point to InfluxDB
             write_api.write(bucket=bucket, record=data, timeout=20)
 
-def analyzeData(path):
+def analyze_data(path):
 
     data = pd.read_csv(path, header=0)
 
@@ -127,9 +122,6 @@ def analyzeData(path):
 
     # Save the plot in the 'Images' folder
     plt.savefig(os.path.join(images_folder, 'heatmap.png'))
-
-    # Create the 'Images' folder if it doesn't exist
-    images_folder = '/home/unai_laskurain/images'
     #if not os.path.exists(images_folder):
         #os.makedirs(images_folder)
 
@@ -156,9 +148,6 @@ def analyzeData(path):
 
     # List of columns to plot
     columns_to_plot = ['Euribor', 'IPC', 'Total_debt', 'Price_EUR', 'Activos', 'Parados', 'Ocupados', 'Actividad(%)', 'Paro(%)', 'GDP_Value', 'High_DJ', 'Births', 'Defunciones']
-
-    # Create the 'Images' folder if it doesn't exist
-    images_folder = '/home/unai_laskurain/images'
     #if not os.path.exists(images_folder):
        # os.makedirs(images_folder)
 
@@ -188,9 +177,6 @@ def analyzeData(path):
     # List of columns to compare with 'High'
     columns_to_plot = ['Euribor', 'IPC', 'Total_debt', 'Price_EUR', 'Activos', 'Parados', 'Ocupados', 
                     'Actividad(%)', 'Paro(%)', 'GDP_Value', 'High_DJ', 'Births', 'Defunciones']
-
-    # Create the 'Images' folder if it doesn't exist
-    images_folder = '/home/unai_laskurain/images'
     #if not os.path.exists(images_folder):
        # os.makedirs(images_folder)
 
