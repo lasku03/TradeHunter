@@ -1,0 +1,22 @@
+@echo off
+
+:: Definir los parámetros
+set projectKey=TradeHunterAI
+set projectName=TradeHunterAI
+set sonarHostUrl=http://tradehunter.duckdns.org:9090
+set sonarToken=sqp_e1f7da136ff093930448ea1c8711c02363792401
+
+:: Comando Maven
+set sonarCommand=mvn clean verify sonar:sonar -f "03_Web\tradehunter.demo\pom.xml" -Dsonar.projectKey=%projectKey% -Dsonar.projectName="%projectName%" -Dsonar.host.url=%sonarHostUrl% -Dsonar.token=%sonarToken%
+
+:: Ejecutar el comando Maven
+%sonarCommand%
+
+:: Verificar el código de salida del comando
+if %errorlevel% equ 0 (
+    echo Sonarqube's static analysis of the project has been correct.
+    exit /b 0
+) else (
+    echo Error during Sonarqube's static analysis of the project. Exiting...
+    exit /b %errorlevel%
+)
