@@ -6,6 +6,7 @@ import pandas as pd
 from prophet import Prophet 
 import pickle
 from simulation import Simulation
+from scrapping import Scrapping
 
 class Serv(BaseHTTPRequestHandler):
     def do_GET(self):
@@ -14,11 +15,9 @@ class Serv(BaseHTTPRequestHandler):
         application_json = 'application/json'
 
         if len(path_parts) == 4 and path_parts[1] == 'search':
-            # Extract the path variables
             start_date = path_parts[2]
             end_date = path_parts[3]
 
-            # Assuming you want to add a range of dates to the search list
             search = Search()
             internal_data = search.create_internal_search(start_date, end_date)
             result = search.create_search(start_date, end_date)
@@ -41,23 +40,18 @@ class Serv(BaseHTTPRequestHandler):
                 }
                 internal_data_dict.append(result_dict)
 
-            # Serialize the result to JSON
             result_json = json.dumps(internal_data_dict, indent=2)
 
-            # Send the response headers
             self.finish_json(result_json=result_json, code=200, application=application_json)
 
         elif path_parts[1] == 'predict':
-            # Load the model from the pkl file
             with open('modelo_prophet.pkl', 'rb') as f:
                 model = pickle.load(f)
 
-            # Load your data for prediction here
             data = pd.read_csv("merged_dataset1.csv")
             data['ds'] = data['Date']
             data['y'] = data['AdjClose']
 
-            # Do the prediction using the created model
             def make_prediction(input_data):
                 forecast = model.predict(input_data)
                 return forecast.to_dict(orient='records')
@@ -67,10 +61,8 @@ class Serv(BaseHTTPRequestHandler):
 
             ultimos_dos_yhat = predictions_data['yhat'].tail(2)
 
-            # Convertir la serie a una lista
             ultimos_dos_yhat_list = ultimos_dos_yhat.tolist()
 
-            # Convertir la lista a JSON
             result_json = json.dumps(ultimos_dos_yhat_list)
 
             print(result_json)
@@ -102,16 +94,13 @@ class Serv(BaseHTTPRequestHandler):
             simulation = Simulation()
             simulation.update_excel(data)
 
-            # Load the model from the pkl file
             with open('simulation/modelo_prophet2.pkl', 'rb') as f:
                 model = pickle.load(f)
 
-            # Load your data for prediction here
             data = pd.read_csv("simulation/merged_dataset1.csv")
             data['ds'] = data['Date']
             data['y'] = data['AdjClose']
 
-            # Do the prediction using the created model
             def make_prediction(input_data):
                 forecast = model.predict(input_data)
                 return forecast.to_dict(orient='records')
@@ -121,13 +110,10 @@ class Serv(BaseHTTPRequestHandler):
 
             ultimos_dos_yhat = predictions_data['yhat'].tail(2)
 
-            # Convertir la serie a una lista
             ultimos_dos_yhat_list = ultimos_dos_yhat.tolist()
 
-            # Convertir la lista a JSON
             result_json = json.dumps(ultimos_dos_yhat_list)
 
-            # Send the response headers
             self.finish_json(result_json=result_json, code=200, application=application_json)
         else:
             result_json = json.dumps({"error": "Invalid path"}, indent=2)
