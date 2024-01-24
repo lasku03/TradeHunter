@@ -4,8 +4,6 @@ from scrapping import Scrapping
 import datetime
 import coverage
 
-import requests
-
 class TestScrapping(unittest.TestCase):
 
     def test_init(self):
@@ -186,7 +184,6 @@ class TestScrapping(unittest.TestCase):
     @patch('scrapping.BeautifulSoup')
     def test_activity_scrapping(self, mock_beautifulsoup):
         mock_soup = MagicMock()
-        
         mock_soup.select.side_effect = [
             [MagicMock(text='3,5')],
             [MagicMock(text='4,5')],
