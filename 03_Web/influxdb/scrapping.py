@@ -49,18 +49,12 @@ class Scrapping:
         parados = parados[0].text.split()
         parados = parados[0]
 
-        # Remove periods (thousand separators)
         ocupados = ocupados.replace('.', '')
-        # Replace commas (decimal separators) with periods
         ocupados = ocupados.replace(',', '.')
-        # Convert to float
         ocupados = pd.to_numeric(ocupados, errors='coerce')
 
-        # Remove periods (thousand separators)
         parados = parados.replace('.', '')
-        # Replace commas (decimal separators) with periods
         parados = parados.replace(',', '.')
-        # Convert to float
         parados = pd.to_numeric(parados, errors='coerce')
 
         activos = ocupados + parados
@@ -249,11 +243,8 @@ class Scrapping:
         for col in headers:
             i = i + 1
             if col != 'Date' and not isinstance(new_row[i], int) and not isinstance(new_row[i], float):
-                # Remove periods (thousand separators)
                 new_row[i] = new_row[i].replace('.', '')
-                # Replace commas (decimal separators) with periods
                 new_row[i] = new_row[i].replace(',', '.')
-                # Convert to float
                 new_row[i] = pd.to_numeric(new_row[i], errors='coerce')
         new_data.append(new_row)
         data = pd.DataFrame(new_data)
